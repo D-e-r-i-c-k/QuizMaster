@@ -16,6 +16,7 @@ object frmHome: TfrmHome
   Position = poScreenCenter
   ShowInTaskBar = True
   OnCreate = FormCreate
+  OnShow = FormShow
   TextHeight = 15
   object pnlHeader: TPanel
     Left = 0
@@ -293,15 +294,231 @@ object frmHome: TfrmHome
       Brush.Color = clSkyBlue
       Shape = stRoundRect
     end
-    object Button3: TButton
-      Left = 169
-      Top = 208
-      Width = 360
-      Height = 57
-      Caption = 'Button1'
-      StylusHotImageIndex = -2
+    object lblDailyButtonSubtext: TLabel
+      Left = 176
+      Top = 271
+      Width = 354
+      Height = 15
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Complete Daily Challenges To Build Your Learning Streak'
+      Color = clHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clHighlight
+      Font.Height = 14
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+    end
+    object pnlStartDaily: TPanel
+      Left = 175
+      Top = 200
+      Width = 355
+      Height = 65
+      BevelOuter = bvNone
       TabOrder = 0
-      StyleName = 'Windows'
+      object shpButtonStartDaily: TShape
+        Left = 0
+        Top = 0
+        Width = 354
+        Height = 65
+        Brush.Color = clHighlight
+        Shape = stRoundRect
+        OnMouseDown = shpButtonStartDailyMouseDown
+      end
+      object lblButtonStartDaily: TLabel
+        Left = 0
+        Top = 20
+        Width = 352
+        Height = 30
+        Align = alCustom
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Start Daily Challenge'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlightText
+        Font.Height = 24
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = lblButtonStartDailyClick
+      end
+    end
+    object pnlDailyQuizInfo: TPanel
+      Left = 33
+      Top = 25
+      Width = 497
+      Height = 169
+      BevelEdges = []
+      BevelOuter = bvNone
+      TabOrder = 1
+      object imgDaily1: TImage
+        Left = 8
+        Top = 8
+        Width = 33
+        Height = 33
+        Center = True
+        Stretch = True
+      end
+      object imgDaily2: TImage
+        Left = 8
+        Top = 136
+        Width = 25
+        Height = 25
+        Center = True
+        Stretch = True
+      end
+      object lblDailyTitle: TLabel
+        Left = 47
+        Top = 0
+        Width = 148
+        Height = 28
+        Caption = 'Daily Challenge'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clDefault
+        Font.Height = 28
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblDailyAmntQuestions: TLabel
+        Left = 39
+        Top = 145
+        Width = 61
+        Height = 13
+        Caption = '3 Questions'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = 14
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblDailyDate: TLabel
+        Left = 8
+        Top = 56
+        Width = 177
+        Height = 21
+        Caption = 'Daily Quiz - 2025-08-25'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clDefault
+        Font.Height = 22
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblDailyMotivation: TLabel
+        Left = 47
+        Top = 29
+        Width = 187
+        Height = 13
+        Alignment = taCenter
+        Caption = 'Complete a quiz to build your streak'
+        Color = clHighlight
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = 14
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+      end
+      object lblDailyTopic: TLabel
+        Left = 8
+        Top = 77
+        Width = 81
+        Height = 13
+        Alignment = taCenter
+        Caption = 'Topic: Literature'
+        Color = clHighlight
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = 14
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+      end
+      object lblDailyStreak: TLabel
+        Left = 39
+        Top = 108
+        Width = 123
+        Height = 15
+        Caption = 'Current Streak: 0 days'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = 16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object imgDaily3: TImage
+        Left = 8
+        Top = 103
+        Width = 25
+        Height = 25
+        Center = True
+        Stretch = True
+      end
+    end
+  end
+  object pnlQuizSelector: TPanel
+    Left = 48
+    Top = 543
+    Width = 705
+    Height = 25
+    BevelEdges = []
+    BevelOuter = bvNone
+    TabOrder = 6
+    object sbtnMyQuizzes: TSpeedButton
+      Left = 0
+      Top = 0
+      Width = 352
+      Height = 25
+      AllowAllUp = True
+      GroupIndex = 1
+      Down = True
+      Caption = 'My Quizzes'
+    end
+    object sbtnOnlineQuizzes: TSpeedButton
+      Left = 352
+      Top = 0
+      Width = 352
+      Height = 25
+      AllowAllUp = True
+      GroupIndex = 1
+      Caption = 'Online Quizzes'
+    end
+  end
+  object pnlMyQuizzes: TPanel
+    Left = 48
+    Top = 574
+    Width = 705
+    Height = 320
+    BevelEdges = []
+    BevelOuter = bvNone
+    TabOrder = 7
+    object shpMyQuizzesMain: TShape
+      Left = 0
+      Top = 0
+      Width = 705
+      Height = 265
+      Shape = stRoundRect
+    end
+    object shpMyQuizzesCreateCustomQuiz: TShape
+      Left = 0
+      Top = 270
+      Width = 350
+      Height = 50
+      Shape = stRoundRect
+    end
+    object shpMyQuizzesCreateAIQuiz: TShape
+      Left = 355
+      Top = 270
+      Width = 350
+      Height = 50
+      Shape = stRoundRect
     end
   end
 end

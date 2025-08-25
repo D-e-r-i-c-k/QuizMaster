@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
+  Vcl.Buttons;
 
 type
   TfrmHome = class(TForm)
@@ -33,10 +34,37 @@ type
     imgStat4: TImage;
     pnlDailyQuiz: TPanel;
     shpDailyQuiz: TShape;
-    Button3: TButton;
+    shpButtonStartDaily: TShape;
+    pnlStartDaily: TPanel;
+    lblButtonStartDaily: TLabel;
+    pnlDailyQuizInfo: TPanel;
+    lblDailyButtonSubtext: TLabel;
+    imgDaily1: TImage;
+    imgDaily2: TImage;
+    lblDailyTitle: TLabel;
+    lblDailyAmntQuestions: TLabel;
+    lblDailyDate: TLabel;
+    lblDailyMotivation: TLabel;
+    lblDailyTopic: TLabel;
+    lblDailyStreak: TLabel;
+    imgDaily3: TImage;
+    pnlQuizSelector: TPanel;
+    sbtnMyQuizzes: TSpeedButton;
+    sbtnOnlineQuizzes: TSpeedButton;
+    pnlMyQuizzes: TPanel;
+    shpMyQuizzesMain: TShape;
+    shpMyQuizzesCreateCustomQuiz: TShape;
+    shpMyQuizzesCreateAIQuiz: TShape;
     procedure FormCreate(Sender: TObject);
+    procedure lblButtonStartDailyClick(Sender: TObject);
+    procedure shpButtonStartDailyMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FormShow(Sender: TObject);
   private
+  {private variables}
   public
+  {public variables}
+    intQuizTypeActive: Integer;
   end;
 
 var
@@ -49,10 +77,45 @@ implementation
 
 procedure TfrmHome.FormCreate(Sender: TObject);
 begin
+// Image Loading:
+  // Stats
   imgStat1.Picture.LoadFromFile('icons/imgStat1.png');
   imgStat2.Picture.LoadFromFile('icons/imgStat2.png');
   imgStat3.Picture.LoadFromFile('icons/imgStat3.png');
   imgStat4.Picture.LoadFromFile('icons/imgStat4.png');
+  // Daily Quiz
+  imgDaily1.Picture.LoadFromFile('icons/imgDaily1.png');
+  imgDaily2.Picture.LoadFromFile('icons/imgDaily2.png');
+  imgDaily3.Picture.LoadFromFile('icons/imgDaily3.png');
+
+//Variable Starting Values:
+  intQuizTypeActive := 0;
+end;
+
+procedure TfrmHome.FormShow(Sender: TObject);
+begin
+//Dynamic Text Loading:
+  // Daily Quiz
+  lblDailyDate.Caption := 'Daily Quiz - ' + FormatDateTime('yyyy-mm-dd', Date());
+  lblDailyTopic.Caption := 'Topic: Literature';
+  lblDailyStreak.Caption := 'Current Streak: 0';
+  lblDailyAmntQuestions.Caption := '3 Questions';
+
+
+// Button Logic:
+  //Quiz Type Selector
+  if intQuizTypeActive = 0 then
+end;
+
+procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
+begin
+  ShowMessage('Clicked')
+end;
+
+procedure TfrmHome.shpButtonStartDailyMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  lblButtonStartDaily.OnClick(lblButtonStartDaily);
 end;
 
 end.
