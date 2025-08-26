@@ -60,8 +60,8 @@ type
     crdOnlineQuizzes: TCard;
     pnlOnlineQuizzes: TPanel;
     Shape1: TShape;
-    ScrollBox1: TScrollBox;
     Shape2: TShape;
+    sbMainSrcoll: TScrollBox;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
@@ -73,7 +73,6 @@ type
   {private variables}
   public
   {public variables}
-    intQuizTypeActive: Integer;
   end;
 
 var
@@ -96,9 +95,6 @@ begin
   imgDaily1.Picture.LoadFromFile('icons/imgDaily1.png');
   imgDaily2.Picture.LoadFromFile('icons/imgDaily2.png');
   imgDaily3.Picture.LoadFromFile('icons/imgDaily3.png');
-
-//Variable Starting Values:
-  intQuizTypeActive := 0;
 end;
 
 procedure TfrmHome.FormShow(Sender: TObject);

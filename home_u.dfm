@@ -1,6 +1,8 @@
 object frmHome: TfrmHome
   Left = 0
   Top = 0
+  VertScrollBar.Size = 10
+  VertScrollBar.Tracking = True
   BorderIcons = [biSystemMenu, biMinimize, biHelp]
   BorderStyle = bsSingle
   Caption = 'Home'
@@ -14,24 +16,157 @@ object frmHome: TfrmHome
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  Visible = True
   ShowInTaskBar = True
   OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 15
-  object ScrollBox1: TScrollBox
-    Left = 8
-    Top = 8
+  object pnlHeader: TPanel
+    Left = 0
+    Top = 0
     Width = 810
-    Height = 900
+    Height = 89
+    BevelOuter = bvNone
+    BevelWidth = 4
+    BorderWidth = 8
+    ShowCaption = False
+    TabOrder = 0
+    object lblTitle: TLabel
+      AlignWithMargins = True
+      Left = 11
+      Top = 11
+      Width = 788
+      Height = 67
+      Align = alClient
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'QuizMaster'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clCornflowerblue
+      Font.Height = 40
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      ExplicitTop = 17
+    end
+    object lblSubTitle: TLabel
+      Left = 0
+      Top = 61
+      Width = 810
+      Height = 17
+      Align = alCustom
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Interactive Flashcard-Style Quiz App for Students and Teachers'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = 15
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object sbMainSrcoll: TScrollBox
+    Left = 0
+    Top = 84
+    Width = 810
+    Height = 829
+    VertScrollBar.Increment = 5
+    VertScrollBar.Range = 1000
+    AutoScroll = False
     BevelEdges = []
     BevelInner = bvNone
     BevelOuter = bvNone
     BorderStyle = bsNone
     TabOrder = 1
     UseWheelForScrolling = True
+    object cdpQuizzSelection: TCardPanel
+      Left = 48
+      Top = 450
+      Width = 713
+      Height = 1126
+      Align = alCustom
+      ActiveCard = crdMyQuizzes
+      BevelEdges = []
+      BevelOuter = bvNone
+      TabOrder = 0
+      object crdMyQuizzes: TCard
+        Left = 0
+        Top = 0
+        Width = 713
+        Height = 1126
+        Caption = 'MyQuizzes'
+        CardIndex = 0
+        TabOrder = 0
+        object pnlMyQuizzes: TPanel
+          Left = 0
+          Top = 0
+          Width = 713
+          Height = 1000
+          BevelEdges = []
+          BevelOuter = bvNone
+          TabOrder = 0
+          object shpMyQuizzesMain: TShape
+            Left = 0
+            Top = 0
+            Width = 713
+            Height = 261
+            Shape = stRoundRect
+          end
+          object shpMyQuizzesCreateCustomQuiz: TShape
+            Left = 0
+            Top = 267
+            Width = 350
+            Height = 70
+            Shape = stRoundRect
+          end
+          object shpMyQuizzesCreateAIQuiz: TShape
+            Left = 363
+            Top = 267
+            Width = 350
+            Height = 70
+            Shape = stRoundRect
+          end
+        end
+      end
+      object crdOnlineQuizzes: TCard
+        Left = 0
+        Top = 0
+        Width = 713
+        Height = 1126
+        Caption = 'OnlineQuizzes'
+        CardIndex = 1
+        TabOrder = 1
+        object pnlOnlineQuizzes: TPanel
+          Left = 0
+          Top = 0
+          Width = 713
+          Height = 1000
+          BevelEdges = []
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Shape1: TShape
+            Left = 0
+            Top = 0
+            Width = 713
+            Height = 170
+            Shape = stRoundRect
+          end
+          object Shape2: TShape
+            Left = 0
+            Top = 216
+            Width = 713
+            Height = 241
+            Shape = stRoundRect
+          end
+        end
+      end
+    end
     object pnlDailyQuiz: TPanel
       Left = 48
-      Top = 240
+      Top = 116
       Width = 713
       Height = 297
       BevelEdges = []
@@ -98,8 +233,8 @@ object frmHome: TfrmHome
         end
       end
       object pnlDailyQuizInfo: TPanel
-        Left = 33
-        Top = 25
+        Left = 16
+        Top = 17
         Width = 497
         Height = 169
         BevelEdges = []
@@ -217,14 +352,14 @@ object frmHome: TfrmHome
     end
     object pnlQuizSelector: TPanel
       Left = 48
-      Top = 543
+      Top = 419
       Width = 713
       Height = 25
       BevelEdges = []
       BevelOuter = bvNone
       TabOrder = 2
       object sbtnMyQuizzes: TSpeedButton
-        Left = -5
+        Left = 0
         Top = 0
         Width = 356
         Height = 25
@@ -247,7 +382,7 @@ object frmHome: TfrmHome
     end
     object pnlStat1: TPanel
       Left = 48
-      Top = 128
+      Top = 16
       Width = 161
       Height = 81
       BevelEdges = []
@@ -300,7 +435,7 @@ object frmHome: TfrmHome
     end
     object pnlStat2: TPanel
       Left = 232
-      Top = 127
+      Top = 15
       Width = 161
       Height = 82
       BevelEdges = []
@@ -353,13 +488,13 @@ object frmHome: TfrmHome
     end
     object pnlStat3: TPanel
       Left = 416
-      Top = 128
+      Top = 16
       Width = 161
       Height = 81
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
-      TabOrder = 5
+      TabOrder = 6
       object shpStat3: TShape
         Left = 0
         Top = 0
@@ -406,13 +541,13 @@ object frmHome: TfrmHome
     end
     object pnlStat4: TPanel
       Left = 600
-      Top = 128
+      Top = 16
       Width = 161
       Height = 81
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
-      TabOrder = 6
+      TabOrder = 5
       object shpStat4: TShape
         Left = 0
         Top = 0
@@ -456,137 +591,6 @@ object frmHome: TfrmHome
         Center = True
         Stretch = True
       end
-    end
-    object cdpQuizzSelection: TCardPanel
-      Left = 48
-      Top = 574
-      Width = 713
-      Height = 1000
-      Align = alCustom
-      ActiveCard = crdMyQuizzes
-      BevelEdges = []
-      BevelOuter = bvNone
-      TabOrder = 0
-      object crdMyQuizzes: TCard
-        Left = 0
-        Top = 0
-        Width = 713
-        Height = 1000
-        Caption = 'MyQuizzes'
-        CardIndex = 0
-        TabOrder = 0
-        ExplicitHeight = 500
-        object pnlMyQuizzes: TPanel
-          Left = 0
-          Top = 0
-          Width = 713
-          Height = 1000
-          BevelEdges = []
-          BevelOuter = bvNone
-          TabOrder = 0
-          object shpMyQuizzesMain: TShape
-            Left = 0
-            Top = 0
-            Width = 713
-            Height = 261
-            Shape = stRoundRect
-          end
-          object shpMyQuizzesCreateCustomQuiz: TShape
-            Left = 0
-            Top = 267
-            Width = 350
-            Height = 50
-            Shape = stRoundRect
-          end
-          object shpMyQuizzesCreateAIQuiz: TShape
-            Left = 363
-            Top = 267
-            Width = 350
-            Height = 50
-            Shape = stRoundRect
-          end
-        end
-      end
-      object crdOnlineQuizzes: TCard
-        Left = 0
-        Top = 0
-        Width = 713
-        Height = 1000
-        Caption = 'OnlineQuizzes'
-        CardIndex = 1
-        TabOrder = 1
-        ExplicitHeight = 318
-        object pnlOnlineQuizzes: TPanel
-          Left = 0
-          Top = 0
-          Width = 713
-          Height = 1000
-          BevelEdges = []
-          BevelOuter = bvNone
-          TabOrder = 0
-          object Shape1: TShape
-            Left = 0
-            Top = 0
-            Width = 713
-            Height = 170
-            Shape = stRoundRect
-          end
-          object Shape2: TShape
-            Left = 0
-            Top = 216
-            Width = 713
-            Height = 241
-            Shape = stRoundRect
-          end
-        end
-      end
-    end
-  end
-  object pnlHeader: TPanel
-    Left = 0
-    Top = 0
-    Width = 810
-    Height = 89
-    BevelOuter = bvNone
-    BevelWidth = 4
-    BorderWidth = 8
-    ShowCaption = False
-    TabOrder = 0
-    object lblTitle: TLabel
-      AlignWithMargins = True
-      Left = 11
-      Top = 11
-      Width = 788
-      Height = 67
-      Align = alClient
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'QuizMaster'
-      Color = clWhite
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clCornflowerblue
-      Font.Height = 40
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      ExplicitTop = 17
-    end
-    object lblSubTitle: TLabel
-      Left = 0
-      Top = 61
-      Width = 810
-      Height = 17
-      Align = alCustom
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Interactive Flashcard-Style Quiz App for Students and Teachers'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowFrame
-      Font.Height = 15
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
     end
   end
 end
