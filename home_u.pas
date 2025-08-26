@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.Buttons;
+  Vcl.Buttons, Vcl.WinXPanels;
 
 type
   TfrmHome = class(TForm)
@@ -55,11 +55,20 @@ type
     shpMyQuizzesMain: TShape;
     shpMyQuizzesCreateCustomQuiz: TShape;
     shpMyQuizzesCreateAIQuiz: TShape;
+    cdpQuizzSelection: TCardPanel;
+    crdMyQuizzes: TCard;
+    crdOnlineQuizzes: TCard;
+    pnlOnlineQuizzes: TPanel;
+    Shape1: TShape;
+    ScrollBox1: TScrollBox;
+    Shape2: TShape;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
+    procedure sbtnMyQuizzesClick(Sender: TObject);
+    procedure sbtnOnlineQuizzesClick(Sender: TObject);
   private
   {private variables}
   public
@@ -100,16 +109,21 @@ begin
   lblDailyTopic.Caption := 'Topic: Literature';
   lblDailyStreak.Caption := 'Current Streak: 0';
   lblDailyAmntQuestions.Caption := '3 Questions';
-
-
-// Button Logic:
-  //Quiz Type Selector
-  if intQuizTypeActive = 0 then
 end;
 
 procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
 begin
   ShowMessage('Clicked')
+end;
+
+procedure TfrmHome.sbtnMyQuizzesClick(Sender: TObject);
+begin
+  cdpQuizzSelection.ActiveCard := crdMyQuizzes;
+end;
+
+procedure TfrmHome.sbtnOnlineQuizzesClick(Sender: TObject);
+begin
+  cdpQuizzSelection.ActiveCard := crdOnlineQuizzes;
 end;
 
 procedure TfrmHome.shpButtonStartDailyMouseDown(Sender: TObject;
