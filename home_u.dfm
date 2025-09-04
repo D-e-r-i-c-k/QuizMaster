@@ -73,8 +73,9 @@ object frmHome: TfrmHome
     Top = 84
     Width = 810
     Height = 829
-    VertScrollBar.Increment = 5
+    VertScrollBar.Position = 171
     VertScrollBar.Range = 1000
+    VertScrollBar.Smooth = True
     AutoScroll = False
     BevelEdges = []
     BevelInner = bvNone
@@ -84,7 +85,7 @@ object frmHome: TfrmHome
     UseWheelForScrolling = True
     object cdpQuizzSelection: TCardPanel
       Left = 48
-      Top = 450
+      Top = 253
       Width = 713
       Height = 1126
       Align = alCustom
@@ -112,22 +113,153 @@ object frmHome: TfrmHome
             Left = 0
             Top = 0
             Width = 713
-            Height = 261
+            Height = 393
             Shape = stRoundRect
           end
-          object shpMyQuizzesCreateCustomQuiz: TShape
+          object pnlMyQuizzesHeader: TPanel
             Left = 0
-            Top = 267
-            Width = 350
-            Height = 70
-            Shape = stRoundRect
+            Top = 0
+            Width = 713
+            Height = 121
+            BevelEdges = []
+            BevelOuter = bvNone
+            Padding.Left = 10
+            Padding.Right = 10
+            TabOrder = 0
+            object imgMyQuizzes1: TImage
+              Left = 20
+              Top = 16
+              Width = 33
+              Height = 33
+              Center = True
+              Stretch = True
+            end
+            object lblMyQuizzesTitle: TLabel
+              Left = 59
+              Top = 9
+              Width = 180
+              Height = 28
+              Caption = 'My Quiz Collection'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = 28
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object lblMyQuizzesSubTitle: TLabel
+              Left = 59
+              Top = 38
+              Width = 178
+              Height = 13
+              Alignment = taCenter
+              Caption = 'Create and Edit your saved quizzes'
+              Color = clGrayText
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clGrayText
+              Font.Height = 14
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentColor = False
+              ParentFont = False
+            end
+            object shpMyQuizzesSearch: TShape
+              Left = 59
+              Top = 64
+              Width = 622
+              Height = 35
+              Shape = stRoundRect
+            end
+            object imgMyQuizzesSearch: TImage
+              Left = 20
+              Top = 68
+              Width = 24
+              Height = 24
+              Center = True
+              Stretch = True
+            end
+            object pnlCreateQuiz: TPanel
+              Left = 512
+              Top = 16
+              Width = 174
+              Height = 33
+              BevelOuter = bvNone
+              TabOrder = 0
+              OnClick = pnlCreateQuizClick
+              object shpButtonCreateQuiz: TShape
+                Left = 0
+                Top = 0
+                Width = 168
+                Height = 33
+                Brush.Color = clBackground
+                Shape = stRoundRect
+                OnMouseDown = shpButtonCreateQuizMouseDown
+              end
+              object lblCreateQuiz: TLabel
+                Left = 47
+                Top = 7
+                Width = 80
+                Height = 20
+                Align = alCustom
+                Alignment = taCenter
+                Caption = 'Create Quiz'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clHighlightText
+                Font.Height = 20
+                Font.Name = 'Segoe UI'
+                Font.Style = [fsBold]
+                ParentFont = False
+                OnClick = pnlCreateQuizClick
+              end
+            end
+            object edtMyQuizzesSearch: TEdit
+              Left = 63
+              Top = 70
+              Width = 610
+              Height = 27
+              TabStop = False
+              AutoSelect = False
+              AutoSize = False
+              BevelEdges = [beBottom]
+              BevelInner = bvNone
+              BevelOuter = bvNone
+              BorderStyle = bsNone
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              HideSelection = False
+              ParentFont = False
+              TabOrder = 1
+              TextHint = 'Search your quizzes...'
+            end
           end
-          object shpMyQuizzesCreateAIQuiz: TShape
-            Left = 363
-            Top = 267
-            Width = 350
-            Height = 70
-            Shape = stRoundRect
+          object sbMyQuizzes: TScrollBox
+            Left = 24
+            Top = 120
+            Width = 665
+            Height = 257
+            VertScrollBar.Smooth = True
+            VertScrollBar.Style = ssFlat
+            VertScrollBar.Tracking = True
+            AutoScroll = False
+            BevelEdges = []
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = clWindow
+            ParentColor = False
+            TabOrder = 1
+            object pnlMyQuizzesScroll: TPanel
+              Left = 16
+              Top = 16
+              Width = 617
+              Height = 225
+              BevelEdges = []
+              BevelOuter = bvNone
+              TabOrder = 0
+            end
           end
         end
       end
@@ -166,16 +298,24 @@ object frmHome: TfrmHome
     end
     object pnlDailyQuiz: TPanel
       Left = 48
-      Top = 116
+      Top = -55
       Width = 713
-      Height = 297
+      Height = 277
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
       TabOrder = 1
+      object shpDailyQuiz: TShape
+        Left = 0
+        Top = 0
+        Width = 713
+        Height = 273
+        Brush.Color = clSkyBlue
+        Shape = stRoundRect
+      end
       object lblDailyButtonSubtext: TLabel
-        Left = 176
-        Top = 271
+        Left = 179
+        Top = 255
         Width = 354
         Height = 15
         Alignment = taCenter
@@ -189,48 +329,6 @@ object frmHome: TfrmHome
         Font.Style = []
         ParentColor = False
         ParentFont = False
-      end
-      object shpDailyQuiz: TShape
-        Left = 0
-        Top = 0
-        Width = 713
-        Height = 297
-        Brush.Color = clSkyBlue
-        Shape = stRoundRect
-      end
-      object pnlStartDaily: TPanel
-        Left = 179
-        Top = 200
-        Width = 355
-        Height = 65
-        BevelOuter = bvNone
-        TabOrder = 0
-        object shpButtonStartDaily: TShape
-          Left = 0
-          Top = 0
-          Width = 354
-          Height = 65
-          Brush.Color = clHighlight
-          Shape = stRoundRect
-          OnMouseDown = shpButtonStartDailyMouseDown
-        end
-        object lblButtonStartDaily: TLabel
-          Left = 1
-          Top = 20
-          Width = 352
-          Height = 30
-          Align = alCustom
-          Alignment = taCenter
-          AutoSize = False
-          Caption = 'Start Daily Challenge'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clHighlightText
-          Font.Height = 24
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          OnClick = lblButtonStartDailyClick
-        end
       end
       object pnlDailyQuizInfo: TPanel
         Left = 16
@@ -349,10 +447,44 @@ object frmHome: TfrmHome
           Stretch = True
         end
       end
+      object pnlStartDaily: TPanel
+        Left = 179
+        Top = 184
+        Width = 355
+        Height = 65
+        BevelOuter = bvNone
+        TabOrder = 0
+        object shpButtonStartDaily: TShape
+          Left = 0
+          Top = 0
+          Width = 354
+          Height = 65
+          Brush.Color = clHighlight
+          Shape = stRoundRect
+          OnMouseDown = shpButtonStartDailyMouseDown
+        end
+        object lblButtonStartDaily: TLabel
+          Left = 2
+          Top = 18
+          Width = 352
+          Height = 30
+          Align = alCustom
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Start Daily Challenge'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clHighlightText
+          Font.Height = 24
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          OnClick = lblButtonStartDailyClick
+        end
+      end
     end
     object pnlQuizSelector: TPanel
       Left = 48
-      Top = 419
+      Top = 222
       Width = 713
       Height = 25
       BevelEdges = []
@@ -382,7 +514,7 @@ object frmHome: TfrmHome
     end
     object pnlStat1: TPanel
       Left = 48
-      Top = 16
+      Top = -155
       Width = 161
       Height = 81
       BevelEdges = []
@@ -435,7 +567,7 @@ object frmHome: TfrmHome
     end
     object pnlStat2: TPanel
       Left = 232
-      Top = 15
+      Top = -156
       Width = 161
       Height = 82
       BevelEdges = []
@@ -488,7 +620,7 @@ object frmHome: TfrmHome
     end
     object pnlStat3: TPanel
       Left = 416
-      Top = 16
+      Top = -155
       Width = 161
       Height = 81
       BevelEdges = []
@@ -541,7 +673,7 @@ object frmHome: TfrmHome
     end
     object pnlStat4: TPanel
       Left = 600
-      Top = 16
+      Top = -155
       Width = 161
       Height = 81
       BevelEdges = []
