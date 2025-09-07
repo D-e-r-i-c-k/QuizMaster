@@ -19,6 +19,7 @@ object frmHome: TfrmHome
   Visible = True
   ShowInTaskBar = True
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   TextHeight = 15
   object pnlHeader: TPanel
@@ -73,7 +74,6 @@ object frmHome: TfrmHome
     Top = 84
     Width = 810
     Height = 829
-    VertScrollBar.Position = 171
     VertScrollBar.Range = 1000
     VertScrollBar.Smooth = True
     AutoScroll = False
@@ -85,7 +85,7 @@ object frmHome: TfrmHome
     UseWheelForScrolling = True
     object cdpQuizzSelection: TCardPanel
       Left = 48
-      Top = 253
+      Top = 424
       Width = 713
       Height = 1126
       Align = alCustom
@@ -259,6 +259,139 @@ object frmHome: TfrmHome
               BevelEdges = []
               BevelOuter = bvNone
               TabOrder = 0
+              object Panel1: TPanel
+                Left = 0
+                Top = 0
+                Width = 200
+                Height = 225
+                Caption = 'Panel1'
+                TabOrder = 0
+                object Shape3: TShape
+                  Left = 0
+                  Top = 0
+                  Width = 200
+                  Height = 225
+                  Shape = stRoundRect
+                end
+                object Label2: TLabel
+                  Left = 15
+                  Top = 47
+                  Width = 45
+                  Height = 17
+                  Caption = 'Caption'
+                  Color = clGrayText
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clGrayText
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentColor = False
+                  ParentFont = False
+                end
+                object Label3: TLabel
+                  Left = 38
+                  Top = 106
+                  Width = 60
+                  Height = 13
+                  Caption = 'x Questions'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Image1: TImage
+                  Left = 15
+                  Top = 104
+                  Width = 17
+                  Height = 17
+                end
+                object Label1: TLabel
+                  Left = 15
+                  Top = 20
+                  Width = 38
+                  Height = 25
+                  Caption = 'Title'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -19
+                  Font.Name = 'Segoe UI'
+                  Font.Style = [fsBold]
+                  ParentFont = False
+                end
+                object Image2: TImage
+                  Left = 103
+                  Top = 104
+                  Width = 17
+                  Height = 17
+                end
+                object Label4: TLabel
+                  Left = 126
+                  Top = 106
+                  Width = 24
+                  Height = 13
+                  Caption = 'Date'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Image3: TImage
+                  Left = 160
+                  Top = 16
+                  Width = 25
+                  Height = 25
+                end
+                object Image4: TImage
+                  Left = 140
+                  Top = 161
+                  Width = 21
+                  Height = 21
+                end
+                object Image5: TImage
+                  Left = 167
+                  Top = 161
+                  Width = 21
+                  Height = 21
+                end
+                object Panel2: TPanel
+                  Left = 16
+                  Top = 161
+                  Width = 105
+                  Height = 24
+                  BevelOuter = bvNone
+                  TabOrder = 0
+                  OnClick = pnlCreateQuizClick
+                  object Shape4: TShape
+                    Left = 0
+                    Top = 0
+                    Width = 105
+                    Height = 24
+                    Brush.Color = clBackground
+                    Shape = stRoundRect
+                    OnMouseDown = shpButtonCreateQuizMouseDown
+                  end
+                  object Label5: TLabel
+                    Left = 15
+                    Top = 2
+                    Width = 75
+                    Height = 20
+                    Align = alCustom
+                    Alignment = taCenter
+                    Caption = 'Strart Quiz'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clHighlightText
+                    Font.Height = 20
+                    Font.Name = 'Segoe UI'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    OnClick = pnlCreateQuizClick
+                  end
+                end
+              end
             end
           end
         end
@@ -298,7 +431,7 @@ object frmHome: TfrmHome
     end
     object pnlDailyQuiz: TPanel
       Left = 48
-      Top = -55
+      Top = 116
       Width = 713
       Height = 277
       BevelEdges = []
@@ -484,7 +617,7 @@ object frmHome: TfrmHome
     end
     object pnlQuizSelector: TPanel
       Left = 48
-      Top = 222
+      Top = 393
       Width = 713
       Height = 25
       BevelEdges = []
@@ -514,7 +647,7 @@ object frmHome: TfrmHome
     end
     object pnlStat1: TPanel
       Left = 48
-      Top = -155
+      Top = 16
       Width = 161
       Height = 81
       BevelEdges = []
@@ -567,7 +700,7 @@ object frmHome: TfrmHome
     end
     object pnlStat2: TPanel
       Left = 232
-      Top = -156
+      Top = 15
       Width = 161
       Height = 82
       BevelEdges = []
@@ -620,7 +753,7 @@ object frmHome: TfrmHome
     end
     object pnlStat3: TPanel
       Left = 416
-      Top = -155
+      Top = 16
       Width = 161
       Height = 81
       BevelEdges = []
@@ -673,7 +806,7 @@ object frmHome: TfrmHome
     end
     object pnlStat4: TPanel
       Left = 600
-      Top = -155
+      Top = 16
       Width = 161
       Height = 81
       BevelEdges = []
