@@ -137,6 +137,7 @@
             <Form>frmHome</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="quizbox_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

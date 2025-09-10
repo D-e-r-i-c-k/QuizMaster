@@ -5,7 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections;
+  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections,
+
+  quizbox_u;
 
 type
   TfrmHome = class(TForm)
@@ -86,6 +88,7 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
@@ -102,6 +105,7 @@ type
     procedure shpBtnStrtQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure EditQuizClick(Sender: TObject);
     procedure DeleteQuizClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
   {private variables}
   public
@@ -119,6 +123,7 @@ type
 
 var
   frmHome: TfrmHome;
+  QuizManager: TQuizBoxManager;
 
 implementation
 
@@ -152,6 +157,9 @@ begin
   // MyQuizzes list:
   lstMyQuizzes := TObjectList<TPanel>.Create(False);
   intQuizID := 0;
+
+  QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbMyQuizzes)
+
 end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);
@@ -273,7 +281,7 @@ begin
   lblSubTitle.Top := 47;
   lblSubTitle.Caption := 'Quiz Caption';
   lblSubTitle.Font.Color := $666666;
-  lblSubTitle.Font.Size := 10;
+  lblSubTitle.Font.Size := 8;
 
   // Amount of Questions:
   // Image:
@@ -294,7 +302,7 @@ begin
   lblAmtQuestions.Top := 106;
   lblAmtQuestions.Caption := 'x Questions';
   lblAmtQuestions.Font.Color := $666666;
-  lblAmtQuestions.Font.Size := 8;
+  lblAmtQuestions.Font.Size := 6;
 
   // Date Added:
   // Image:
@@ -315,7 +323,7 @@ begin
   lblDateAdded.Top := 106;
   lblDateAdded.Caption := FormatDateTime('yyyy-mm-dd', Date());
   lblDateAdded.Font.Color := $666666;
-  lblDateAdded.Font.Size := 8;
+  lblDateAdded.Font.Size := 6;
 
   // Quiz Type - Get from DB:
   if intQuizID mod 2 = 0 then
@@ -365,12 +373,14 @@ begin
   lblBtnStrtQuiz := TLabel.Create(Self);
   lblBtnStrtQuiz.Parent := pnlBtnStrtQuiz;
   lblBtnStrtQuiz.Alignment := taCenter;
+
   lblBtnStrtQuiz.Caption := 'Start Quiz';
   lblBtnStrtQuiz.Font.Color := clHighlightText;
-  lblBtnStrtQuiz.Font.Size := 12;
+  lblBtnStrtQuiz.Align := alClient;
+  lblBtnStrtQuiz.Font.Size := 10;
   lblBtnStrtQuiz.Font.Style := [TFontStyle.fsBold];
-  lblBtnStrtQuiz.Left := 15;
-  lblBtnStrtQuiz.Top := 2;
+//  lblBtnStrtQuiz.Left := 15;
+//  lblBtnStrtQuiz.Top := 2;
   lblBtnStrtQuiz.Tag := intQuizID;
 
   // OnClick
@@ -414,7 +424,7 @@ end;
 
 procedure TfrmHome.shpBtnStrtQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  StartQuizClick(Sender); // Calls your TNotifyEvent handler
+  StartQuizClick(Sender);
 end;
 
 procedure TfrmHome.EditQuizClick(Sender: TObject);
@@ -427,6 +437,11 @@ begin
   finally
 
   end;
+end;
+
+procedure TfrmHome.Button1Click(Sender: TObject);
+begin
+  QuizManager.AddQuiz
 end;
 
 procedure TfrmHome.DeleteQuizClick(Sender: TObject);

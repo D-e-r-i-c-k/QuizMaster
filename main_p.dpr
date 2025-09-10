@@ -4,7 +4,8 @@ uses
   Vcl.Forms,
   home_u in 'home_u.pas' {frmHome},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  quizbox_u in 'quizbox_u.pas';
 
 {$R *.res}
 
