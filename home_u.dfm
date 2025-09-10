@@ -580,19 +580,6 @@ object frmHome: TfrmHome
           Center = True
           Stretch = True
         end
-        object Button1: TButton
-          Left = 245
-          Top = 101
-          Width = 243
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Button1'
-          TabOrder = 0
-          OnClick = Button1Click
-        end
       end
       object pnlStartDaily: TPanel
         Left = 179
