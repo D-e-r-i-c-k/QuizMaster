@@ -138,6 +138,8 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="quizbox_u.pas"/>
+        <DCCReference Include="api_caller_u.pas"/>
+        <DCCReference Include="question_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

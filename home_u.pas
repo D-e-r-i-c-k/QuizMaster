@@ -88,6 +88,7 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
@@ -99,6 +100,7 @@ type
     procedure shpButtonCreateQuizMouseDown(Sender: TObject;
     Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormDestroy(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
   {private variables}
   public
@@ -116,12 +118,18 @@ type
 var
   frmHome: TfrmHome;
   QuizManager: TQuizBoxManager;
+//  API_Caller: TAPI_Caller;
 
 implementation
 
 {$R *.dfm}
 
 
+
+procedure TfrmHome.Button1Click(Sender: TObject);
+begin
+//  ShowMessage(API_Caller.Call('https://opentdb.com/api.php?amount=10&category=27'))
+end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
   begin
@@ -149,8 +157,8 @@ procedure TfrmHome.FormCreate(Sender: TObject);
     // MyQuizzes list:
     lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
-    QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbMyQuizzes)
-
+    QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbMyQuizzes);
+//    API_Caller := TAPI_Caller.Create;
   end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);
