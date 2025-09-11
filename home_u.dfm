@@ -254,7 +254,7 @@ object frmHome: TfrmHome
             TabOrder = 1
             object pnlMyQuizzesScroll: TPanel
               Left = 16
-              Top = 16
+              Top = 7
               Width = 617
               Height = 225
               BevelEdges = []

@@ -5,9 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections,
+  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON,
 
-  quizbox_u;
+  quizbox_u, api_caller_u, question_u;
 
 type
   TfrmHome = class(TForm)
@@ -118,7 +118,8 @@ type
 var
   frmHome: TfrmHome;
   QuizManager: TQuizBoxManager;
-//  API_Caller: TAPI_Caller;
+  API_Caller: TAPI_Caller;
+  Question: TQuestion;
 
 implementation
 
@@ -127,11 +128,24 @@ implementation
 
 
 procedure TfrmHome.Button1Click(Sender: TObject);
-begin
-//  ShowMessage(API_Caller.Call('https://opentdb.com/api.php?amount=10&category=27'))
-end;
+  var
+  json: TJSONObject;
+  question_list: TList<TQuestion>;
+  q: TQuestion;
+  begin
+    question_list := TList<TQuestion>.Create;
+    json := API_Caller.Call('https://opentdb.com/api.php?amount=10&category=27');
+    question_list := API_Caller.QuizToJSON(json.ToString);
+    for q in question_list do
+      begin
+        ShowMessage(q.Question)
+      end;
+
+  end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
+  var
+    emptyJSON : TJSONObject;
   begin
   // Image Loading:
     // Stats
@@ -158,7 +172,7 @@ procedure TfrmHome.FormCreate(Sender: TObject);
     lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
     QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbMyQuizzes);
-//    API_Caller := TAPI_Caller.Create;
+    API_Caller := TAPI_Caller.Create;
   end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);
