@@ -5,9 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON,
+  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
 
-  quizbox_u, api_caller_u, question_u;
+  quizbox_u, api_caller_u, question_u, database_u;
 
 type
   TfrmHome = class(TForm)
@@ -88,7 +88,6 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
-    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
@@ -120,27 +119,41 @@ var
   QuizManager: TQuizBoxManager;
   API_Caller: TAPI_Caller;
   Question: TQuestion;
+  DB: TdmDatabase;
 
 implementation
 
 {$R *.dfm}
 
 
-
 procedure TfrmHome.Button1Click(Sender: TObject);
   var
   json: TJSONObject;
   question_list: TList<TQuestion>;
-  q: TQuestion;
+  quizID: integer;
+  quizTitle, quizDescription, url: string;
+  quizLen, quizCategory: integer;
   begin
     question_list := TList<TQuestion>.Create;
-    json := API_Caller.Call('https://opentdb.com/api.php?amount=10&category=27');
+    quizCategory := API_Caller.GetRandomCategory;
+    quizLen := 13;
+    url := 'https://opentdb.com/api.php?amount=' + IntToStr(quizLen) + '&category=' + IntToStr(quizCategory);
+    json := API_Caller.Call(url);
     question_list := API_Caller.QuizToJSON(json.ToString);
-    for q in question_list do
+    quizTitle := API_Caller.GetCategory(quizCategory);
+    quizDescription := IntToStr(quizLen) + ' questions about ' + quizTitle;
+    quizID := DB.AddQuiz(quizTitle, quizDescription, 'API Quiz', 'API', question_list);
+    ShowMessage(IntToStr(QuizID));
+    with database_u.dmDatabase do
       begin
-        ShowMessage(q.Question)
-      end;
+        tblQuizzes.First;
+        while not tblQuizzes.Eof do
+          begin
+            ShowMessage(tblQuizzes['Title']);
 
+            tblQuizzes.Next;
+          end;
+      end;
   end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
@@ -221,6 +234,7 @@ procedure TfrmHome.shpButtonCreateQuizMouseDown(Sender: TObject;
   begin
     pnlCreateQuiz.OnClick(lblCreateQuiz);
   end;
+
 end.
 
 

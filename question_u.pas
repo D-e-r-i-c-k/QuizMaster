@@ -9,7 +9,7 @@ type
   TQuestion = class
     private
     {Private Variables}
-      FQuizType: string;
+      FQuestionType: string;
       FDifficulty: string;
       FCategory: string;
       FQuestion: string;
@@ -19,7 +19,7 @@ type
     public
     {Constructor, Procedures, Properties}
       constructor Create(QuizJSON: TJSONObject);
-      property QuizType: string read FQuizType write FQuizType;
+      property QuestionType: string read FQuestionType write FQuestionType;
       property Difficulty: string read FDifficulty write FDifficulty;
       property Question: string read FQuestion write FQuestion;
       property Category: string read FCategory write FCategory;

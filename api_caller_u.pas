@@ -20,10 +20,9 @@ type
       constructor Create;
       function Call(URL: string): TJSONObject;
       function QuizToJSON(JSONstring: string): TList<TQuestion>;
+      function GetCategory(CatID: integer): string;
+      function GetRandomCategory: integer;
   end;
-
-var
-  Q: TQuestion;
 
 implementation
 
@@ -56,11 +55,11 @@ function TAPI_Caller.QuizToJSON(JSONstring: string): TList<TQuestion>;
   var
     JSONObject, QuestionObj: TJSONObject;
     ResultsArray, Incorrect_Answers: TJSONArray;
-    Question: TQuestion;
     Options: TList<string>;
     Option: TJSONString;
     i, n: Integer;
     Questions: TList<TQuestion>;
+    Q: TQuestion;
   begin
     JSONObject := TJSONObject.ParseJSONValue(JSONstring) as TJSONObject;
     try
@@ -76,7 +75,7 @@ function TAPI_Caller.QuizToJSON(JSONstring: string): TList<TQuestion>;
                   Options := TList<string>.Create;
                   Q := TQuestion.Create(QuestionObj);
 
-                  Q.QuizType := DecodeHTML(QuestionObj.GetValue<string>('type'));
+                  Q.QuestionType := DecodeHTML(QuestionObj.GetValue<string>('type'));
                   Q.Difficulty := DecodeHTML(QuestionObj.GetValue<string>('difficulty'));
                   Q.Category := DecodeHTML(QuestionObj.GetValue<string>('category'));
                   Q.Question := DecodeHTML(QuestionObj.GetValue<string>('question'));
@@ -102,6 +101,41 @@ function TAPI_Caller.QuizToJSON(JSONstring: string): TList<TQuestion>;
 function TAPI_Caller.DecodeHTML(Str: string): string;
   begin
     Result := TNetEncoding.HTML.Decode(Str)
+  end;
+
+function TAPI_Caller.GetCategory(CatID: Integer): string;
+  var
+    Categories: TJSONArray;
+    n: integer;
+    Category: TJSONObject;
+  begin
+    Categories := Call('https://opentdb.com/api_category.php').GetValue<TJSONArray>('trivia_categories');
+    for n := 0 to Categories.Count - 1 do
+      begin
+        Category := Categories.Items[n] as TJSONObject;
+        if Category.GetValue<integer>('id') = CatID then
+          begin
+            Result := Category.GetValue<string>('name')
+          end;
+      end;
+  end;
+
+function TAPI_Caller.GetRandomCategory: Integer;
+  var
+    Categories: TJSONArray;
+    n: integer;
+    Category: TJSONObject;
+    CatIDList: TList<integer>;
+  begin
+    CatIDList := TList<integer>.Create;
+    Categories := Call('https://opentdb.com/api_category.php').GetValue<TJSONArray>('trivia_categories');
+    for n := 0 to Categories.Count - 1 do
+      begin
+        Category := Categories.Items[n] as TJSONObject;
+        CatIDList.Add(Category.GetValue<integer>('id'))
+      end;
+    Randomize;
+    Result := CatIDList.Items[Random(CatIDList.Count)];
   end;
 
 end.
