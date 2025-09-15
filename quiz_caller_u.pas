@@ -1,4 +1,4 @@
-unit api_caller_u;
+unit quiz_caller_u;
 
 interface
 
@@ -6,31 +6,34 @@ uses
   IdHTTP, IdSSLOpenSSL, System.SysUtils, System.JSON, System.Generics.Collections,
   System.NetEncoding, Vcl.Dialogs,
 
-  question_u;
+  question_u, database_u;
 
 type
-  TAPI_Caller = class
+  TQuizCaller = class
     private
     {Private Variables}
       HTTP: TIdHTTP;
       SSL: TIdSSLIOHandlerSocketOpenSSL;
+      DB: TdmDatabase;
       function DecodeHTML(Str: string): string;
     public
     {Constructor, Procedures, and Properties}
       constructor Create;
       function Call(URL: string): TJSONObject;
-      function QuizToJSON(JSONstring: string): TList<TQuestion>;
+      function JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
       function GetCategory(CatID: integer): string;
       function GetRandomCategory: integer;
+      function GetQuiz(Category, AmmountOfQuestions: integer): TList<TQuestion>;
+      function GetAndAddDailyQuiz: integer;
   end;
 
 implementation
 
-constructor TAPI_Caller.Create;
+constructor TQuizCaller.Create;
   begin
   end;
 
-function TAPI_Caller.Call(URL: string): TJSONObject;
+function TQuizCaller.Call(URL: string): TJSONObject;
   var
     JSONstring: string;
   begin
@@ -51,9 +54,9 @@ function TAPI_Caller.Call(URL: string): TJSONObject;
     end;
   end;
 
-function TAPI_Caller.QuizToJSON(JSONstring: string): TList<TQuestion>;
+function TQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
   var
-    JSONObject, QuestionObj: TJSONObject;
+    QuestionObj: TJSONObject;
     ResultsArray, Incorrect_Answers: TJSONArray;
     Options: TList<string>;
     Option: TJSONString;
@@ -61,11 +64,10 @@ function TAPI_Caller.QuizToJSON(JSONstring: string): TList<TQuestion>;
     Questions: TList<TQuestion>;
     Q: TQuestion;
   begin
-    JSONObject := TJSONObject.ParseJSONValue(JSONstring) as TJSONObject;
     try
-      if Assigned(JSONObject) then
+      if Assigned(JSON) then
         begin
-          ResultsArray := JSONObject.GetValue<TJSONArray>('results');
+          ResultsArray := JSON.GetValue<TJSONArray>('results');
           if Assigned(ResultsArray) then
             begin
               Questions := TList<TQuestion>.Create;
@@ -94,16 +96,16 @@ function TAPI_Caller.QuizToJSON(JSONstring: string): TList<TQuestion>;
             end;
         end;
     finally
-      JSONObject.Free;
+      JSON.Free;
     end;
   end;
 
-function TAPI_Caller.DecodeHTML(Str: string): string;
+function TQuizCaller.DecodeHTML(Str: string): string;
   begin
     Result := TNetEncoding.HTML.Decode(Str)
   end;
 
-function TAPI_Caller.GetCategory(CatID: Integer): string;
+function TQuizCaller.GetCategory(CatID: Integer): string;
   var
     Categories: TJSONArray;
     n: integer;
@@ -120,7 +122,7 @@ function TAPI_Caller.GetCategory(CatID: Integer): string;
       end;
   end;
 
-function TAPI_Caller.GetRandomCategory: Integer;
+function TQuizCaller.GetRandomCategory: Integer;
   var
     Categories: TJSONArray;
     n: integer;
@@ -138,4 +140,36 @@ function TAPI_Caller.GetRandomCategory: Integer;
     Result := CatIDList.Items[Random(CatIDList.Count)];
   end;
 
+function TQuizCaller.GetQuiz(Category: integer; AmmountOfQuestions: integer): TList<TQuestion>;
+  var
+    URL: string;
+    QuizCategory, QuizLen: integer;
+  begin
+    QuizCategory := Category;
+    QuizLen := AmmountOfQuestions;
+    URL := 'https://opentdb.com/api.php?amount=' + IntToStr(QuizLen) + '&category=' + IntToStr(QuizCategory);
+
+    Result := JSONToQuiz(Call(URL));
+  end;
+
+function TQuizCaller.GetAndAddDailyQuiz: Integer;
+  const
+    Len = 10;
+  var
+    Title, Description: string;
+    Questions: TList<TQuestion>;
+    Category: integer;
+    ChallengeID: integer;
+  begin
+    Questions := TList<TQuestion>.Create;
+    Category := GetRandomCategory;
+
+    Questions := GetQuiz(Category, Len);
+    Title := 'Daily Quiz: ' + FormatDateTime('yyyy-mm-dd', Date());
+    Description := 'Topic: ' + GetCategory(Category);
+
+    ChallengeID := DB.AddDailyQuiz(Title, Description, Questions);
+
+    Result := ChallengeID;
+  end;
 end.

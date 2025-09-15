@@ -138,7 +138,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="quizbox_u.pas"/>
-        <DCCReference Include="api_caller_u.pas"/>
+        <DCCReference Include="quiz_caller_u.pas"/>
         <DCCReference Include="question_u.pas"/>
         <DCCReference Include="database_u.pas">
             <Form>dmDatabase</Form>

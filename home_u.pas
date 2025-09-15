@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
   Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
 
-  quizbox_u, api_caller_u, question_u, database_u;
+  quizbox_u, quiz_caller_u, question_u, database_u;
 
 type
   TfrmHome = class(TForm)
@@ -88,6 +88,7 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
@@ -117,7 +118,7 @@ type
 var
   frmHome: TfrmHome;
   QuizManager: TQuizBoxManager;
-  API_Caller: TAPI_Caller;
+  API_Caller: TQuizCaller;
   Question: TQuestion;
   DB: TdmDatabase;
 
@@ -134,31 +135,11 @@ procedure TfrmHome.Button1Click(Sender: TObject);
   quizTitle, quizDescription, url: string;
   quizLen, quizCategory: integer;
   begin
-    question_list := TList<TQuestion>.Create;
-    quizCategory := API_Caller.GetRandomCategory;
-    quizLen := 13;
-    url := 'https://opentdb.com/api.php?amount=' + IntToStr(quizLen) + '&category=' + IntToStr(quizCategory);
-    json := API_Caller.Call(url);
-    question_list := API_Caller.QuizToJSON(json.ToString);
-    quizTitle := API_Caller.GetCategory(quizCategory);
-    quizDescription := IntToStr(quizLen) + ' questions about ' + quizTitle;
-    quizID := DB.AddQuiz(quizTitle, quizDescription, 'API Quiz', 'API', question_list);
-    ShowMessage(IntToStr(QuizID));
-    with database_u.dmDatabase do
-      begin
-        tblQuizzes.First;
-        while not tblQuizzes.Eof do
-          begin
-            ShowMessage(tblQuizzes['Title']);
-
-            tblQuizzes.Next;
-          end;
-      end;
+    quizID := API_Caller.GetAndAddDailyQuiz;
+    ShowMessage(IntToStr(quizID))
   end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
-  var
-    emptyJSON : TJSONObject;
   begin
   // Image Loading:
     // Stats
@@ -185,7 +166,7 @@ procedure TfrmHome.FormCreate(Sender: TObject);
     lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
     QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbMyQuizzes);
-    API_Caller := TAPI_Caller.Create;
+    API_Caller := TQuizCaller.Create;
   end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);

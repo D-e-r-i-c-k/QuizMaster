@@ -6,7 +6,7 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   quizbox_u in 'quizbox_u.pas',
-  api_caller_u in 'api_caller_u.pas',
+  quiz_caller_u in 'quiz_caller_u.pas',
   question_u in 'question_u.pas',
   database_u in 'database_u.pas' {dmDatabase: TDataModule};
 
