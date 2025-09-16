@@ -50,18 +50,9 @@ type
     lblDailyTopic: TLabel;
     lblDailyStreak: TLabel;
     imgDaily3: TImage;
-    pnlQuizSelector: TPanel;
-    sbtnMyQuizzes: TSpeedButton;
-    sbtnOnlineQuizzes: TSpeedButton;
     pnlMyQuizzes: TPanel;
     shpMyQuizzesMain: TShape;
-    cdpQuizzSelection: TCardPanel;
-    crdMyQuizzes: TCard;
-    crdOnlineQuizzes: TCard;
-    pnlOnlineQuizzes: TPanel;
-    Shape1: TShape;
-    Shape2: TShape;
-    sbMainSrcoll: TScrollBox;
+    pnlMainForm: TPanel;
     pnlMyQuizzesHeader: TPanel;
     imgMyQuizzes1: TImage;
     lblMyQuizzesTitle: TLabel;
@@ -94,8 +85,6 @@ type
     procedure shpButtonStartDailyMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
-    procedure sbtnMyQuizzesClick(Sender: TObject);
-    procedure sbtnOnlineQuizzesClick(Sender: TObject);
     procedure pnlCreateQuizClick(Sender: TObject);
     procedure shpButtonCreateQuizMouseDown(Sender: TObject;
     Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -192,16 +181,6 @@ procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
 procedure TfrmHome.pnlCreateQuizClick(Sender: TObject);
   begin
     QuizManager.AddQuiz
-  end;
-
-procedure TfrmHome.sbtnMyQuizzesClick(Sender: TObject);
-  begin
-    cdpQuizzSelection.ActiveCard := crdMyQuizzes;
-  end;
-
-procedure TfrmHome.sbtnOnlineQuizzesClick(Sender: TObject);
-  begin
-    cdpQuizzSelection.ActiveCard := crdOnlineQuizzes;
   end;
 
 procedure TfrmHome.shpButtonStartDailyMouseDown(Sender: TObject;

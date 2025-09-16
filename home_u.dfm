@@ -6,8 +6,8 @@ object frmHome: TfrmHome
   BorderIcons = [biSystemMenu, biMinimize, biHelp]
   BorderStyle = bsSingle
   Caption = 'Home'
-  ClientHeight = 910
-  ClientWidth = 810
+  ClientHeight = 911
+  ClientWidth = 809
   Color = clBtnFace
   DragMode = dmAutomatic
   Font.Charset = DEFAULT_CHARSET
@@ -32,7 +32,7 @@ object frmHome: TfrmHome
     BevelWidth = 4
     BorderWidth = 8
     ShowCaption = False
-    TabOrder = 0
+    TabOrder = 1
     object lblTitle: TLabel
       AlignWithMargins = True
       Left = 11
@@ -70,140 +70,296 @@ object frmHome: TfrmHome
       ParentFont = False
     end
   end
-  object sbMainSrcoll: TScrollBox
+  object pnlMainForm: TPanel
     Left = 0
     Top = 84
     Width = 810
     Height = 829
-    VertScrollBar.Range = 1000
-    VertScrollBar.Smooth = True
-    AutoScroll = False
     BevelEdges = []
-    BevelInner = bvNone
     BevelOuter = bvNone
-    BorderStyle = bsNone
-    TabOrder = 1
-    UseWheelForScrolling = True
-    object cdpQuizzSelection: TCardPanel
+    TabOrder = 0
+    object pnlMyQuizzes: TPanel
       Left = 48
       Top = 424
       Width = 713
-      Height = 1126
-      Align = alCustom
-      ActiveCard = crdMyQuizzes
+      Height = 396
       BevelEdges = []
       BevelOuter = bvNone
       TabOrder = 0
-      object crdMyQuizzes: TCard
+      object shpMyQuizzesMain: TShape
         Left = 0
         Top = 0
         Width = 713
-        Height = 1126
-        Caption = 'MyQuizzes'
-        CardIndex = 0
+        Height = 393
+        Shape = stRoundRect
+      end
+      object pnlMyQuizzesHeader: TPanel
+        Left = 0
+        Top = 0
+        Width = 713
+        Height = 121
+        BevelEdges = []
+        BevelOuter = bvNone
+        Padding.Left = 10
+        Padding.Right = 10
         TabOrder = 0
-        object pnlMyQuizzes: TPanel
-          Left = 0
-          Top = 0
-          Width = 713
-          Height = 1000
+        object imgMyQuizzes1: TImage
+          Left = 20
+          Top = 16
+          Width = 33
+          Height = 33
+          Center = True
+          Stretch = True
+        end
+        object lblMyQuizzesTitle: TLabel
+          Left = 59
+          Top = 9
+          Width = 180
+          Height = 28
+          Caption = 'My Quiz Collection'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = 28
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblMyQuizzesSubTitle: TLabel
+          Left = 59
+          Top = 38
+          Width = 178
+          Height = 13
+          Alignment = taCenter
+          Caption = 'Create and Edit your saved quizzes'
+          Color = clGrayText
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clGrayText
+          Font.Height = 14
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentColor = False
+          ParentFont = False
+        end
+        object shpMyQuizzesSearch: TShape
+          Left = 59
+          Top = 64
+          Width = 622
+          Height = 35
+          Shape = stRoundRect
+        end
+        object imgMyQuizzesSearch: TImage
+          Left = 20
+          Top = 68
+          Width = 24
+          Height = 24
+          Center = True
+          Stretch = True
+        end
+        object pnlCreateQuiz: TPanel
+          Left = 512
+          Top = 16
+          Width = 174
+          Height = 33
+          BevelOuter = bvNone
+          TabOrder = 0
+          OnClick = pnlCreateQuizClick
+          object shpButtonCreateQuiz: TShape
+            Left = 0
+            Top = 0
+            Width = 168
+            Height = 33
+            Brush.Color = clBackground
+            Shape = stRoundRect
+            OnMouseDown = shpButtonCreateQuizMouseDown
+          end
+          object lblCreateQuiz: TLabel
+            Left = 47
+            Top = 7
+            Width = 80
+            Height = 20
+            Align = alCustom
+            Alignment = taCenter
+            Caption = 'Create Quiz'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clHighlightText
+            Font.Height = 20
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+            OnClick = pnlCreateQuizClick
+          end
+        end
+        object edtMyQuizzesSearch: TEdit
+          Left = 63
+          Top = 70
+          Width = 610
+          Height = 27
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          BevelEdges = [beBottom]
+          BevelInner = bvNone
+          BevelOuter = bvNone
+          BorderStyle = bsNone
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = 20
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          HideSelection = False
+          ParentFont = False
+          TabOrder = 1
+          TextHint = 'Search your quizzes...'
+        end
+      end
+      object sbMyQuizzes: TScrollBox
+        Left = 24
+        Top = 120
+        Width = 665
+        Height = 257
+        VertScrollBar.Smooth = True
+        VertScrollBar.Style = ssFlat
+        VertScrollBar.Tracking = True
+        AutoScroll = False
+        BevelEdges = []
+        BevelInner = bvNone
+        BevelOuter = bvNone
+        BorderStyle = bsNone
+        Color = clWindow
+        ParentColor = False
+        TabOrder = 1
+        UseWheelForScrolling = True
+        object pnlMyQuizzesScroll: TPanel
+          Left = 16
+          Top = 7
+          Width = 617
+          Height = 225
           BevelEdges = []
           BevelOuter = bvNone
           TabOrder = 0
-          object shpMyQuizzesMain: TShape
+          object Panel1: TPanel
             Left = 0
             Top = 0
-            Width = 713
-            Height = 393
-            Shape = stRoundRect
-          end
-          object pnlMyQuizzesHeader: TPanel
-            Left = 0
-            Top = 0
-            Width = 713
-            Height = 121
-            BevelEdges = []
-            BevelOuter = bvNone
-            Padding.Left = 10
-            Padding.Right = 10
+            Width = 200
+            Height = 225
+            Caption = 'Panel1'
             TabOrder = 0
-            object imgMyQuizzes1: TImage
-              Left = 20
-              Top = 16
-              Width = 33
-              Height = 33
-              Center = True
-              Stretch = True
+            object Shape3: TShape
+              Left = 0
+              Top = 0
+              Width = 200
+              Height = 225
+              Shape = stRoundRect
             end
-            object lblMyQuizzesTitle: TLabel
-              Left = 59
-              Top = 9
-              Width = 180
-              Height = 28
-              Caption = 'My Quiz Collection'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clDefault
-              Font.Height = 28
-              Font.Name = 'Segoe UI'
-              Font.Style = [fsBold]
-              ParentFont = False
-            end
-            object lblMyQuizzesSubTitle: TLabel
-              Left = 59
-              Top = 38
-              Width = 178
-              Height = 13
-              Alignment = taCenter
-              Caption = 'Create and Edit your saved quizzes'
+            object Label2: TLabel
+              Left = 15
+              Top = 47
+              Width = 45
+              Height = 17
+              Caption = 'Caption'
               Color = clGrayText
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clGrayText
-              Font.Height = 14
+              Font.Height = -13
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
-            object shpMyQuizzesSearch: TShape
-              Left = 59
-              Top = 64
-              Width = 622
-              Height = 35
-              Shape = stRoundRect
+            object Label3: TLabel
+              Left = 38
+              Top = 106
+              Width = 60
+              Height = 13
+              Caption = 'x Questions'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
             end
-            object imgMyQuizzesSearch: TImage
-              Left = 20
-              Top = 68
+            object Image1: TImage
+              Left = 15
+              Top = 104
+              Width = 17
+              Height = 17
+            end
+            object Label1: TLabel
+              Left = 15
+              Top = 20
+              Width = 38
+              Height = 25
+              Caption = 'Title'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Image2: TImage
+              Left = 103
+              Top = 104
+              Width = 17
+              Height = 17
+            end
+            object Label4: TLabel
+              Left = 126
+              Top = 106
               Width = 24
-              Height = 24
-              Center = True
-              Stretch = True
+              Height = 13
+              Caption = 'Date'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
             end
-            object pnlCreateQuiz: TPanel
-              Left = 512
+            object Image3: TImage
+              Left = 160
               Top = 16
-              Width = 174
-              Height = 33
+              Width = 25
+              Height = 25
+            end
+            object Image4: TImage
+              Left = 140
+              Top = 161
+              Width = 21
+              Height = 21
+            end
+            object Image5: TImage
+              Left = 167
+              Top = 161
+              Width = 21
+              Height = 21
+            end
+            object Panel2: TPanel
+              Left = 16
+              Top = 161
+              Width = 105
+              Height = 24
               BevelOuter = bvNone
               TabOrder = 0
               OnClick = pnlCreateQuizClick
-              object shpButtonCreateQuiz: TShape
+              object Shape4: TShape
                 Left = 0
                 Top = 0
-                Width = 168
-                Height = 33
+                Width = 105
+                Height = 24
                 Brush.Color = clBackground
                 Shape = stRoundRect
                 OnMouseDown = shpButtonCreateQuizMouseDown
               end
-              object lblCreateQuiz: TLabel
-                Left = 47
-                Top = 7
-                Width = 80
+              object Label5: TLabel
+                Left = 15
+                Top = 2
+                Width = 75
                 Height = 20
                 Align = alCustom
                 Alignment = taCenter
-                Caption = 'Create Quiz'
+                Caption = 'Strart Quiz'
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clHighlightText
                 Font.Height = 20
@@ -213,219 +369,6 @@ object frmHome: TfrmHome
                 OnClick = pnlCreateQuizClick
               end
             end
-            object edtMyQuizzesSearch: TEdit
-              Left = 63
-              Top = 70
-              Width = 610
-              Height = 27
-              TabStop = False
-              AutoSelect = False
-              AutoSize = False
-              BevelEdges = [beBottom]
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              BorderStyle = bsNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = 20
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              HideSelection = False
-              ParentFont = False
-              TabOrder = 1
-              TextHint = 'Search your quizzes...'
-            end
-          end
-          object sbMyQuizzes: TScrollBox
-            Left = 24
-            Top = 120
-            Width = 665
-            Height = 257
-            VertScrollBar.Smooth = True
-            VertScrollBar.Style = ssFlat
-            VertScrollBar.Tracking = True
-            AutoScroll = False
-            BevelEdges = []
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            BorderStyle = bsNone
-            Color = clWindow
-            ParentColor = False
-            TabOrder = 1
-            object pnlMyQuizzesScroll: TPanel
-              Left = 16
-              Top = 7
-              Width = 617
-              Height = 225
-              BevelEdges = []
-              BevelOuter = bvNone
-              TabOrder = 0
-              object Panel1: TPanel
-                Left = 0
-                Top = 0
-                Width = 200
-                Height = 225
-                Caption = 'Panel1'
-                TabOrder = 0
-                object Shape3: TShape
-                  Left = 0
-                  Top = 0
-                  Width = 200
-                  Height = 225
-                  Shape = stRoundRect
-                end
-                object Label2: TLabel
-                  Left = 15
-                  Top = 47
-                  Width = 45
-                  Height = 17
-                  Caption = 'Caption'
-                  Color = clGrayText
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clGrayText
-                  Font.Height = -13
-                  Font.Name = 'Segoe UI'
-                  Font.Style = []
-                  ParentColor = False
-                  ParentFont = False
-                end
-                object Label3: TLabel
-                  Left = 38
-                  Top = 106
-                  Width = 60
-                  Height = 13
-                  Caption = 'x Questions'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clWindowText
-                  Font.Height = -11
-                  Font.Name = 'Segoe UI'
-                  Font.Style = []
-                  ParentFont = False
-                end
-                object Image1: TImage
-                  Left = 15
-                  Top = 104
-                  Width = 17
-                  Height = 17
-                end
-                object Label1: TLabel
-                  Left = 15
-                  Top = 20
-                  Width = 38
-                  Height = 25
-                  Caption = 'Title'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clWindowText
-                  Font.Height = -19
-                  Font.Name = 'Segoe UI'
-                  Font.Style = [fsBold]
-                  ParentFont = False
-                end
-                object Image2: TImage
-                  Left = 103
-                  Top = 104
-                  Width = 17
-                  Height = 17
-                end
-                object Label4: TLabel
-                  Left = 126
-                  Top = 106
-                  Width = 24
-                  Height = 13
-                  Caption = 'Date'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clWindowText
-                  Font.Height = -11
-                  Font.Name = 'Segoe UI'
-                  Font.Style = []
-                  ParentFont = False
-                end
-                object Image3: TImage
-                  Left = 160
-                  Top = 16
-                  Width = 25
-                  Height = 25
-                end
-                object Image4: TImage
-                  Left = 140
-                  Top = 161
-                  Width = 21
-                  Height = 21
-                end
-                object Image5: TImage
-                  Left = 167
-                  Top = 161
-                  Width = 21
-                  Height = 21
-                end
-                object Panel2: TPanel
-                  Left = 16
-                  Top = 161
-                  Width = 105
-                  Height = 24
-                  BevelOuter = bvNone
-                  TabOrder = 0
-                  OnClick = pnlCreateQuizClick
-                  object Shape4: TShape
-                    Left = 0
-                    Top = 0
-                    Width = 105
-                    Height = 24
-                    Brush.Color = clBackground
-                    Shape = stRoundRect
-                    OnMouseDown = shpButtonCreateQuizMouseDown
-                  end
-                  object Label5: TLabel
-                    Left = 15
-                    Top = 2
-                    Width = 75
-                    Height = 20
-                    Align = alCustom
-                    Alignment = taCenter
-                    Caption = 'Strart Quiz'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clHighlightText
-                    Font.Height = 20
-                    Font.Name = 'Segoe UI'
-                    Font.Style = [fsBold]
-                    ParentFont = False
-                    OnClick = pnlCreateQuizClick
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-      object crdOnlineQuizzes: TCard
-        Left = 0
-        Top = 0
-        Width = 713
-        Height = 1126
-        Caption = 'OnlineQuizzes'
-        CardIndex = 1
-        TabOrder = 1
-        object pnlOnlineQuizzes: TPanel
-          Left = 0
-          Top = 0
-          Width = 713
-          Height = 1000
-          BevelEdges = []
-          BevelOuter = bvNone
-          TabOrder = 0
-          object Shape1: TShape
-            Left = 0
-            Top = 0
-            Width = 713
-            Height = 170
-            Shape = stRoundRect
-          end
-          object Shape2: TShape
-            Left = 0
-            Top = 216
-            Width = 713
-            Height = 241
-            Shape = stRoundRect
           end
         end
       end
@@ -629,36 +572,6 @@ object frmHome: TfrmHome
         end
       end
     end
-    object pnlQuizSelector: TPanel
-      Left = 48
-      Top = 393
-      Width = 713
-      Height = 25
-      BevelEdges = []
-      BevelOuter = bvNone
-      TabOrder = 2
-      object sbtnMyQuizzes: TSpeedButton
-        Left = 0
-        Top = 0
-        Width = 356
-        Height = 25
-        AllowAllUp = True
-        GroupIndex = 1
-        Down = True
-        Caption = 'My Quizzes'
-        OnClick = sbtnMyQuizzesClick
-      end
-      object sbtnOnlineQuizzes: TSpeedButton
-        Left = 357
-        Top = 0
-        Width = 356
-        Height = 25
-        AllowAllUp = True
-        GroupIndex = 1
-        Caption = 'Online Quizzes'
-        OnClick = sbtnOnlineQuizzesClick
-      end
-    end
     object pnlStat1: TPanel
       Left = 48
       Top = 16
@@ -667,7 +580,7 @@ object frmHome: TfrmHome
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
-      TabOrder = 3
+      TabOrder = 2
       object shpStat1: TShape
         Left = 0
         Top = 0
@@ -720,7 +633,7 @@ object frmHome: TfrmHome
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
-      TabOrder = 4
+      TabOrder = 3
       object shpStat2: TShape
         Left = 0
         Top = 0
@@ -773,7 +686,7 @@ object frmHome: TfrmHome
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
-      TabOrder = 6
+      TabOrder = 5
       object shpStat3: TShape
         Left = 0
         Top = 0
@@ -826,7 +739,7 @@ object frmHome: TfrmHome
       BevelEdges = []
       BevelOuter = bvNone
       ShowCaption = False
-      TabOrder = 5
+      TabOrder = 4
       object shpStat4: TShape
         Left = 0
         Top = 0
