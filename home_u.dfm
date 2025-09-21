@@ -5,7 +5,7 @@ object frmHome: TfrmHome
   VertScrollBar.Tracking = True
   BorderIcons = [biSystemMenu, biMinimize, biHelp]
   BorderStyle = bsSingle
-  Caption = 'Home'
+  Caption = 'Quiz Master'
   ClientHeight = 911
   ClientWidth = 809
   Color = clBtnFace
@@ -80,7 +80,7 @@ object frmHome: TfrmHome
     TabOrder = 0
     object pnlMyQuizzes: TPanel
       Left = 48
-      Top = 424
+      Top = 410
       Width = 713
       Height = 396
       BevelEdges = []
@@ -126,11 +126,11 @@ object frmHome: TfrmHome
         end
         object lblMyQuizzesSubTitle: TLabel
           Left = 59
-          Top = 38
-          Width = 178
+          Top = 43
+          Width = 141
           Height = 13
           Alignment = taCenter
-          Caption = 'Create and Edit your saved quizzes'
+          Caption = 'Manage your saved quizzes'
           Color = clGrayText
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clGrayText
@@ -212,7 +212,7 @@ object frmHome: TfrmHome
           TextHint = 'Search your quizzes...'
         end
       end
-      object sbMyQuizzes: TScrollBox
+      object sbxMyQuizzes: TScrollBox
         Left = 24
         Top = 120
         Width = 665
@@ -434,12 +434,12 @@ object frmHome: TfrmHome
         object lblDailyTitle: TLabel
           Left = 47
           Top = 0
-          Width = 148
-          Height = 28
+          Width = 177
+          Height = 32
           Caption = 'Daily Challenge'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clDefault
-          Font.Height = 28
+          Font.Height = 32
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False

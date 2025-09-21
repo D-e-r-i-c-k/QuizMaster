@@ -28,6 +28,8 @@ type
     function AddQuiz(Title, Description, Subject, Source, QType: string; Questions: TList<TQuestion>): integer;
     function AddQuestion(QuizID: integer; Question: TQuestion): integer;
     function AddDailyQuiz(Title, Description: string; Questions: TList<TQuestion>): integer;
+    function GetAllNonDailyIDs: TList<integer>;
+    function GetQuizDetails(QuizID: integer): TList<string>;
   end;
 
 var
@@ -136,4 +138,47 @@ function TdmDatabase.AddDailyQuiz(Title: string; Description: string; Questions:
 
     Result := dmDatabase.tblDailyQuizzes['ChallengeID'];
   end;
+
+function TdmDatabase.GetAllNonDailyIDs: TList<integer>;
+  var
+    QuizIDs: TList<Integer>;
+  begin
+    QuizIDs := TList<Integer>.Create;
+    tblQuizzes.First;
+    while not tblQuizzes.Eof do
+      begin
+        if tblQuizzes['QType'] <> 'Daily' then
+          begin
+            QuizIDs.Add(tblQuizzes['QuizID']);
+          end;
+
+
+        tblQuizzes.Next;
+      end;
+    Result := QuizIDs;
+  end;
+
+function TdmDatabase.GetQuizDetails(QuizID: Integer): TList<string>;
+{
+Takes the quizID and returns the details of the quiz in a list of string with
+like [Title, Description, Subject, DateCreated(as string), Source, QuizType]
+}
+  const
+    Fields: array[0..5] of string = ('Title', 'Description', 'Subject', 'DateCreated', 'Source', 'QType');
+  var
+    Details: TList<string>;
+    FieldName: string;
+  begin
+    Details := TList<string>.Create;
+
+    if tblQuizzes.Locate('QuizID', QuizID, []) then
+    begin
+      for FieldName in Fields do
+        Details.Add(tblQuizzes.FieldByName(FieldName).AsString);
+    end;
+
+    Result := Details;
+  end;
+
+
 end.

@@ -5,7 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections;
+  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections,
+
+  database_u;
 
 type
   TQuizBoxManager = class
@@ -25,11 +27,13 @@ type
   public
     {Constructor, Procedures and Properties}
     constructor Create(pnlQuizContainer: TPanel; sbScrollBox: TScrollBox);
-    procedure AddQuiz;
+    procedure AddQuiz(QuizID: integer);
     procedure StartQuizClick(Sender: TObject);
     procedure EditQuizClick(Sender: TObject);
     procedure DeleteQuizClick(Sender: TObject);
     property Quizzes: TObjectList<TPanel> read FQuizList write FQuizList;
+
+    procedure LoadAllQuizzes;
   end;
 
 implementation
@@ -42,15 +46,17 @@ constructor TQuizBoxManager.Create(pnlQuizContainer: TPanel; sbScrollBox: TScrol
     FQuizID := -1;
   end;
 
-procedure TQuizBoxManager.AddQuiz;
+procedure TQuizBoxManager.AddQuiz(QuizID: integer);
   var
     pnlBox, pnlBtnStrtQuiz: TPanel;
     shpBox, shpBtnStrtQuiz: TShape;
     lblTitle, lblSubTitle, lblAmtQuestions, lblDateAdded, lblBtnStrtQuiz: TLabel;
     imgQuizBox1, imgQuizBox2, imgQuizType, imgBtnEditQuiz, imgBtnDelQuiz: TImage;
     strQuizType: string;
+    Properties: TList<string>;
   begin
-    Inc(FQuizID);
+  //Quiz Properties:
+    Properties := dmDatabase.GetQuizDetails(QuizID);
   //Panel Of Box:
     pnlBox := TPanel.Create(FQuizParent.Owner);
     pnlBox.Parent := FQuizParent;
@@ -59,7 +65,7 @@ procedure TQuizBoxManager.AddQuiz;
 
     pnlBox.BevelEdges := [];
     pnlBox.BevelOuter := bvNone;
-    pnlBox.Tag := FQuizID;
+    pnlBox.Tag := QuizID;
 
     pnlBox.Left := FMyQuizzesLeft;
     pnlBox.Top := FMyQuizzesTop;
@@ -93,7 +99,7 @@ procedure TQuizBoxManager.AddQuiz;
     lblTitle.Parent := pnlBox;
     lblTitle.Left := 15;
     lblTitle.Top := 20;
-    lblTitle.Caption := 'Quiz Title ' + IntToStr(FQuizID);
+    lblTitle.Caption := Properties[0];
     lblTitle.Font.Size := 14;
     lblTitle.Font.Style := [fsBold];
 
@@ -102,7 +108,7 @@ procedure TQuizBoxManager.AddQuiz;
     lblSubTitle.Parent := pnlBox;
     lblSubTitle.Left := 15;
     lblSubTitle.Top := 47;
-    lblSubTitle.Caption := 'Quiz Caption';
+    lblSubTitle.Caption := Properties[1];
     lblSubTitle.Font.Color := $666666;
     lblSubTitle.Font.Size := 8;
 
@@ -144,31 +150,28 @@ procedure TQuizBoxManager.AddQuiz;
     lblDateAdded.Parent := pnlBox;
     lblDateAdded.Left := 126;
     lblDateAdded.Top := 106;
-    lblDateAdded.Caption := FormatDateTime('yyyy-mm-dd', Date());
+    lblDateAdded.Caption := FormatDateTime('yyyy-mm-dd', StrToDateTime(Properties[3]));
     lblDateAdded.Font.Color := $666666;
     lblDateAdded.Font.Size := 6;
 
   // Quiz Type - Get from DB:
-    if FQuizID mod 2 = 0 then
-      begin
-        strQuizType := 'User'
-      end
-    else
-      begin
-        strQuizType := 'AI'
-      end;
+    strQuizType := Properties[5];
 
   // Image Quiz Type:
-    imgQuizType := TImage.Create(FQuizParent.Owner);
-    imgQuizType.Parent := pnlBox;
-    imgQuizType.Left := 160;
-    imgQuizType.Top := 16;
-    imgQuizType.Height := 25;
-    imgQuizType.Width := 25;
-    imgQuizType.Center := True;
-    imgQuizType.Stretch := True;
-    imgQuizType.Picture.LoadFromFile('icons/img' + strQuizType + '.png');
+    try
+      imgQuizType := TImage.Create(FQuizParent.Owner);
+      imgQuizType.Parent := pnlBox;
+      imgQuizType.Left := 160;
+      imgQuizType.Top := 16;
+      imgQuizType.Height := 25;
+      imgQuizType.Width := 25;
+      imgQuizType.Center := True;
+      imgQuizType.Stretch := True;
+      imgQuizType.Picture.LoadFromFile('icons/img' + strQuizType + '.png');
+    except
+      imgQuizType.Destroy;
 
+    end;
 
   // Box Buttons:
   // Start Quiz
@@ -181,7 +184,7 @@ procedure TQuizBoxManager.AddQuiz;
     pnlBtnStrtQuiz.Height := 24;
     pnlBtnStrtQuiz.BevelEdges := [];
     pnlBtnStrtQuiz.BevelOuter := bvNone;
-    pnlBtnStrtQuiz.Tag := FQuizID;
+    pnlBtnStrtQuiz.Tag := QuizID;
 
     // Shape
     shpBtnStrtQuiz := TShape.Create(FQuizParent.Owner);
@@ -191,7 +194,7 @@ procedure TQuizBoxManager.AddQuiz;
     shpBtnStrtQuiz.Shape := stRoundRect;
     shpBtnStrtQuiz.Brush.Color := clBackground;
     shpBtnStrtQuiz.Brush.Style := bsSolid;
-    shpBtnStrtQuiz.Tag := FQuizID;
+    shpBtnStrtQuiz.Tag := QuizID;
 
     // Label
     lblBtnStrtQuiz := TLabel.Create(FQuizParent.Owner);
@@ -203,7 +206,7 @@ procedure TQuizBoxManager.AddQuiz;
     lblBtnStrtQuiz.Align := alClient;
     lblBtnStrtQuiz.Font.Size := 10;
     lblBtnStrtQuiz.Font.Style := [TFontStyle.fsBold];
-    lblBtnStrtQuiz.Tag := FQuizID;
+    lblBtnStrtQuiz.Tag := QuizID;
 
     // OnClick
     lblBtnStrtQuiz.OnClick := StartQuizClick;
@@ -220,7 +223,7 @@ procedure TQuizBoxManager.AddQuiz;
     imgBtnEditQuiz.Center := True;
     imgBtnEditQuiz.Stretch := True;
     imgBtnEditQuiz.Picture.LoadFromFile('icons/imgEdit.png');
-    imgBtnEditQuiz.Tag := FQuizID;
+    imgBtnEditQuiz.Tag := QuizID;
 
     // On Click
     imgBtnEditQuiz.OnClick := EditQuizClick;
@@ -238,7 +241,7 @@ procedure TQuizBoxManager.AddQuiz;
     imgBtnDelQuiz.Center := True;
     imgBtnDelQuiz.Stretch := True;
     imgBtnDelQuiz.Picture.LoadFromFile('icons/imgDelete.png');
-    imgBtnDelQuiz.Tag := FQuizID;
+    imgBtnDelQuiz.Tag := QuizID;
 
     // On Click
     imgBtnDelQuiz.OnClick := DeleteQuizClick;
@@ -276,5 +279,17 @@ procedure TQuizBoxManager.DeleteQuizClick(Sender: TObject);
     intQuizID := TImage(Sender).Tag;
     ShowMessage('Delete Quiz with ID: ' + IntToStr(intQuizID));
     // Load quiz from DB here
+  end;
+
+procedure TQuizBoxManager.LoadAllQuizzes;
+  var
+    QuizzesToLoad: TList<integer>;
+    QuizID: integer;
+  begin
+    QuizzesToLoad := dmDatabase.GetAllNonDailyIDs;
+    for QuizID in QuizzesToLoad do
+      begin
+        AddQuiz(QuizID);
+      end;
   end;
 end.

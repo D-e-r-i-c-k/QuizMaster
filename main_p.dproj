@@ -145,6 +145,13 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="frmCreateQuiz_u.pas">
+            <Form>frmCreateQuiz</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="dmTempDB.pas"/>
+        <DCCReference Include="dbTemp_u.pas"/>
+        <DCCReference Include="GLOBALS_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

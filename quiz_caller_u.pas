@@ -25,6 +25,8 @@ type
       function GetRandomCategory: integer;
       function GetQuiz(Category, AmmountOfQuestions: integer): TList<TQuestion>;
       function GetAndAddDailyQuiz: integer;
+      function GetAllCategoriesNames: TList<string>;
+      function GetAllCategoriesIDs: TList<integer>;
   end;
 
 implementation
@@ -171,5 +173,39 @@ function TQuizCaller.GetAndAddDailyQuiz: Integer;
     ChallengeID := DB.AddDailyQuiz(Title, Description, Questions);
 
     Result := ChallengeID;
+  end;
+
+function TQuizCaller.GetAllCategoriesNames: TList<string>;
+  var
+    CategoryList: TList<string>;
+    Categories: TJSONArray;
+    n: integer;
+    Category: TJSONObject;
+  begin
+    CategoryList := TList<string>.Create;
+    Categories := Call('https://opentdb.com/api_category.php').GetValue<TJSONArray>('trivia_categories');
+    for n := 0 to Categories.Count - 1 do
+      begin
+        Category := Categories.Items[n] as TJSONObject;
+        CategoryList.Add(Category.GetValue<string>('name'))
+      end;
+    Result := CategoryList;
+  end;
+
+function TQuizCaller.GetAllCategoriesIDs: TList<integer>;
+  var
+    Categories: TJSONArray;
+    n: integer;
+    Category: TJSONObject;
+    CatIDList: TList<integer>;
+  begin
+    CatIDList := TList<integer>.Create;
+    Categories := Call('https://opentdb.com/api_category.php').GetValue<TJSONArray>('trivia_categories');
+    for n := 0 to Categories.Count - 1 do
+      begin
+        Category := Categories.Items[n] as TJSONObject;
+        CatIDList.Add(Category.GetValue<integer>('id'))
+      end;
+    Result := CatIDList;
   end;
 end.

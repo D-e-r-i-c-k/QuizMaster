@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
   Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
 
-  quizbox_u, quiz_caller_u, question_u, database_u;
+  quizbox_u, quiz_caller_u, question_u, database_u, frmCreateQuiz_u, dbTemp_u, GLOBALS_u;
 
 type
   TfrmHome = class(TForm)
@@ -63,7 +63,7 @@ type
     shpMyQuizzesSearch: TShape;
     imgMyQuizzesSearch: TImage;
     edtMyQuizzesSearch: TEdit;
-    sbMyQuizzes: TScrollBox;
+    sbxMyQuizzes: TScrollBox;
     pnlMyQuizzesScroll: TPanel;
     Panel1: TPanel;
     Shape3: TShape;
@@ -106,10 +106,9 @@ type
 
 var
   frmHome: TfrmHome;
-  QuizManager: TQuizBoxManager;
   API_Caller: TQuizCaller;
   Question: TQuestion;
-  DB: TdmDatabase;
+  CreateQuizForm: TfrmCreateQuiz;
 
 implementation
 
@@ -118,14 +117,22 @@ implementation
 
 procedure TfrmHome.Button1Click(Sender: TObject);
   var
-  json: TJSONObject;
-  question_list: TList<TQuestion>;
-  quizID: integer;
-  quizTitle, quizDescription, url: string;
-  quizLen, quizCategory: integer;
+    Cats: TList<string>;
+    IDs: TList<integer>;
+
+    Cat: string;
+    I: Integer;
   begin
-    quizID := API_Caller.GetAndAddDailyQuiz;
-    ShowMessage(IntToStr(quizID))
+//    Cats := Cache.GetAllCategoryNames;
+//    IDs := Cache.GetAllCategoryIDs;
+//    for Cat in Cats do
+//      begin
+//        ShowMessage(IntToStr(IDs[Cats.IndexOf(Cat)]) + ' - ' + Cat)
+//      end;
+//    CreateQuizForm.Show;
+//    ShowMessage(IntToStr(dmDatabase.GetAllNonDailyIDs.Count))
+    GLOBALS_u.QuizManager.LoadAllQuizzes;
+
   end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
@@ -154,8 +161,12 @@ procedure TfrmHome.FormCreate(Sender: TObject);
     // MyQuizzes list:
     lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
-    QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbMyQuizzes);
+    GLOBALS_u.QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbxMyQuizzes);
     API_Caller := TQuizCaller.Create;
+    CreateQuizForm := TfrmCreateQuiz.Create(nil);
+    GLOBALS_u.Cache := TdmCache.Create;
+
+    GLOBALS_u.Cache.CacheAllCategories;
   end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);
@@ -171,6 +182,9 @@ procedure TfrmHome.FormShow(Sender: TObject);
     lblDailyTopic.Caption := 'Topic: Literature';
     lblDailyStreak.Caption := 'Current Streak: 0';
     lblDailyAmntQuestions.Caption := '3 Questions';
+
+  //Load all saved Quizzes from DB
+    GLOBALS_u.QuizManager.LoadAllQuizzes;
   end;
 
 procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
@@ -180,7 +194,7 @@ procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
 
 procedure TfrmHome.pnlCreateQuizClick(Sender: TObject);
   begin
-    QuizManager.AddQuiz
+    CreateQuizForm.Show;
   end;
 
 procedure TfrmHome.shpButtonStartDailyMouseDown(Sender: TObject;
