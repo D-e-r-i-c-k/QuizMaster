@@ -291,5 +291,6 @@ procedure TQuizBoxManager.LoadAllQuizzes;
       begin
         AddQuiz(QuizID);
       end;
+    FQuizScroller.VertScrollBar.Position := 0;
   end;
 end.

@@ -10,9 +10,9 @@ uses
   question_u in 'question_u.pas',
   database_u in 'database_u.pas' {dmDatabase: TDataModule},
   frmCreateQuiz_u in 'frmCreateQuiz_u.pas' {frmCreateQuiz},
-  dmTempDB in 'dmTempDB.pas',
   dbTemp_u in 'dbTemp_u.pas',
-  GLOBALS_u in 'GLOBALS_u.pas';
+  GLOBALS_u in 'GLOBALS_u.pas',
+  aiCaller_u in 'aiCaller_u.pas';
 
 {$R *.res}
 

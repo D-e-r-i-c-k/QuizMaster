@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
   Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
 
-  quizbox_u, quiz_caller_u, question_u, database_u, frmCreateQuiz_u, dbTemp_u, GLOBALS_u;
+  quizbox_u, quiz_caller_u, question_u, database_u, frmCreateQuiz_u, dbTemp_u, GLOBALS_u, aiCaller_u;
 
 type
   TfrmHome = class(TForm)
@@ -106,9 +106,9 @@ type
 
 var
   frmHome: TfrmHome;
-  API_Caller: TQuizCaller;
   Question: TQuestion;
   CreateQuizForm: TfrmCreateQuiz;
+  AI: TAIQuiz;
 
 implementation
 
@@ -116,24 +116,9 @@ implementation
 
 
 procedure TfrmHome.Button1Click(Sender: TObject);
-  var
-    Cats: TList<string>;
-    IDs: TList<integer>;
-
-    Cat: string;
-    I: Integer;
-  begin
-//    Cats := Cache.GetAllCategoryNames;
-//    IDs := Cache.GetAllCategoryIDs;
-//    for Cat in Cats do
-//      begin
-//        ShowMessage(IntToStr(IDs[Cats.IndexOf(Cat)]) + ' - ' + Cat)
-//      end;
-//    CreateQuizForm.Show;
-//    ShowMessage(IntToStr(dmDatabase.GetAllNonDailyIDs.Count))
-    GLOBALS_u.QuizManager.LoadAllQuizzes;
-
-  end;
+begin
+  AI.Call('');
+end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
   begin
@@ -162,7 +147,6 @@ procedure TfrmHome.FormCreate(Sender: TObject);
     lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
     GLOBALS_u.QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbxMyQuizzes);
-    API_Caller := TQuizCaller.Create;
     CreateQuizForm := TfrmCreateQuiz.Create(nil);
     GLOBALS_u.Cache := TdmCache.Create;
 

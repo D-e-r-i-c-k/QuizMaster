@@ -146,8 +146,8 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
             end
             object imgApiSearch1: TImage
-              Left = 1
-              Top = 1
+              Left = 4
+              Top = 4
               Width = 33
               Height = 33
               Center = True
@@ -175,6 +175,19 @@ object frmCreateQuiz: TfrmCreateQuiz
               Width = 189
               Height = 25
               Caption = 'Select Quiz Category:'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object lblApiQuestionCount: TLabel
+              Left = 352
+              Top = 45
+              Width = 190
+              Height = 25
+              Caption = 'Amount of Questions'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clDefault
               Font.Height = -19
@@ -282,7 +295,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 2
-              object Shape1: TShape
+              object shpAOACRemoveBorderBG: TShape
                 Left = 0
                 Top = 0
                 Width = 170
@@ -301,6 +314,223 @@ object frmCreateQuiz: TfrmCreateQuiz
                 BevelOuter = bvNone
                 TabOrder = 0
                 object speAmntOfApiQuestions: TSpinEdit
+                  Left = -1
+                  Top = -1
+                  Width = 172
+                  Height = 34
+                  Margins.Left = 0
+                  Margins.Top = 0
+                  Margins.Right = 0
+                  Margins.Bottom = 0
+                  TabStop = False
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = 24
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  MaxValue = 999999
+                  MinValue = 1
+                  ParentFont = False
+                  StyleElements = [seFont, seClient]
+                  TabOrder = 0
+                  Value = 1
+                end
+              end
+            end
+          end
+        end
+        object crdAiQuizCreator: TCard
+          Left = 0
+          Top = 0
+          Width = 755
+          Height = 130
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'AI Quiz Creator'
+          CardIndex = 1
+          TabOrder = 1
+          object pnlAiCreate: TPanel
+            Left = 0
+            Top = 1
+            Width = 755
+            Height = 128
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            BevelOuter = bvNone
+            TabOrder = 0
+            object lblAiCreateTitle: TLabel
+              Left = 48
+              Top = -1
+              Width = 193
+              Height = 28
+              Caption = 'Create Quiz With AI.'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = 28
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object imgAiCreate1: TImage
+              Left = 4
+              Top = 4
+              Width = 33
+              Height = 33
+              Center = True
+              Stretch = True
+            end
+            object lblAiCreateSubTitle: TLabel
+              Left = 48
+              Top = 27
+              Width = 258
+              Height = 13
+              Alignment = taCenter
+              Caption = 'Get community created quizzes from OpenTriviaDB'
+              Color = clGrayText
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clGrayText
+              Font.Height = 14
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentColor = False
+              ParentFont = False
+            end
+            object lblAiCategory: TLabel
+              Left = 1
+              Top = 46
+              Width = 189
+              Height = 25
+              Caption = 'Select Quiz Category:'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object pnlAiCategories: TPanel
+              Left = 1
+              Top = 71
+              Width = 344
+              Height = 34
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 0
+              object shpAIQuizzesSearch: TShape
+                Left = 0
+                Top = 0
+                Width = 344
+                Height = 33
+                Shape = stRoundRect
+              end
+              object pnlAiCRemoveBorder: TPanel
+                Left = 3
+                Top = 3
+                Width = 338
+                Height = 28
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object cbxAiCategories: TComboBox
+                  Left = -1
+                  Top = -1
+                  Width = 340
+                  Height = 31
+                  Margins.Left = 4
+                  Margins.Top = 4
+                  Margins.Right = 4
+                  Margins.Bottom = 4
+                  AutoDropDown = True
+                  AutoDropDownWidth = True
+                  BevelEdges = []
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  ExtendedUI = True
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = 24
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  TabOrder = 0
+                  TabStop = False
+                  Text = 'Categories'
+                  StyleElements = [seFont, seClient]
+                end
+              end
+            end
+            object pnlCreateAiQuiz: TPanel
+              Left = 579
+              Top = 59
+              Width = 174
+              Height = 33
+              BevelOuter = bvNone
+              TabOrder = 1
+              object shpButtonCreateAiQuiz: TShape
+                Left = 0
+                Top = 0
+                Width = 168
+                Height = 33
+                Brush.Color = clBackground
+                Shape = stRoundRect
+              end
+              object lblCreateAiQuiz: TLabel
+                Left = 47
+                Top = 7
+                Width = 80
+                Height = 20
+                Align = alCustom
+                Alignment = taCenter
+                Caption = 'Create Quiz'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clHighlightText
+                Font.Height = 20
+                Font.Name = 'Segoe UI'
+                Font.Style = [fsBold]
+                ParentFont = False
+                OnClick = lblCreateQuizClick
+              end
+            end
+            object pnlAmntOfAiQuestions: TPanel
+              Left = 350
+              Top = 71
+              Width = 170
+              Height = 34
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 2
+              object pnlAOAiCRemoveBorderBG: TShape
+                Left = 0
+                Top = 0
+                Width = 170
+                Height = 33
+                Shape = stRoundRect
+              end
+              object pnlAOAiCRemoveBorder: TPanel
+                Left = 3
+                Top = 3
+                Width = 164
+                Height = 28
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object speAmntOfAiQuestions: TSpinEdit
                   Left = -1
                   Top = -1
                   Width = 172
@@ -358,6 +588,7 @@ object frmCreateQuiz: TfrmCreateQuiz
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
+        OnClick = sbtAPIClick
       end
       object sbtAI: TSpeedButton
         Left = 386
@@ -377,6 +608,7 @@ object frmCreateQuiz: TfrmCreateQuiz
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
+        OnClick = sbtAIClick
       end
     end
   end

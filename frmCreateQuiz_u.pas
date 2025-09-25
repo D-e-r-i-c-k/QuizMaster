@@ -16,32 +16,52 @@ type
     lblCreateNewQuizTitle: TLabel;
     lblCreateNewQuizSubTitle: TLabel;
     pnlOnlineCreate: TPanel;
-    pnlCreateTypeSelector: TPanel;
-    sbtAPI: TSpeedButton;
-    sbtAI: TSpeedButton;
     shpOnlineCreateBG: TShape;
     cpnAPI: TCardPanel;
-    pnlApiSearch: TPanel;
     crdApiSearch: TCard;
+    pnlApiSearch: TPanel;
     lblApiSearchTitle: TLabel;
     imgApiSearch1: TImage;
     lblApiSearchSubTitle: TLabel;
+    lblApiCategory: TLabel;
     pnlApiCategories: TPanel;
+    shpMyQuizzesSearch: TShape;
+    pnlACRemoveBorder: TPanel;
+    cbxApiCategories: TComboBox;
     pnlCreateQuiz: TPanel;
     shpButtonCreateQuiz: TShape;
     lblCreateQuiz: TLabel;
-    cbxApiCategories: TComboBox;
-    shpMyQuizzesSearch: TShape;
-    pnlACRemoveBorder: TPanel;
-    lblApiCategory: TLabel;
     pnlAmntOfApiQuestions: TPanel;
-    Shape1: TShape;
+    shpAOACRemoveBorderBG: TShape;
     pnlAOACRemoveBorder: TPanel;
     speAmntOfApiQuestions: TSpinEdit;
+    crdAiQuizCreator: TCard;
+    pnlAiCreate: TPanel;
+    lblAiCreateTitle: TLabel;
+    imgAiCreate1: TImage;
+    lblAiCreateSubTitle: TLabel;
+    lblAiCategory: TLabel;
+    pnlAiCategories: TPanel;
+    shpAIQuizzesSearch: TShape;
+    pnlAiCRemoveBorder: TPanel;
+    cbxAiCategories: TComboBox;
+    pnlCreateAiQuiz: TPanel;
+    shpButtonCreateAiQuiz: TShape;
+    lblCreateAiQuiz: TLabel;
+    pnlAmntOfAiQuestions: TPanel;
+    pnlAOAiCRemoveBorderBG: TShape;
+    pnlAOAiCRemoveBorder: TPanel;
+    speAmntOfAiQuestions: TSpinEdit;
+    pnlCreateTypeSelector: TPanel;
+    sbtAPI: TSpeedButton;
+    sbtAI: TSpeedButton;
+    lblApiQuestionCount: TLabel;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     function CallApiQuiz(Category: string; AmntQuestions: integer): integer;
     procedure lblCreateQuizClick(Sender: TObject);
+    procedure sbtAPIClick(Sender: TObject);
+    procedure sbtAIClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -57,13 +77,15 @@ implementation
 
 {$R *.dfm}
 
-uses home_u;
-
-
 procedure TfrmCreateQuiz.FormCreate(Sender: TObject);
   begin
     Cache := GLOBALS_u.Cache;
     QuizCaller := TQuizCaller.Create;
+
+    imgApiSearch1.Picture.LoadFromFile('icons/imgAPISearch.png');
+    imgAiCreate1.Picture.LoadFromFile('icons/imgAICreate.png');
+
+    sbtAPI.Click;
   end;
 
 procedure TfrmCreateQuiz.FormShow(Sender: TObject);
@@ -92,12 +114,26 @@ procedure TfrmCreateQuiz.lblCreateQuizClick(Sender: TObject);
       end
     else
       begin
+        Screen.Cursor := crHourGlass;
+        Self.Enabled := False;
         QuizID := CallApiQuiz(cbxApiCategories.Text, speAmntOfApiQuestions.Value);
         GLOBALS_u.QuizManager.AddQuiz(QuizID);
+        Screen.Cursor := crDefault;
+        Self.Enabled := True;
         Self.Close;
-        ShowMessage('Quiz Created!')
+        ShowMessage('Quiz Created!');
       end;
       
+  end;
+
+procedure TfrmCreateQuiz.sbtAIClick(Sender: TObject);
+  begin
+    cpnAPI.ActiveCard := crdAiQuizCreator;
+  end;
+
+procedure TfrmCreateQuiz.sbtAPIClick(Sender: TObject);
+  begin
+    cpnAPI.ActiveCard := crdApiSearch;
   end;
 
 function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): integer;
