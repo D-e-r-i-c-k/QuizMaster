@@ -89,7 +89,6 @@ type
     procedure shpButtonCreateQuizMouseDown(Sender: TObject;
     Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormDestroy(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
   private
   {private variables}
   public
@@ -113,12 +112,6 @@ var
 implementation
 
 {$R *.dfm}
-
-
-procedure TfrmHome.Button1Click(Sender: TObject);
-begin
-  AI.Call('');
-end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
   begin

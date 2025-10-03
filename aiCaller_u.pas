@@ -16,11 +16,12 @@ type
       SSL: TIdSSLIOHandlerSocketOpenSSL;
       DB: TdmDatabase;
       function DecodeHTML(Str: string): string;
+      function JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
+      function Call(UserPrompt: string; Model: string): TJSONObject;
     public
     {Constructor, Procedures, and Properties}
       constructor Create;
-      function Call(UserPrompt: string): TJSONObject;
-      function JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
+      function GetQuiz(UserPrompt: string): TList<TQuestion>;
   end;
 
 implementation
@@ -29,7 +30,7 @@ constructor TAIQuiz.Create;
   begin
   end;
 
-function TAIQuiz.Call(UserPrompt: string): TJSONObject;
+function TAIQuiz.Call(UserPrompt: string; Model: string): TJSONObject;
   const
     SystemPrompt = 'You are an academic quiz generator. Your task is to create a formal, professional test in JSON format. '
   + 'The JSON should follow the general schema of the examples given below, but with a more in-depth, formal and academic style. '
@@ -88,55 +89,122 @@ function TAIQuiz.Call(UserPrompt: string): TJSONObject;
   + '] '
   + '}';
   var
-    JSONstring: string;
-    Response: string;
-    HTTP: TIdHTTP;
-    SSL: TIdSSLIOHandlerSocketOpenSSL;
-    PostData: TStringStream;
-  begin
-    Result := nil;
-    HTTP := TIdHTTP.Create(nil);
-    SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+  Root, Msg, MsgObj, RawJSON: TJSONObject;
+  MsgArray, Choices: TJSONArray;
+  PostData: TStringStream;
+  Response, ContentStr: string;
+  HTTPEx: Exception;
+  APIKey: string;
+begin
+  Result := nil;
+  APIKey := GetEnvironmentVariable('OPEN_ROUTER_KEY');
 
+  if APIKey = '' then
+    begin
+      raise Exception.Create('OPEN_ROUTER_KEY environment variable is not set.');
+    end;
+
+  HTTP := TIdHTTP.Create(nil);
+  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+  Root := nil;
+  MsgArray := nil;
+  PostData := nil;
+  RawJSON := nil;
+
+  try
+    // Configure HTTP/SSL
+    SSL.SSLOptions.Method := sslvTLSv1_2;
+    HTTP.IOHandler := SSL;
+    HTTP.HandleRedirects := True;
+    HTTP.Request.ContentType := 'application/json';
+    HTTP.Request.CustomHeaders.Clear;
+    HTTP.Request.CustomHeaders.AddValue('Authorization', 'Bearer ' + APIKey);
+
+    // Build request body
+    Root := TJSONObject.Create;
+    MsgArray := TJSONArray.Create;
     try
-      SSL.SSLOptions.Method := sslvTLSv1_2;
-      HTTP.IOHandler := SSL;
-      HTTP.HandleRedirects := True;
-      HTTP.Request.ContentType := 'application/json';
-      HTTP.Request.CustomHeaders.Clear;
-      HTTP.Request.CustomHeaders.AddValue('Authorization',
-        'Bearer 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');
+      Root.AddPair('model', Model);
 
-      JSONstring :=
-        '{'
-        + '  "model": "x-ai/grok-4-fast:free",'
-        + '  "messages": ['
-        + '  {'
-        + '    "role": "system",'
-        + '    "content": "' + SystemPrompt + '"'
-        + '  {'
-        + '    "role": "user",'
-        + '    "content": "' + UserPrompt + '"'
-        + '  }],'
-        + '  "temperature": 0.7'
-        + '}';
+      Msg := TJSONObject.Create;
+      Msg.AddPair('role', 'system');
+      Msg.AddPair('content', SystemPrompt);
+      MsgArray.Add(Msg);
 
-      PostData := TStringStream.Create(JSONstring, TEncoding.UTF8);
+      Msg := TJSONObject.Create;
+      Msg.AddPair('role', 'user');
+      Msg.AddPair('content', UserPrompt);
+      MsgArray.Add(Msg);
 
+      Root.AddPair('messages', MsgArray);
+      Root.AddPair('temperature', TJSONNumber.Create(0.7));
+
+      PostData := TStringStream.Create(Root.ToJSON, TEncoding.UTF8);
+
+      // Post and parse wrapper response
       try
         Response := HTTP.Post('https://openrouter.ai/api/v1/chat/completions', PostData).Trim;
-        ShowMessage(Response);
-        Writeln(Response);
-        Result := TJSONObject.ParseJSONValue(Response) as TJSONObject;
-      finally
-        PostData.Free;
+      except
+        on E: Exception do
+          begin
+            HTTPEx := E; // capture to raise later after cleaning up
+            raise;
+          end;
       end;
 
+      RawJSON := TJSONObject.ParseJSONValue(Response) as TJSONObject;
+      if Assigned(RawJSON) then
+        begin
+          Choices := RawJSON.GetValue<TJSONArray>('choices');
+          if Assigned(Choices) and (Choices.Count > 0) then
+            begin
+              // message object may be nested under 'message'
+              MsgObj := nil;
+              try
+                MsgObj := Choices.Items[0].GetValue<TJSONObject>('message');
+              except
+                MsgObj := nil;
+              end;
+
+              if Assigned(MsgObj) then
+                begin
+                  // content may include surrounding text or fenced code - extract JSON body
+                  ContentStr := MsgObj.GetValue<string>('content').Trim;
+
+                  // If assistant wrapped JSON in ``` ... ``` or extra text, try to extract the {...} substring
+                  if (ContentStr.StartsWith('```')) then
+                    begin
+                      // remove leading/trailing code fence if present
+                      ContentStr := ContentStr.Replace('```', '').Trim;
+                    end;
+
+                  // If Parse fails, try to extract first {...} block
+                  Result := TJSONObject.ParseJSONValue(ContentStr) as TJSONObject;
+                    if not Assigned(Result) then
+                    begin
+                      var StartIdx := Pos('{', ContentStr);
+                      var EndIdx := LastDelimiter('}', ContentStr);
+                      if (StartIdx > 0) and (EndIdx >= StartIdx) then
+                        begin
+                          ContentStr := Copy(ContentStr, StartIdx, EndIdx - StartIdx + 1);
+                          Result := TJSONObject.ParseJSONValue(ContentStr) as TJSONObject;
+                        end;
+                    end;
+                  // If still nil, Result remains nil and caller should handle it
+                end;
+            end;
+        end;
     finally
-      HTTP.Free;
-      SSL.Free;
+      PostData.Free;
+      Root.Free;
+      MsgArray := nil;
     end;
+  finally
+    RawJSON.Free;
+    HTTP.Free;
+    SSL.Free;
   end;
+end;
 
 function TAIQuiz.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
   var
@@ -187,5 +255,37 @@ function TAIQuiz.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
 function TAIQuiz.DecodeHTML(Str: string): string;
   begin
     Result := TNetEncoding.HTML.Decode(Str)
+  end;
+
+function TAIQuiz.GetQuiz(UserPrompt: string): TList<TQuestion>;
+  var
+    QuizJSON: TJSONObject;
+    Quiz: TList<TQuestion>;
+  begin
+    try
+      ShowMessage('Trying to get quiz with Grok 4 fast...');
+      QuizJSON := Call(UserPrompt, 'x-ai/grok-4-fast:free');
+      ShowMessage(QuizJSON.ToString);
+    except
+      try
+        ShowMessage('Grok failed, trying Deepseek...');
+        QuizJSON := Call(UserPrompt, 'deepseek/deepseek-chat-v3.1:free');
+        ShowMessage(QuizJSON.ToString);
+      except
+        ShowMessage('AI generation failed, please try again later.');
+        ShowMessage(QuizJSON.ToString);
+        exit;
+      end;
+    end;
+
+    try
+      ShowMessage('Quiz Created... Parsing Quiz...');
+      ShowMessage(QuizJSON.ToString);
+      Quiz := JSONToQuiz(QuizJSON);
+      Result := Quiz;
+    except
+      ShowMessage('Error Parsing Quiz');
+      Result := nil;
+    end;
   end;
 end.
