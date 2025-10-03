@@ -59,6 +59,27 @@ type
     shpAiDifficultyBG: TShape;
     pnlAiDifficultyRemoveBorder: TPanel;
     cbxAiDifficultySelector: TComboBox;
+    pnlCustomQuizCreator: TPanel;
+    shpCustomQuizHeaderBG: TShape;
+    pnlCustomQuizHeader: TPanel;
+    imgCustomQuizHeader1: TImage;
+    lblCustomQuizHeaderSubtitle: TLabel;
+    lblCustomQuizHeaderTitle: TLabel;
+    lblCustomQuizTitle: TLabel;
+    pnlCustomQuizTitle: TPanel;
+    shpCustomQuizTitleBG: TShape;
+    pnlCustomQuizTitleRemoveBorder: TPanel;
+    edtCustomQuizTitle: TEdit;
+    lblCustomQuizCategory: TLabel;
+    pnlCustomQuizCategory: TPanel;
+    shpCustomQuizCategoryBG: TShape;
+    pnlCustomQuizCategoryRemoveBorder: TPanel;
+    edtCustomQuizCategory: TEdit;
+    lblCustomQuizDescription: TLabel;
+    pnlCustomQuizDescription: TPanel;
+    shpCustomQuizDescriptionBG: TShape;
+    pnlCustomQuizDescriptionRemoveBorder: TPanel;
+    memCustomQuizDescription: TMemo;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure sbtAPIClick(Sender: TObject);
@@ -69,6 +90,8 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure shpButtonCreateAiQuizMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure memCustomQuizDescriptionEnter(Sender: TObject);
+    procedure memCustomQuizDescriptionExit(Sender: TObject);
   private
     { Private declarations }
     function CallApiQuiz(Category: string; AmntQuestions: integer): integer;
@@ -97,8 +120,6 @@ procedure TfrmCreateQuiz.FormCreate(Sender: TObject);
     imgAiCreate1.Picture.LoadFromFile('icons/imgAICreate.png');
 
     sbtAPI.Click;
-
-
   end;
 
 procedure TfrmCreateQuiz.FormShow(Sender: TObject);
@@ -114,6 +135,24 @@ procedure TfrmCreateQuiz.FormShow(Sender: TObject);
     cbxAiDifficultySelector.Items.AddStrings(['Very easy', 'Easy', 'Medium', 'Hard', 'Very hard'])
   end;
 
+procedure TfrmCreateQuiz.memCustomQuizDescriptionEnter(Sender: TObject);
+  begin
+    if memCustomQuizDescription.Lines[0] = 'Describe what the quiz is about' then
+      begin
+        memCustomQuizDescription.Lines.Clear;
+        memCustomQuizDescription.Font.Color := clWindowText;
+      end;
+  end;
+
+procedure TfrmCreateQuiz.memCustomQuizDescriptionExit(Sender: TObject);
+  begin
+    if memCustomQuizDescription.Lines[0].Trim = '' then
+      begin
+        memCustomQuizDescription.Lines.Clear;
+        memCustomQuizDescription.Lines[0] := 'Describe what the quiz is about';
+        memCustomQuizDescription.Font.Color := clWindowFrame;
+      end;
+  end;
 
 procedure TfrmCreateQuiz.pnlCreateAiQuizClick(Sender: TObject);
   var
@@ -140,6 +179,8 @@ procedure TfrmCreateQuiz.pnlCreateAiQuizClick(Sender: TObject);
               Screen.Cursor := crHourGlass;
               Self.Enabled := False;
               QuizID := CallAiQuiz(edtAiCategories.Text, speAmntOfAiQuestions.Value, cbxAiDifficultySelector.Text);
+              if QuizID = -1 then
+                raise Exception.Create('Error creating AI Quiz');
               GLOBALS_u.QuizManager.AddQuiz(QuizID);
               Screen.Cursor := crDefault;
               Self.Enabled := True;
@@ -227,7 +268,7 @@ function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): i
   end;
 
 function TfrmCreateQuiz.CallAiQuiz(UserPrompt: string; AmntQuestions: Integer; Difficulty: string): Integer;
-var
+  var
     FullPrompt: string;
     Quiz: TList<TQuestion>;
   begin
@@ -253,7 +294,6 @@ var
       ShowMessage('Failed to call AI Quiz. Please try again later.');
       Result := -1;
       exit;
-
     end;
   end;
 end.

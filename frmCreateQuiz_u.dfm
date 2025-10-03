@@ -672,5 +672,277 @@ object frmCreateQuiz: TfrmCreateQuiz
         OnClick = sbtAIClick
       end
     end
+    object pnlCustomQuizCreator: TPanel
+      Left = 21
+      Top = 255
+      Width = 769
+      Height = 655
+      BevelOuter = bvNone
+      TabOrder = 3
+      object pnlCustomQuizHeader: TPanel
+        Left = 0
+        Top = 0
+        Width = 769
+        Height = 250
+        BevelOuter = bvNone
+        TabOrder = 0
+        object shpCustomQuizHeaderBG: TShape
+          Left = 0
+          Top = 1
+          Width = 769
+          Height = 249
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Shape = stRoundRect
+        end
+        object imgCustomQuizHeader1: TImage
+          Left = 12
+          Top = 12
+          Width = 33
+          Height = 33
+          Center = True
+          Stretch = True
+        end
+        object lblCustomQuizHeaderSubtitle: TLabel
+          Left = 56
+          Top = 35
+          Width = 242
+          Height = 13
+          Alignment = taCenter
+          Caption = 'Create your own custom quiz just as you like it!'
+          Color = clGrayText
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clGrayText
+          Font.Height = 14
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblCustomQuizHeaderTitle: TLabel
+          Left = 56
+          Top = 7
+          Width = 313
+          Height = 28
+          Caption = 'Or Create Your Own Custom Quiz'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = 28
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblCustomQuizTitle: TLabel
+          Left = 9
+          Top = 54
+          Width = 88
+          Height = 25
+          Caption = 'Quiz Title:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = -19
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblCustomQuizCategory: TLabel
+          Left = 395
+          Top = 54
+          Width = 132
+          Height = 25
+          Caption = 'Quiz Category:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = -19
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblCustomQuizDescription: TLabel
+          Left = 9
+          Top = 116
+          Width = 102
+          Height = 25
+          Caption = 'Description'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = -19
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object pnlCustomQuizTitle: TPanel
+          Left = 9
+          Top = 79
+          Width = 244
+          Height = 34
+          Hint = 'Select a category.'
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          BevelOuter = bvNone
+          TabOrder = 0
+          object shpCustomQuizTitleBG: TShape
+            Left = 0
+            Top = 0
+            Width = 244
+            Height = 33
+            Shape = stRoundRect
+          end
+          object pnlCustomQuizTitleRemoveBorder: TPanel
+            Left = 3
+            Top = 3
+            Width = 238
+            Height = 28
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            BevelOuter = bvNone
+            TabOrder = 0
+            object edtCustomQuizTitle: TEdit
+              Left = -1
+              Top = -1
+              Width = 240
+              Height = 31
+              Hint = 'Enter a title for your quiz.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              TabStop = False
+              BevelEdges = []
+              BevelInner = bvNone
+              BevelOuter = bvNone
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 24
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 0
+              TextHint = 'Enter a title for your quiz.'
+              StyleElements = [seFont, seClient]
+            end
+          end
+        end
+        object pnlCustomQuizCategory: TPanel
+          Left = 395
+          Top = 79
+          Width = 244
+          Height = 34
+          Hint = 'Select a category.'
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          BevelOuter = bvNone
+          TabOrder = 1
+          object shpCustomQuizCategoryBG: TShape
+            Left = 0
+            Top = 0
+            Width = 244
+            Height = 33
+            Shape = stRoundRect
+          end
+          object pnlCustomQuizCategoryRemoveBorder: TPanel
+            Left = 3
+            Top = 3
+            Width = 238
+            Height = 28
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            BevelOuter = bvNone
+            TabOrder = 0
+            object edtCustomQuizCategory: TEdit
+              Left = -1
+              Top = -1
+              Width = 240
+              Height = 31
+              Hint = 'Enter a category for the quiz'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              TabStop = False
+              BevelEdges = []
+              BevelInner = bvNone
+              BevelOuter = bvNone
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 24
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 0
+              TextHint = 'Enter quiz category.'
+              StyleElements = [seFont, seClient]
+            end
+          end
+        end
+        object pnlCustomQuizDescription: TPanel
+          Left = 9
+          Top = 141
+          Width = 751
+          Height = 75
+          Hint = 'Select a category.'
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          BevelOuter = bvNone
+          TabOrder = 2
+          object shpCustomQuizDescriptionBG: TShape
+            Left = 0
+            Top = 0
+            Width = 751
+            Height = 74
+            Shape = stRoundRect
+          end
+          object pnlCustomQuizDescriptionRemoveBorder: TPanel
+            Left = 6
+            Top = 6
+            Width = 741
+            Height = 61
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            BevelOuter = bvNone
+            TabOrder = 0
+            object memCustomQuizDescription: TMemo
+              Left = -1
+              Top = -1
+              Width = 743
+              Height = 66
+              Hint = 'Give a description of the your quiz'
+              TabStop = False
+              BevelInner = bvNone
+              BevelOuter = bvNone
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowFrame
+              Font.Height = 18
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Lines.Strings = (
+                'Describe what the quiz is about')
+              ParentFont = False
+              TabOrder = 0
+              OnEnter = memCustomQuizDescriptionEnter
+              OnExit = memCustomQuizDescriptionExit
+            end
+          end
+        end
+      end
+    end
   end
 end
