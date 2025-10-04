@@ -679,6 +679,19 @@ object frmCreateQuiz: TfrmCreateQuiz
       Height = 655
       BevelOuter = bvNone
       TabOrder = 3
+      object lblCustomQuestions: TLabel
+        Left = 3
+        Top = 260
+        Width = 99
+        Height = 28
+        Caption = 'Questions:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clDefault
+        Font.Height = 28
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object pnlCustomQuizHeader: TPanel
         Left = 0
         Top = 0
@@ -940,6 +953,861 @@ object frmCreateQuiz: TfrmCreateQuiz
               OnEnter = memCustomQuizDescriptionEnter
               OnExit = memCustomQuizDescriptionExit
             end
+          end
+        end
+      end
+      object Panel1: TPanel
+        Left = 0
+        Top = 290
+        Width = 769
+        Height = 325
+        BevelOuter = bvNone
+        TabOrder = 1
+        object Shape1: TShape
+          Left = 0
+          Top = 1
+          Width = 769
+          Height = 324
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Shape = stRoundRect
+        end
+        object Label2: TLabel
+          Left = 12
+          Top = 7
+          Width = 108
+          Height = 28
+          Caption = 'Question 1:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = 28
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label3: TLabel
+          Left = 9
+          Top = 39
+          Width = 127
+          Height = 25
+          Caption = 'Question Type'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = -19
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label4: TLabel
+          Left = 395
+          Top = 39
+          Width = 132
+          Height = 25
+          Caption = 'Quiz Category:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clDefault
+          Font.Height = -19
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Panel2: TPanel
+          Left = 9
+          Top = 64
+          Width = 244
+          Height = 34
+          Hint = 'Select a category.'
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Shape2: TShape
+            Left = 0
+            Top = 0
+            Width = 244
+            Height = 33
+            Shape = stRoundRect
+          end
+          object Panel3: TPanel
+            Left = 3
+            Top = 3
+            Width = 238
+            Height = 28
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            BevelOuter = bvNone
+            TabOrder = 0
+            object ComboBox1: TComboBox
+              Left = -1
+              Top = -1
+              Width = 240
+              Height = 31
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 24
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 0
+              TabStop = False
+              Text = 'Type of Question'
+            end
+          end
+        end
+        object Panel4: TPanel
+          Left = 395
+          Top = 64
+          Width = 244
+          Height = 34
+          Hint = 'Select a category.'
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Shape3: TShape
+            Left = 0
+            Top = 0
+            Width = 244
+            Height = 33
+            Shape = stRoundRect
+          end
+          object Panel5: TPanel
+            Left = 3
+            Top = 3
+            Width = 238
+            Height = 28
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            BevelOuter = bvNone
+            TabOrder = 0
+            object ComboBox2: TComboBox
+              Left = -1
+              Top = -1
+              Width = 240
+              Height = 31
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 24
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 0
+              TabStop = False
+              Text = 'Type of Question'
+            end
+          end
+        end
+        object CardPanel1: TCardPanel
+          Left = 9
+          Top = 102
+          Width = 753
+          Height = 200
+          ActiveCard = Card3
+          BevelOuter = bvNone
+          Caption = 'CardPanel1'
+          TabOrder = 2
+          object Card1: TCard
+            Left = 0
+            Top = 0
+            Width = 753
+            Height = 200
+            Caption = 'Text Answer'
+            CardIndex = 0
+            TabOrder = 0
+            object Answer: TLabel
+              Left = 1
+              Top = 95
+              Width = 66
+              Height = 25
+              Caption = 'Answer'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Question: TLabel
+              Left = 1
+              Top = -4
+              Width = 80
+              Height = 25
+              Caption = 'Question'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Panel6: TPanel
+              Left = 0
+              Top = 21
+              Width = 751
+              Height = 75
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 0
+              object Shape4: TShape
+                Left = 0
+                Top = 0
+                Width = 751
+                Height = 74
+                Shape = stRoundRect
+              end
+              object Panel7: TPanel
+                Left = 6
+                Top = 6
+                Width = 741
+                Height = 61
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Memo1: TMemo
+                  Left = -1
+                  Top = -1
+                  Width = 743
+                  Height = 66
+                  Hint = 'Give a description of the your quiz'
+                  TabStop = False
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowFrame
+                  Font.Height = 18
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  Lines.Strings = (
+                    'Describe what the quiz is about')
+                  ParentFont = False
+                  TabOrder = 0
+                  OnEnter = memCustomQuizDescriptionEnter
+                  OnExit = memCustomQuizDescriptionExit
+                end
+              end
+            end
+            object Panel8: TPanel
+              Left = 0
+              Top = 121
+              Width = 751
+              Height = 75
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 1
+              object Shape5: TShape
+                Left = 0
+                Top = 0
+                Width = 751
+                Height = 74
+                Shape = stRoundRect
+              end
+              object Panel9: TPanel
+                Left = 6
+                Top = 6
+                Width = 741
+                Height = 61
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Memo2: TMemo
+                  Left = -1
+                  Top = -1
+                  Width = 743
+                  Height = 66
+                  Hint = 'Give a description of the your quiz'
+                  TabStop = False
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowFrame
+                  Font.Height = 18
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  Lines.Strings = (
+                    'Describe what the quiz is about')
+                  ParentFont = False
+                  TabOrder = 0
+                  OnEnter = memCustomQuizDescriptionEnter
+                  OnExit = memCustomQuizDescriptionExit
+                end
+              end
+            end
+          end
+          object Card2: TCard
+            Left = 0
+            Top = 0
+            Width = 753
+            Height = 200
+            Caption = 'Multiple Choice'
+            CardIndex = 1
+            TabOrder = 1
+            object Label1: TLabel
+              Left = 1
+              Top = -4
+              Width = 80
+              Height = 25
+              Caption = 'Question'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label5: TLabel
+              Left = 1
+              Top = 95
+              Width = 66
+              Height = 25
+              Caption = 'Answer'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Panel11: TPanel
+              Left = 0
+              Top = 21
+              Width = 751
+              Height = 75
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 0
+              object Shape8: TShape
+                Left = 0
+                Top = 0
+                Width = 751
+                Height = 74
+                Shape = stRoundRect
+              end
+              object Panel12: TPanel
+                Left = 6
+                Top = 6
+                Width = 741
+                Height = 61
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Memo3: TMemo
+                  Left = -1
+                  Top = -1
+                  Width = 743
+                  Height = 66
+                  Hint = 'Give a description of the your quiz'
+                  TabStop = False
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowFrame
+                  Font.Height = 18
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  Lines.Strings = (
+                    'Describe what the quiz is about')
+                  ParentFont = False
+                  TabOrder = 0
+                  OnEnter = memCustomQuizDescriptionEnter
+                  OnExit = memCustomQuizDescriptionExit
+                end
+              end
+            end
+            object RadioButton1: TRadioButton
+              Tag = 1
+              Left = 3
+              Top = 120
+              Width = 28
+              Height = 34
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 1
+            end
+            object Panel13: TPanel
+              Left = 20
+              Top = 120
+              Width = 244
+              Height = 34
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 2
+              object Shape9: TShape
+                Left = 0
+                Top = 0
+                Width = 244
+                Height = 33
+                Shape = stRoundRect
+              end
+              object Panel14: TPanel
+                Left = 3
+                Top = 3
+                Width = 238
+                Height = 28
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Edit1: TEdit
+                  Left = -1
+                  Top = -1
+                  Width = 240
+                  Height = 31
+                  Hint = 'Enter the first possible answer or leave blank for no option.'
+                  Margins.Left = 4
+                  Margins.Top = 4
+                  Margins.Right = 4
+                  Margins.Bottom = 4
+                  TabStop = False
+                  BevelEdges = []
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = 24
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  ParentShowHint = False
+                  ShowHint = True
+                  TabOrder = 0
+                  TextHint = 'Option 1'
+                  StyleElements = [seFont, seClient]
+                end
+              end
+            end
+            object RadioButton2: TRadioButton
+              Tag = 2
+              Left = 3
+              Top = 167
+              Width = 28
+              Height = 34
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 4
+            end
+            object Panel15: TPanel
+              Left = 20
+              Top = 167
+              Width = 244
+              Height = 34
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 3
+              object Shape10: TShape
+                Left = 0
+                Top = 0
+                Width = 244
+                Height = 33
+                Shape = stRoundRect
+              end
+              object Panel16: TPanel
+                Left = 3
+                Top = 3
+                Width = 238
+                Height = 28
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Edit2: TEdit
+                  Left = -1
+                  Top = -1
+                  Width = 240
+                  Height = 31
+                  Hint = 'Enter the second possible answer or leave blank for no option.'
+                  Margins.Left = 4
+                  Margins.Top = 4
+                  Margins.Right = 4
+                  Margins.Bottom = 4
+                  TabStop = False
+                  BevelEdges = []
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = 24
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  ParentShowHint = False
+                  ShowHint = True
+                  TabOrder = 0
+                  TextHint = 'Option 2'
+                  StyleElements = [seFont, seClient]
+                end
+              end
+            end
+            object RadioButton3: TRadioButton
+              Tag = 3
+              Left = 395
+              Top = 120
+              Width = 28
+              Height = 34
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 7
+            end
+            object RadioButton4: TRadioButton
+              Tag = 4
+              Left = 395
+              Top = 167
+              Width = 28
+              Height = 34
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 8
+            end
+            object Panel19: TPanel
+              Left = 412
+              Top = 167
+              Width = 244
+              Height = 34
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 6
+              object Shape12: TShape
+                Left = 0
+                Top = 0
+                Width = 244
+                Height = 33
+                Shape = stRoundRect
+              end
+              object Panel20: TPanel
+                Left = 3
+                Top = 3
+                Width = 238
+                Height = 28
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Edit4: TEdit
+                  Left = -1
+                  Top = -1
+                  Width = 240
+                  Height = 31
+                  Hint = 'Enter the fourth possible answer or leave blank for no option.'
+                  Margins.Left = 4
+                  Margins.Top = 4
+                  Margins.Right = 4
+                  Margins.Bottom = 4
+                  TabStop = False
+                  BevelEdges = []
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = 24
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  ParentShowHint = False
+                  ShowHint = True
+                  TabOrder = 0
+                  TextHint = 'Option 4'
+                  StyleElements = [seFont, seClient]
+                end
+              end
+            end
+            object Panel17: TPanel
+              Left = 412
+              Top = 120
+              Width = 244
+              Height = 34
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 5
+              object Shape11: TShape
+                Left = 0
+                Top = 0
+                Width = 244
+                Height = 33
+                Shape = stRoundRect
+              end
+              object Panel18: TPanel
+                Left = 3
+                Top = 3
+                Width = 238
+                Height = 28
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Edit3: TEdit
+                  Left = -1
+                  Top = -1
+                  Width = 240
+                  Height = 31
+                  Hint = 'Enter the third possible answer or leave blank for no option.'
+                  Margins.Left = 4
+                  Margins.Top = 4
+                  Margins.Right = 4
+                  Margins.Bottom = 4
+                  TabStop = False
+                  BevelEdges = []
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = 24
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  ParentShowHint = False
+                  ShowHint = True
+                  TabOrder = 0
+                  TextHint = 'Option 3'
+                  StyleElements = [seFont, seClient]
+                end
+              end
+            end
+          end
+          object Card3: TCard
+            Left = 0
+            Top = 0
+            Width = 753
+            Height = 200
+            Caption = 'Boolean'
+            CardIndex = 2
+            TabOrder = 2
+            object Label01: TLabel
+              Left = 1
+              Top = -4
+              Width = 80
+              Height = 25
+              Caption = 'Question'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label105: TLabel
+              Left = 1
+              Top = 95
+              Width = 66
+              Height = 25
+              Caption = 'Answer'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clDefault
+              Font.Height = -19
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label6: TLabel
+              Left = 23
+              Top = 125
+              Width = 30
+              Height = 21
+              Caption = 'True'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label7: TLabel
+              Left = 23
+              Top = 165
+              Width = 34
+              Height = 21
+              Caption = 'False'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Panel1011: TPanel
+              Left = 0
+              Top = 21
+              Width = 751
+              Height = 75
+              Hint = 'Select a category.'
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              BevelOuter = bvNone
+              TabOrder = 0
+              object Shape108: TShape
+                Left = 0
+                Top = 0
+                Width = 751
+                Height = 74
+                Shape = stRoundRect
+              end
+              object Panel1012: TPanel
+                Left = 6
+                Top = 6
+                Width = 741
+                Height = 61
+                Margins.Left = 4
+                Margins.Top = 4
+                Margins.Right = 4
+                Margins.Bottom = 4
+                BevelOuter = bvNone
+                TabOrder = 0
+                object Memo103: TMemo
+                  Left = -1
+                  Top = -1
+                  Width = 743
+                  Height = 66
+                  Hint = 'Give a description of the your quiz'
+                  TabStop = False
+                  BevelInner = bvNone
+                  BevelOuter = bvNone
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowFrame
+                  Font.Height = 18
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  Lines.Strings = (
+                    'Describe what the quiz is about')
+                  ParentFont = False
+                  TabOrder = 0
+                  OnEnter = memCustomQuizDescriptionEnter
+                  OnExit = memCustomQuizDescriptionExit
+                end
+              end
+            end
+            object RadioButton101: TRadioButton
+              Tag = 1
+              Left = 3
+              Top = 120
+              Width = 20
+              Height = 34
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 1
+            end
+            object RadioButton102: TRadioButton
+              Tag = 2
+              Left = 3
+              Top = 160
+              Width = 20
+              Height = 34
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = 20
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 2
+            end
+          end
+        end
+        object Panel10: TPanel
+          Left = 648
+          Top = 8
+          Width = 85
+          Height = 40
+          BevelOuter = bvNone
+          TabOrder = 3
+          object Shape6: TShape
+            Left = 0
+            Top = 0
+            Width = 40
+            Height = 40
+            Shape = stRoundSquare
+          end
+          object Shape7: TShape
+            Left = 45
+            Top = 0
+            Width = 40
+            Height = 40
+            Shape = stRoundSquare
+          end
+          object Image1: TImage
+            Left = 0
+            Top = 0
+            Width = 40
+            Height = 40
+          end
+          object Image2: TImage
+            Left = 45
+            Top = 0
+            Width = 40
+            Height = 40
           end
         end
       end
