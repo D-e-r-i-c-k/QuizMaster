@@ -133,14 +133,13 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="home_u.pas">
-            <Form>frmHome</Form>
-            <FormType>dfm</FormType>
+        <DCCReference Include="frmHome_u.pas">
+            <Form>Home</Form>
         </DCCReference>
-        <DCCReference Include="quizbox_u.pas"/>
-        <DCCReference Include="quiz_caller_u.pas"/>
-        <DCCReference Include="question_u.pas"/>
-        <DCCReference Include="database_u.pas">
+        <DCCReference Include="clsQuizBoxManager_u.pas"/>
+        <DCCReference Include="clsApiQuizCaller_u.pas"/>
+        <DCCReference Include="clsQuestion_u.pas"/>
+        <DCCReference Include="dbMain_u.pas">
             <Form>dmDatabase</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
@@ -151,7 +150,7 @@
         </DCCReference>
         <DCCReference Include="dbTemp_u.pas"/>
         <DCCReference Include="GLOBALS_u.pas"/>
-        <DCCReference Include="aiCaller_u.pas"/>
+        <DCCReference Include="clsAiQuizCaller_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

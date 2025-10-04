@@ -2,17 +2,17 @@ program main_p;
 
 uses
   Vcl.Forms,
-  home_u in 'home_u.pas' {frmHome},
+  frmHome_u in 'frmHome_u.pas' {Home},
   Vcl.Themes,
   Vcl.Styles,
-  quizbox_u in 'quizbox_u.pas',
-  quiz_caller_u in 'quiz_caller_u.pas',
-  question_u in 'question_u.pas',
-  database_u in 'database_u.pas' {dmDatabase: TDataModule},
+  clsQuizBoxManager_u in 'clsQuizBoxManager_u.pas',
+  clsApiQuizCaller_u in 'clsApiQuizCaller_u.pas',
+  clsQuestion_u in 'clsQuestion_u.pas',
+  dbMain_u in 'dbMain_u.pas' {dmDatabase: TDataModule},
   frmCreateQuiz_u in 'frmCreateQuiz_u.pas' {frmCreateQuiz},
   dbTemp_u in 'dbTemp_u.pas',
   GLOBALS_u in 'GLOBALS_u.pas',
-  aiCaller_u in 'aiCaller_u.pas';
+  clsAiQuizCaller_u in 'clsAiQuizCaller_u.pas';
 
 {$R *.res}
 

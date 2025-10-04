@@ -1,4 +1,4 @@
-unit quizbox_u;
+unit clsQuizBoxManager_u;
 
 interface
 
@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
   Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections,
 
-  database_u;
+  dbMain_u;
 
 type
   TQuizBoxManager = class

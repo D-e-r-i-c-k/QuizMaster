@@ -1,11 +1,11 @@
-unit database_u;
+unit dbMain_u;
 
 interface
 
 uses
   System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, System.Generics.Collections,
 
-  question_u;
+  clsQuestion_u;
 
 type
   TdmDatabase = class(TDataModule)

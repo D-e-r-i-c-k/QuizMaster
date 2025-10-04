@@ -1,4 +1,4 @@
-unit quiz_caller_u;
+unit clsApiQuizCaller_u;
 
 interface
 
@@ -6,10 +6,10 @@ uses
   IdHTTP, IdSSLOpenSSL, System.SysUtils, System.JSON, System.Generics.Collections,
   System.NetEncoding, Vcl.Dialogs,
 
-  question_u, database_u;
+  clsQuestion_u, dbMain_u;
 
 type
-  TQuizCaller = class
+  TApiQuizCaller = class
     private
     {Private Variables}
       HTTP: TIdHTTP;
@@ -31,11 +31,11 @@ type
 
 implementation
 
-constructor TQuizCaller.Create;
+constructor TApiQuizCaller.Create;
   begin
   end;
 
-function TQuizCaller.Call(URL: string): TJSONObject;
+function TApiQuizCaller.Call(URL: string): TJSONObject;
   var
     JSONstring: string;
   begin
@@ -56,7 +56,7 @@ function TQuizCaller.Call(URL: string): TJSONObject;
     end;
   end;
 
-function TQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
+function TApiQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
   var
     QuestionObj: TJSONObject;
     ResultsArray, Incorrect_Answers: TJSONArray;
@@ -102,12 +102,12 @@ function TQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
     end;
   end;
 
-function TQuizCaller.DecodeHTML(Str: string): string;
+function TApiQuizCaller.DecodeHTML(Str: string): string;
   begin
     Result := TNetEncoding.HTML.Decode(Str)
   end;
 
-function TQuizCaller.GetCategory(CatID: Integer): string;
+function TApiQuizCaller.GetCategory(CatID: Integer): string;
   var
     Categories: TJSONArray;
     n: integer;
@@ -124,7 +124,7 @@ function TQuizCaller.GetCategory(CatID: Integer): string;
       end;
   end;
 
-function TQuizCaller.GetRandomCategory: Integer;
+function TApiQuizCaller.GetRandomCategory: Integer;
   var
     Categories: TJSONArray;
     n: integer;
@@ -142,7 +142,7 @@ function TQuizCaller.GetRandomCategory: Integer;
     Result := CatIDList.Items[Random(CatIDList.Count)];
   end;
 
-function TQuizCaller.GetQuiz(Category: integer; AmmountOfQuestions: integer): TList<TQuestion>;
+function TApiQuizCaller.GetQuiz(Category: integer; AmmountOfQuestions: integer): TList<TQuestion>;
   var
     URL: string;
     QuizCategory, QuizLen: integer;
@@ -154,7 +154,7 @@ function TQuizCaller.GetQuiz(Category: integer; AmmountOfQuestions: integer): TL
     Result := JSONToQuiz(Call(URL));
   end;
 
-function TQuizCaller.GetAndAddDailyQuiz: Integer;
+function TApiQuizCaller.GetAndAddDailyQuiz: Integer;
   const
     Len = 10;
   var
@@ -175,7 +175,7 @@ function TQuizCaller.GetAndAddDailyQuiz: Integer;
     Result := ChallengeID;
   end;
 
-function TQuizCaller.GetAllCategoriesNames: TList<string>;
+function TApiQuizCaller.GetAllCategoriesNames: TList<string>;
   var
     CategoryList: TList<string>;
     Categories: TJSONArray;
@@ -192,7 +192,7 @@ function TQuizCaller.GetAllCategoriesNames: TList<string>;
     Result := CategoryList;
   end;
 
-function TQuizCaller.GetAllCategoriesIDs: TList<integer>;
+function TApiQuizCaller.GetAllCategoriesIDs: TList<integer>;
   var
     Categories: TJSONArray;
     n: integer;

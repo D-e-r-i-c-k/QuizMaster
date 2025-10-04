@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.WinXPanels, Vcl.Menus, Vcl.Samples.Spin, System.Generics.Collections,
 
-  GLOBALS_u, quiz_caller_u, question_u, database_u, quizbox_u, aiCaller_u;
+  GLOBALS_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, clsQuizBoxManager_u, clsApiQuizCaller_u;
 
 type
   TfrmCreateQuiz = class(TForm)
@@ -163,8 +163,8 @@ type
 
 var
   frmCreateQuiz: TfrmCreateQuiz;
-  ApiQuizCaller: TQuizCaller;
-  AiQuizCaller: TAIQuiz;
+  ApiQuizCaller: TApiQuizCaller;
+  AiQuizCaller: TAiQuizCaller;
   Question: TQuestion;
 
 implementation
@@ -174,8 +174,8 @@ implementation
 procedure TfrmCreateQuiz.FormCreate(Sender: TObject);
   begin
     Cache := GLOBALS_u.Cache;
-    ApiQuizCaller := TQuizCaller.Create;
-    AiQuizCaller := TAIQuiz.Create;
+    ApiQuizCaller := TApiQuizCaller.Create;
+    AiQuizCaller := TAiQuizCaller.Create;
 
     imgApiSearch1.Picture.LoadFromFile('icons/imgAPISearch.png');
     imgAiCreate1.Picture.LoadFromFile('icons/imgAICreate.png');

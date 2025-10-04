@@ -1,4 +1,4 @@
-unit aiCaller_u;
+unit clsAiQuizCaller_u;
 
 interface
 
@@ -6,10 +6,10 @@ uses
   IdHTTP, IdSSLOpenSSL, System.SysUtils, System.JSON, System.Generics.Collections,
   System.NetEncoding, Vcl.Dialogs, System.Classes,
 
-  question_u, database_u;
+  clsQuestion_u, dbMain_u;
 
 type
-  TAIQuiz = class
+  TAiQuizCaller = class
     private
     {Private Variables}
       HTTP: TIdHTTP;
@@ -26,11 +26,11 @@ type
 
 implementation
 
-constructor TAIQuiz.Create;
+constructor TAiQuizCaller.Create;
   begin
   end;
 
-function TAIQuiz.Call(UserPrompt: string; Model: string): TJSONObject;
+function TAiQuizCaller.Call(UserPrompt: string; Model: string): TJSONObject;
   const
     SystemPrompt = 'You are an academic quiz generator. Your task is to create a formal, professional test in JSON format. '
   + 'The JSON should follow the general schema of the examples given below, but with a more in-depth, formal and academic style. '
@@ -206,7 +206,7 @@ begin
   end;
 end;
 
-function TAIQuiz.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
+function TAiQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
   var
     QuestionObj: TJSONObject;
     ResultsArray, Incorrect_Answers: TJSONArray;
@@ -252,12 +252,12 @@ function TAIQuiz.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
     end;
   end;
 
-function TAIQuiz.DecodeHTML(Str: string): string;
+function TAiQuizCaller.DecodeHTML(Str: string): string;
   begin
     Result := TNetEncoding.HTML.Decode(Str)
   end;
 
-function TAIQuiz.GetQuiz(UserPrompt: string): TList<TQuestion>;
+function TAiQuizCaller.GetQuiz(UserPrompt: string): TList<TQuestion>;
   var
     QuizJSON: TJSONObject;
     Quiz: TList<TQuestion>;

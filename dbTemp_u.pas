@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, Data.DB, FireDAC.Comp.Client, System.JSON,
   System.Generics.Collections, Vcl.Dialogs,
 
-  quiz_caller_u;
+  clsApiQuizCaller_u;
 
 type
   TdmCache = class
@@ -25,7 +25,7 @@ type
   end;
 
 var
-  QuizCaller: TQuizCaller;
+  QuizCaller: TApiQuizCaller;
 
 implementation
 
@@ -57,7 +57,7 @@ procedure TdmCache.CacheAllCategories;
     NameList: TList<string>;
     n: integer;
   begin
-    QuizCaller := TQuizCaller.Create;
+    QuizCaller := TApiQuizCaller.Create;
 
     NameList := QuizCaller.GetAllCategoriesNames;
     IDList := QuizCaller.GetAllCategoriesIDs;

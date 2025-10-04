@@ -1,4 +1,4 @@
-﻿unit home_u;
+﻿unit frmHome_u;
 
 interface
 
@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
   Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
 
-  quizbox_u, quiz_caller_u, question_u, database_u, frmCreateQuiz_u, dbTemp_u, GLOBALS_u, aiCaller_u;
+  clsQuizBoxManager_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u;
 
 type
   TfrmHome = class(TForm)
@@ -107,7 +107,7 @@ var
   frmHome: TfrmHome;
   Question: TQuestion;
   CreateQuizForm: TfrmCreateQuiz;
-  AI: TAIQuiz;
+  AI: TAiQuizCaller;
 
 implementation
 

@@ -1,4 +1,4 @@
-unit question_u;
+unit clsQuestion_u;
 
 interface
 
