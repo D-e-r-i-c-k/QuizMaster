@@ -140,7 +140,7 @@ procedure TfrmHome.FormCreate(Sender: TObject);
     lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
     GLOBALS_u.QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbxMyQuizzes);
-    CreateQuizForm := TfrmCreateQuiz.Create(nil);
+    CreateQuizForm := TfrmCreateQuiz.Create(Application);
     GLOBALS_u.Cache := TdmCache.Create;
 
     GLOBALS_u.Cache.CacheAllCategories;

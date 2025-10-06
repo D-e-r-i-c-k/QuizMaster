@@ -134,7 +134,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="frmHome_u.pas">
-            <Form>Home</Form>
+            <Form>frmHome</Form>
         </DCCReference>
         <DCCReference Include="clsQuizBoxManager_u.pas"/>
         <DCCReference Include="clsApiQuizCaller_u.pas"/>
@@ -151,6 +151,7 @@
         <DCCReference Include="dbTemp_u.pas"/>
         <DCCReference Include="GLOBALS_u.pas"/>
         <DCCReference Include="clsAiQuizCaller_u.pas"/>
+        <DCCReference Include="clsCustomQuizQuestionManager_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

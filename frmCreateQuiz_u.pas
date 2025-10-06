@@ -7,7 +7,9 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.WinXPanels, Vcl.Menus, Vcl.Samples.Spin, System.Generics.Collections,
 
-  GLOBALS_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, clsQuizBoxManager_u, clsApiQuizCaller_u;
+  GLOBALS_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, clsQuizBoxManager_u, clsApiQuizCaller_u,
+
+  clsCustomQuizQuestionManager_u;
 
 type
   TfrmCreateQuiz = class(TForm)
@@ -80,67 +82,68 @@ type
     shpCustomQuizDescriptionBG: TShape;
     pnlCustomQuizDescriptionRemoveBorder: TPanel;
     memCustomQuizDescription: TMemo;
-    Panel1: TPanel;
-    Shape1: TShape;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Question: TLabel;
-    Panel2: TPanel;
-    Shape2: TShape;
-    Panel3: TPanel;
-    Panel4: TPanel;
-    Shape3: TShape;
-    Panel5: TPanel;
-    Panel6: TPanel;
-    Shape4: TShape;
-    Panel7: TPanel;
-    Memo1: TMemo;
+    pnlQuestion: TPanel;
+    shpQuestionBG: TShape;
+    lblQuestionNumber: TLabel;
+    lblQuestionType: TLabel;
+    lblQuestionDifficulty: TLabel;
+    lblTextAnswerQuestion: TLabel;
+    pnlQuestionTypeSelector: TPanel;
+    shpQuestionTypeSelectorBG: TShape;
+    pnlQuestionTypeSelectorRemoveBorder: TPanel;
+    pnlQuestionDifficultySelector: TPanel;
+    shpQuestionDifficultyBG: TShape;
+    pnlQuestionDificultySelectorRemoveBorder: TPanel;
+    pnlTextAnswerQuestionInput: TPanel;
+    shpTextAnswerQuestionBG: TShape;
+    pnlTextAnswerQuestionInputRemoveBorder: TPanel;
+    memTextAnswerQuestionInput: TMemo;
     lblCustomQuestions: TLabel;
-    Answer: TLabel;
-    Panel8: TPanel;
-    Shape5: TShape;
-    Panel9: TPanel;
-    Memo2: TMemo;
-    ComboBox1: TComboBox;
-    ComboBox2: TComboBox;
-    CardPanel1: TCardPanel;
-    Card1: TCard;
-    Card2: TCard;
-    Panel10: TPanel;
-    Shape6: TShape;
-    Shape7: TShape;
-    Image1: TImage;
-    Image2: TImage;
-    Panel11: TPanel;
-    Shape8: TShape;
-    Panel12: TPanel;
-    Memo3: TMemo;
-    Label1: TLabel;
-    Label5: TLabel;
-    RadioButton1: TRadioButton;
-    Panel13: TPanel;
-    Shape9: TShape;
-    Panel14: TPanel;
-    Edit1: TEdit;
-    Panel15: TPanel;
-    Shape10: TShape;
-    Panel16: TPanel;
-    Edit2: TEdit;
-    RadioButton2: TRadioButton;
-    Panel17: TPanel;
-    Shape11: TShape;
-    Panel18: TPanel;
+    lblTextAnswerAnswer: TLabel;
+    pnlTextAnswerAnswerInput: TPanel;
+    shpTextAnswerAnswerInputBG: TShape;
+    pnlTextAnswerAnswerInputRemoveBorder: TPanel;
+    memTextAnswerAnswer: TMemo;
+    cmbQuestionType: TComboBox;
+    cmbQuestionDifficulty: TComboBox;
+    cplQuestionTypeOptions: TCardPanel;
+    crdTextAnswer: TCard;
+    crdMultipleChoice: TCard;
+    pnlQuestionButtons: TPanel;
+    shpNewQuestionBG: TShape;
+    imgRemoveQuestionBG: TShape;
+    imgNewQuestion: TImage;
+    imgRemoveQuestion: TImage;
+    pnlMultipleChoiceQuestionInput: TPanel;
+    shpMultipleChoiceQuestionInputBG: TShape;
+    pnlMultipleChoiceQuestionInputRemoveBorder: TPanel;
+    memMultipleChoiceQuestionInput: TMemo;
+    lblMultipleChoiceQuestion: TLabel;
+    lblMultipleChoiceAnswer: TLabel;
+    rbtMultipleChoiceAnswer1: TRadioButton;
+    pnlMultipleChoiceAnswer1: TPanel;
+    shpMultipleChoiceAnswer1BG: TShape;
+    pnlMultipleChoiceAnswer1RemoveBorder: TPanel;
+    edtMultipleChoiceAnswer1: TEdit;
+    pnlMultipleChoiceAnswer2: TPanel;
+    shpMultipleChoiceAnswer2BG: TShape;
+    pnlMultipleChoiceAnswer2RemoveBorder: TPanel;
+    edtMultipleChoiceAnswer2: TEdit;
+    rbtMultipleChoiceAnswer2: TRadioButton;
+    pnlMultipleChoiceAnswer3: TPanel;
+    shpMultipleChoiceAnswer3BG: TShape;
+    pnlMultipleChoiceAnswer3RemoveBorder: TPanel;
     Edit3: TEdit;
-    Panel19: TPanel;
-    Shape12: TShape;
-    Panel20: TPanel;
-    Edit4: TEdit;
-    RadioButton3: TRadioButton;
-    RadioButton4: TRadioButton;
-    Card3: TCard;
-    Label6: TLabel;
-    Label7: TLabel;
+    pnlMultipleChoiceAnswer4: TPanel;
+    shpMultipleChoiceAnswer4BG: TShape;
+    pnlMultipleChoiceAnswer4RemoveBorder: TPanel;
+    edtMultipleChoiceAnswer4: TEdit;
+    rbtMultipleChoiceAnswer3: TRadioButton;
+    rbtMultipleChoiceAnswer4: TRadioButton;
+    crdBoolean: TCard;
+    lblBooleanAnswerTrue: TLabel;
+    lblBooleanAnswerFalse: TLabel;
+    btnCreateQuestion: TButton;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure sbtAPIClick(Sender: TObject);
@@ -153,6 +156,7 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure memCustomQuizDescriptionEnter(Sender: TObject);
     procedure memCustomQuizDescriptionExit(Sender: TObject);
+    procedure btnCreateQuestionClick(Sender: TObject);
   private
     { Private declarations }
     function CallApiQuiz(Category: string; AmntQuestions: integer): integer;
@@ -166,6 +170,7 @@ var
   ApiQuizCaller: TApiQuizCaller;
   AiQuizCaller: TAiQuizCaller;
   Question: TQuestion;
+  QuestionManager: TCustomQuestionsManager;
 
 implementation
 
@@ -193,7 +198,9 @@ procedure TfrmCreateQuiz.FormShow(Sender: TObject);
       begin
         cbxApiCategories.Items.Add(Category);
       end;
-    cbxAiDifficultySelector.Items.AddStrings(['Very easy', 'Easy', 'Medium', 'Hard', 'Very hard'])
+    cbxAiDifficultySelector.Items.AddStrings(['Very easy', 'Easy', 'Medium', 'Hard', 'Very hard']);
+
+    QuestionManager := TCustomQuestionsManager.Create(pnlCustomQuizCreator, sbxMainScroll);
   end;
 
 procedure TfrmCreateQuiz.memCustomQuizDescriptionEnter(Sender: TObject);
@@ -326,6 +333,11 @@ function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): i
         Quiz
       )
     end;
+  end;
+
+procedure TfrmCreateQuiz.btnCreateQuestionClick(Sender: TObject);
+  begin
+    QuestionManager.AddQuestion;
   end;
 
 function TfrmCreateQuiz.CallAiQuiz(UserPrompt: string; AmntQuestions: Integer; Difficulty: string): Integer;

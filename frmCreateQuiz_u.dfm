@@ -73,6 +73,15 @@ object frmCreateQuiz: TfrmCreateQuiz
         ParentColor = False
         ParentFont = False
       end
+      object btnCreateQuestion: TButton
+        Left = 544
+        Top = 32
+        Width = 75
+        Height = 25
+        Caption = 'btnCreateQuestion'
+        TabOrder = 0
+        OnClick = btnCreateQuestionClick
+      end
     end
     object pnlOnlineCreate: TPanel
       Left = 20
@@ -309,7 +318,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Left = -1
                   Top = -1
                   Width = 172
-                  Height = 34
+                  Height = 33
                   Hint = 'Enter the amount of questions.'
                   Margins.Left = 0
                   Margins.Top = 0
@@ -532,7 +541,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Left = -1
                   Top = -1
                   Width = 102
-                  Height = 34
+                  Height = 33
                   Hint = 'Enter the amount of questions.'
                   Margins.Left = 0
                   Margins.Top = 0
@@ -956,14 +965,14 @@ object frmCreateQuiz: TfrmCreateQuiz
           end
         end
       end
-      object Panel1: TPanel
+      object pnlQuestion: TPanel
         Left = 0
         Top = 290
         Width = 769
         Height = 325
         BevelOuter = bvNone
         TabOrder = 1
-        object Shape1: TShape
+        object shpQuestionBG: TShape
           Left = 0
           Top = 1
           Width = 769
@@ -974,7 +983,7 @@ object frmCreateQuiz: TfrmCreateQuiz
           Margins.Bottom = 4
           Shape = stRoundRect
         end
-        object Label2: TLabel
+        object lblQuestionNumber: TLabel
           Left = 12
           Top = 7
           Width = 108
@@ -987,7 +996,7 @@ object frmCreateQuiz: TfrmCreateQuiz
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object Label3: TLabel
+        object lblQuestionType: TLabel
           Left = 9
           Top = 39
           Width = 127
@@ -1000,12 +1009,12 @@ object frmCreateQuiz: TfrmCreateQuiz
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object Label4: TLabel
+        object lblQuestionDifficulty: TLabel
           Left = 395
           Top = 39
-          Width = 132
+          Width = 171
           Height = 25
-          Caption = 'Quiz Category:'
+          Caption = 'Question Difficulty:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clDefault
           Font.Height = -19
@@ -1013,7 +1022,7 @@ object frmCreateQuiz: TfrmCreateQuiz
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object Panel2: TPanel
+        object pnlQuestionTypeSelector: TPanel
           Left = 9
           Top = 64
           Width = 244
@@ -1025,14 +1034,14 @@ object frmCreateQuiz: TfrmCreateQuiz
           Margins.Bottom = 4
           BevelOuter = bvNone
           TabOrder = 0
-          object Shape2: TShape
+          object shpQuestionTypeSelectorBG: TShape
             Left = 0
             Top = 0
             Width = 244
             Height = 33
             Shape = stRoundRect
           end
-          object Panel3: TPanel
+          object pnlQuestionTypeSelectorRemoveBorder: TPanel
             Left = 3
             Top = 3
             Width = 238
@@ -1043,7 +1052,7 @@ object frmCreateQuiz: TfrmCreateQuiz
             Margins.Bottom = 4
             BevelOuter = bvNone
             TabOrder = 0
-            object ComboBox1: TComboBox
+            object cmbQuestionType: TComboBox
               Left = -1
               Top = -1
               Width = 240
@@ -1057,10 +1066,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               TabOrder = 0
               TabStop = False
               Text = 'Type of Question'
+              Items.Strings = (
+                'True/False'
+                'Multiple Choice'
+                'Text Answer')
             end
           end
         end
-        object Panel4: TPanel
+        object pnlQuestionDifficultySelector: TPanel
           Left = 395
           Top = 64
           Width = 244
@@ -1072,14 +1085,14 @@ object frmCreateQuiz: TfrmCreateQuiz
           Margins.Bottom = 4
           BevelOuter = bvNone
           TabOrder = 1
-          object Shape3: TShape
+          object shpQuestionDifficultyBG: TShape
             Left = 0
             Top = 0
             Width = 244
             Height = 33
             Shape = stRoundRect
           end
-          object Panel5: TPanel
+          object pnlQuestionDificultySelectorRemoveBorder: TPanel
             Left = 3
             Top = 3
             Width = 238
@@ -1090,7 +1103,7 @@ object frmCreateQuiz: TfrmCreateQuiz
             Margins.Bottom = 4
             BevelOuter = bvNone
             TabOrder = 0
-            object ComboBox2: TComboBox
+            object cmbQuestionDifficulty: TComboBox
               Left = -1
               Top = -1
               Width = 240
@@ -1103,20 +1116,25 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
               TabOrder = 0
               TabStop = False
-              Text = 'Type of Question'
+              Text = 'Question Difficulty'
+              Items.Strings = (
+                'Very Easy'
+                'Easy'
+                'Medium'
+                'Hard'
+                'Very Hard')
             end
           end
         end
-        object CardPanel1: TCardPanel
+        object cplQuestionTypeOptions: TCardPanel
           Left = 9
           Top = 102
           Width = 753
           Height = 200
-          ActiveCard = Card3
+          ActiveCard = crdTextAnswer
           BevelOuter = bvNone
-          Caption = 'CardPanel1'
           TabOrder = 2
-          object Card1: TCard
+          object crdTextAnswer: TCard
             Left = 0
             Top = 0
             Width = 753
@@ -1124,7 +1142,7 @@ object frmCreateQuiz: TfrmCreateQuiz
             Caption = 'Text Answer'
             CardIndex = 0
             TabOrder = 0
-            object Answer: TLabel
+            object lblTextAnswerAnswer: TLabel
               Left = 1
               Top = 95
               Width = 66
@@ -1137,7 +1155,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Question: TLabel
+            object lblTextAnswerQuestion: TLabel
               Left = 1
               Top = -4
               Width = 80
@@ -1150,7 +1168,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Panel6: TPanel
+            object pnlTextAnswerQuestionInput: TPanel
               Left = 0
               Top = 21
               Width = 751
@@ -1162,14 +1180,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 0
-              object Shape4: TShape
+              object shpTextAnswerQuestionBG: TShape
                 Left = 0
                 Top = 0
                 Width = 751
                 Height = 74
                 Shape = stRoundRect
               end
-              object Panel7: TPanel
+              object pnlTextAnswerQuestionInputRemoveBorder: TPanel
                 Left = 6
                 Top = 6
                 Width = 741
@@ -1180,7 +1198,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Memo1: TMemo
+                object memTextAnswerQuestionInput: TMemo
                   Left = -1
                   Top = -1
                   Width = 743
@@ -1195,7 +1213,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Font.Name = 'Segoe UI'
                   Font.Style = []
                   Lines.Strings = (
-                    'Describe what the quiz is about')
+                    'Question Text')
                   ParentFont = False
                   TabOrder = 0
                   OnEnter = memCustomQuizDescriptionEnter
@@ -1203,7 +1221,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 end
               end
             end
-            object Panel8: TPanel
+            object pnlTextAnswerAnswerInput: TPanel
               Left = 0
               Top = 121
               Width = 751
@@ -1215,14 +1233,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 1
-              object Shape5: TShape
+              object shpTextAnswerAnswerInputBG: TShape
                 Left = 0
                 Top = 0
                 Width = 751
                 Height = 74
                 Shape = stRoundRect
               end
-              object Panel9: TPanel
+              object pnlTextAnswerAnswerInputRemoveBorder: TPanel
                 Left = 6
                 Top = 6
                 Width = 741
@@ -1233,7 +1251,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Memo2: TMemo
+                object memTextAnswerAnswer: TMemo
                   Left = -1
                   Top = -1
                   Width = 743
@@ -1248,7 +1266,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Font.Name = 'Segoe UI'
                   Font.Style = []
                   Lines.Strings = (
-                    'Describe what the quiz is about')
+                    'Answer Text')
                   ParentFont = False
                   TabOrder = 0
                   OnEnter = memCustomQuizDescriptionEnter
@@ -1257,7 +1275,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               end
             end
           end
-          object Card2: TCard
+          object crdMultipleChoice: TCard
             Left = 0
             Top = 0
             Width = 753
@@ -1265,7 +1283,7 @@ object frmCreateQuiz: TfrmCreateQuiz
             Caption = 'Multiple Choice'
             CardIndex = 1
             TabOrder = 1
-            object Label1: TLabel
+            object lblMultipleChoiceQuestion: TLabel
               Left = 1
               Top = -4
               Width = 80
@@ -1278,7 +1296,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label5: TLabel
+            object lblMultipleChoiceAnswer: TLabel
               Left = 1
               Top = 95
               Width = 66
@@ -1291,7 +1309,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Panel11: TPanel
+            object pnlMultipleChoiceQuestionInput: TPanel
               Left = 0
               Top = 21
               Width = 751
@@ -1303,14 +1321,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 0
-              object Shape8: TShape
+              object shpMultipleChoiceQuestionInputBG: TShape
                 Left = 0
                 Top = 0
                 Width = 751
                 Height = 74
                 Shape = stRoundRect
               end
-              object Panel12: TPanel
+              object pnlMultipleChoiceQuestionInputRemoveBorder: TPanel
                 Left = 6
                 Top = 6
                 Width = 741
@@ -1321,7 +1339,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Memo3: TMemo
+                object memMultipleChoiceQuestionInput: TMemo
                   Left = -1
                   Top = -1
                   Width = 743
@@ -1336,7 +1354,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Font.Name = 'Segoe UI'
                   Font.Style = []
                   Lines.Strings = (
-                    'Describe what the quiz is about')
+                    'Question Text')
                   ParentFont = False
                   TabOrder = 0
                   OnEnter = memCustomQuizDescriptionEnter
@@ -1344,7 +1362,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 end
               end
             end
-            object RadioButton1: TRadioButton
+            object rbtMultipleChoiceAnswer1: TRadioButton
               Tag = 1
               Left = 3
               Top = 120
@@ -1358,7 +1376,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
               TabOrder = 1
             end
-            object Panel13: TPanel
+            object pnlMultipleChoiceAnswer1: TPanel
               Left = 20
               Top = 120
               Width = 244
@@ -1370,14 +1388,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 2
-              object Shape9: TShape
+              object shpMultipleChoiceAnswer1BG: TShape
                 Left = 0
                 Top = 0
                 Width = 244
                 Height = 33
                 Shape = stRoundRect
               end
-              object Panel14: TPanel
+              object pnlMultipleChoiceAnswer1RemoveBorder: TPanel
                 Left = 3
                 Top = 3
                 Width = 238
@@ -1388,7 +1406,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Edit1: TEdit
+                object edtMultipleChoiceAnswer1: TEdit
                   Left = -1
                   Top = -1
                   Width = 240
@@ -1416,7 +1434,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 end
               end
             end
-            object RadioButton2: TRadioButton
+            object rbtMultipleChoiceAnswer2: TRadioButton
               Tag = 2
               Left = 3
               Top = 167
@@ -1430,7 +1448,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
               TabOrder = 4
             end
-            object Panel15: TPanel
+            object pnlMultipleChoiceAnswer2: TPanel
               Left = 20
               Top = 167
               Width = 244
@@ -1442,14 +1460,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 3
-              object Shape10: TShape
+              object shpMultipleChoiceAnswer2BG: TShape
                 Left = 0
                 Top = 0
                 Width = 244
                 Height = 33
                 Shape = stRoundRect
               end
-              object Panel16: TPanel
+              object pnlMultipleChoiceAnswer2RemoveBorder: TPanel
                 Left = 3
                 Top = 3
                 Width = 238
@@ -1460,7 +1478,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Edit2: TEdit
+                object edtMultipleChoiceAnswer2: TEdit
                   Left = -1
                   Top = -1
                   Width = 240
@@ -1488,7 +1506,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 end
               end
             end
-            object RadioButton3: TRadioButton
+            object rbtMultipleChoiceAnswer3: TRadioButton
               Tag = 3
               Left = 395
               Top = 120
@@ -1502,7 +1520,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
               TabOrder = 7
             end
-            object RadioButton4: TRadioButton
+            object rbtMultipleChoiceAnswer4: TRadioButton
               Tag = 4
               Left = 395
               Top = 167
@@ -1516,7 +1534,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
               TabOrder = 8
             end
-            object Panel19: TPanel
+            object pnlMultipleChoiceAnswer4: TPanel
               Left = 412
               Top = 167
               Width = 244
@@ -1528,14 +1546,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 6
-              object Shape12: TShape
+              object shpMultipleChoiceAnswer4BG: TShape
                 Left = 0
                 Top = 0
                 Width = 244
                 Height = 33
                 Shape = stRoundRect
               end
-              object Panel20: TPanel
+              object pnlMultipleChoiceAnswer4RemoveBorder: TPanel
                 Left = 3
                 Top = 3
                 Width = 238
@@ -1546,7 +1564,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Edit4: TEdit
+                object edtMultipleChoiceAnswer4: TEdit
                   Left = -1
                   Top = -1
                   Width = 240
@@ -1574,7 +1592,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 end
               end
             end
-            object Panel17: TPanel
+            object pnlMultipleChoiceAnswer3: TPanel
               Left = 412
               Top = 120
               Width = 244
@@ -1586,14 +1604,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 5
-              object Shape11: TShape
+              object shpMultipleChoiceAnswer3BG: TShape
                 Left = 0
                 Top = 0
                 Width = 244
                 Height = 33
                 Shape = stRoundRect
               end
-              object Panel18: TPanel
+              object pnlMultipleChoiceAnswer3RemoveBorder: TPanel
                 Left = 3
                 Top = 3
                 Width = 238
@@ -1633,7 +1651,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               end
             end
           end
-          object Card3: TCard
+          object crdBoolean: TCard
             Left = 0
             Top = 0
             Width = 753
@@ -1641,7 +1659,7 @@ object frmCreateQuiz: TfrmCreateQuiz
             Caption = 'Boolean'
             CardIndex = 2
             TabOrder = 2
-            object Label01: TLabel
+            object lblBooleanQuestion: TLabel
               Left = 1
               Top = -4
               Width = 80
@@ -1654,7 +1672,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label105: TLabel
+            object lblBooleanAnswer: TLabel
               Left = 1
               Top = 95
               Width = 66
@@ -1667,7 +1685,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label6: TLabel
+            object lblBooleanAnswerTrue: TLabel
               Left = 23
               Top = 125
               Width = 30
@@ -1680,7 +1698,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = []
               ParentFont = False
             end
-            object Label7: TLabel
+            object lblBooleanAnswerFalse: TLabel
               Left = 23
               Top = 165
               Width = 34
@@ -1693,7 +1711,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Font.Style = []
               ParentFont = False
             end
-            object Panel1011: TPanel
+            object pnlBooleanQuestionInput: TPanel
               Left = 0
               Top = 21
               Width = 751
@@ -1705,14 +1723,14 @@ object frmCreateQuiz: TfrmCreateQuiz
               Margins.Bottom = 4
               BevelOuter = bvNone
               TabOrder = 0
-              object Shape108: TShape
+              object shpBooleanQuesionInputBG: TShape
                 Left = 0
                 Top = 0
                 Width = 751
                 Height = 74
                 Shape = stRoundRect
               end
-              object Panel1012: TPanel
+              object pnlBooleanQuesionInputRemoveBorder: TPanel
                 Left = 6
                 Top = 6
                 Width = 741
@@ -1723,7 +1741,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 Margins.Bottom = 4
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Memo103: TMemo
+                object memBooleanQuestionInput: TMemo
                   Left = -1
                   Top = -1
                   Width = 743
@@ -1738,7 +1756,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Font.Name = 'Segoe UI'
                   Font.Style = []
                   Lines.Strings = (
-                    'Describe what the quiz is about')
+                    'Question Text')
                   ParentFont = False
                   TabOrder = 0
                   OnEnter = memCustomQuizDescriptionEnter
@@ -1746,7 +1764,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                 end
               end
             end
-            object RadioButton101: TRadioButton
+            object rbtBooleanAnswerTrue: TRadioButton
               Tag = 1
               Left = 3
               Top = 120
@@ -1760,7 +1778,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               ParentFont = False
               TabOrder = 1
             end
-            object RadioButton102: TRadioButton
+            object rbtBooleanFalse: TRadioButton
               Tag = 2
               Left = 3
               Top = 160
@@ -1776,34 +1794,34 @@ object frmCreateQuiz: TfrmCreateQuiz
             end
           end
         end
-        object Panel10: TPanel
+        object pnlQuestionButtons: TPanel
           Left = 648
           Top = 8
           Width = 85
           Height = 40
           BevelOuter = bvNone
           TabOrder = 3
-          object Shape6: TShape
+          object shpNewQuestionBG: TShape
             Left = 0
             Top = 0
             Width = 40
             Height = 40
             Shape = stRoundSquare
           end
-          object Shape7: TShape
+          object imgRemoveQuestionBG: TShape
             Left = 45
             Top = 0
             Width = 40
             Height = 40
             Shape = stRoundSquare
           end
-          object Image1: TImage
+          object imgNewQuestion: TImage
             Left = 0
             Top = 0
             Width = 40
             Height = 40
           end
-          object Image2: TImage
+          object imgRemoveQuestion: TImage
             Left = 45
             Top = 0
             Width = 40

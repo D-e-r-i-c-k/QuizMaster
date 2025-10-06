@@ -2,7 +2,7 @@ program main_p;
 
 uses
   Vcl.Forms,
-  frmHome_u in 'frmHome_u.pas' {Home},
+  frmHome_u in 'frmHome_u.pas' {frmHome},
   Vcl.Themes,
   Vcl.Styles,
   clsQuizBoxManager_u in 'clsQuizBoxManager_u.pas',
@@ -12,7 +12,8 @@ uses
   frmCreateQuiz_u in 'frmCreateQuiz_u.pas' {frmCreateQuiz},
   dbTemp_u in 'dbTemp_u.pas',
   GLOBALS_u in 'GLOBALS_u.pas',
-  clsAiQuizCaller_u in 'clsAiQuizCaller_u.pas';
+  clsAiQuizCaller_u in 'clsAiQuizCaller_u.pas',
+  clsCustomQuizQuestionManager_u in 'clsCustomQuizQuestionManager_u.pas';
 
 {$R *.res}
 
