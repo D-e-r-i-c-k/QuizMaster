@@ -185,6 +185,7 @@ procedure TQuizBoxManager.AddQuiz(QuizID: integer);
     pnlBtnStrtQuiz.BevelEdges := [];
     pnlBtnStrtQuiz.BevelOuter := bvNone;
     pnlBtnStrtQuiz.Tag := QuizID;
+    pnlBtnStrtQuiz.Cursor := crHandPoint;
 
     // Shape
     shpBtnStrtQuiz := TShape.Create(FQuizParent.Owner);
@@ -224,6 +225,7 @@ procedure TQuizBoxManager.AddQuiz(QuizID: integer);
     imgBtnEditQuiz.Stretch := True;
     imgBtnEditQuiz.Picture.LoadFromFile('icons/imgEdit.png');
     imgBtnEditQuiz.Tag := QuizID;
+    imgBtnEditQuiz.Cursor := crHandPoint;
 
     // On Click
     imgBtnEditQuiz.OnClick := EditQuizClick;
@@ -242,6 +244,7 @@ procedure TQuizBoxManager.AddQuiz(QuizID: integer);
     imgBtnDelQuiz.Stretch := True;
     imgBtnDelQuiz.Picture.LoadFromFile('icons/imgDelete.png');
     imgBtnDelQuiz.Tag := QuizID;
+    imgBtnDelQuiz.Cursor := crHandPoint;
 
     // On Click
     imgBtnDelQuiz.OnClick := DeleteQuizClick;

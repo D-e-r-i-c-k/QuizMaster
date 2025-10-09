@@ -27,11 +27,17 @@ object frmCreateQuiz: TfrmCreateQuiz
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
+    HorzScrollBar.Visible = False
+    VertScrollBar.Range = 910
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    AutoScroll = False
     BevelEdges = []
     BevelInner = bvNone
     BevelOuter = bvNone
     BorderStyle = bsNone
     TabOrder = 0
+    UseWheelForScrolling = True
     object pnlHeader: TPanel
       Left = 0
       Top = 0
@@ -73,15 +79,6 @@ object frmCreateQuiz: TfrmCreateQuiz
         ParentColor = False
         ParentFont = False
       end
-      object btnCreateQuestion: TButton
-        Left = 544
-        Top = 32
-        Width = 75
-        Height = 25
-        Caption = 'btnCreateQuestion'
-        TabOrder = 0
-        OnClick = btnCreateQuestionClick
-      end
     end
     object pnlOnlineCreate: TPanel
       Left = 20
@@ -114,7 +111,7 @@ object frmCreateQuiz: TfrmCreateQuiz
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        ActiveCard = crdAiQuizCreator
+        ActiveCard = crdApiSearch
         BevelOuter = bvNone
         Caption = 'API'
         TabOrder = 0
@@ -256,6 +253,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Top = 59
               Width = 174
               Height = 33
+              Cursor = crHandPoint
               BevelOuter = bvNone
               TabOrder = 1
               OnClick = pnlCreateQuizClick
@@ -479,6 +477,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Top = 59
               Width = 174
               Height = 33
+              Cursor = crHandPoint
               BevelOuter = bvNone
               TabOrder = 1
               OnClick = pnlCreateAiQuizClick
@@ -633,6 +632,7 @@ object frmCreateQuiz: TfrmCreateQuiz
       Top = 73
       Width = 769
       Height = 32
+      Cursor = crHandPoint
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -964,6 +964,40 @@ object frmCreateQuiz: TfrmCreateQuiz
             end
           end
         end
+        object pnlButtonCreateCustomQuiz: TPanel
+          Left = 586
+          Top = 20
+          Width = 174
+          Height = 33
+          Cursor = crHandPoint
+          BevelOuter = bvNone
+          TabOrder = 3
+          OnClick = pnlCreateQuizClick
+          object shpButtonCreateCustomQuiz: TShape
+            Left = 0
+            Top = 0
+            Width = 168
+            Height = 33
+            Brush.Color = clBackground
+            Shape = stRoundRect
+            OnMouseDown = shpButtonCreateQuizMouseDown
+          end
+          object lblCreateCustomQuiz: TLabel
+            Left = 47
+            Top = 7
+            Width = 80
+            Height = 20
+            Align = alCustom
+            Alignment = taCenter
+            Caption = 'Create Quiz'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clHighlightText
+            Font.Height = 20
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+        end
       end
       object pnlQuestion: TPanel
         Left = 0
@@ -1131,7 +1165,7 @@ object frmCreateQuiz: TfrmCreateQuiz
           Top = 102
           Width = 753
           Height = 200
-          ActiveCard = crdTextAnswer
+          ActiveCard = crdMultipleChoice
           BevelOuter = bvNone
           TabOrder = 2
           object crdTextAnswer: TCard
@@ -1439,7 +1473,7 @@ object frmCreateQuiz: TfrmCreateQuiz
               Left = 3
               Top = 167
               Width = 28
-              Height = 34
+              Height = 42
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = 20
@@ -1816,10 +1850,20 @@ object frmCreateQuiz: TfrmCreateQuiz
             Shape = stRoundSquare
           end
           object imgNewQuestion: TImage
-            Left = 0
+            Left = -1
             Top = 0
             Width = 40
             Height = 40
+            Center = True
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000300000
+              003008060000005702F987000000834944415478DAEDD3D10980301004515399
+              7666EC4C2BD313528017257B87B310887FF344CB947C451D00401D00401D0040
+              1D00401D101950EDACEDBEB567000000000000000080AC006FC06C6769F7DDCE
+              D1F1023E059CCE80B77BD4F62B40750684FB84BCBB0342FDC400000000000000
+              000003014306403D00EA01500F807AE90117B49038319EC5A42C000000004945
+              4E44AE426082}
+            Stretch = True
           end
           object imgRemoveQuestion: TImage
             Left = 45

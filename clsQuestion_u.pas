@@ -18,7 +18,7 @@ type
 //      function JSONToQuiz(QuizJSON: TJSONObject): string;
     public
     {Constructor, Procedures, Properties}
-      constructor Create(QuizJSON: TJSONObject);
+      constructor Create;
       property QuestionType: string read FQuestionType write FQuestionType;
       property Difficulty: string read FDifficulty write FDifficulty;
       property Question: string read FQuestion write FQuestion;
@@ -30,9 +30,14 @@ type
 
 implementation
 
-constructor TQuestion.Create(QuizJSON: TJSONObject);
+constructor TQuestion.Create;
   begin
-
+    QuestionType := '';
+    Difficulty := '';
+    Category := '';
+    Question := '';
+    Answer := '';
+    Options := TList<string>.Create;
   end;
 
 function TQuestion.JSONToQuiz(QuizJSON: TJSONObject): string;

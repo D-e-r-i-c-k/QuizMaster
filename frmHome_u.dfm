@@ -160,6 +160,7 @@ object frmHome: TfrmHome
           Top = 16
           Width = 174
           Height = 33
+          Cursor = crHandPoint
           BevelOuter = bvNone
           TabOrder = 0
           OnClick = pnlCreateQuizClick
@@ -541,6 +542,7 @@ object frmHome: TfrmHome
         Top = 184
         Width = 355
         Height = 65
+        Cursor = crHandPoint
         BevelOuter = bvNone
         TabOrder = 0
         object shpButtonStartDaily: TShape

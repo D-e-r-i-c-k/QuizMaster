@@ -77,7 +77,7 @@ function TApiQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
                 begin
                   QuestionObj := ResultsArray.Items[i] as TJSONObject;
                   Options := TList<string>.Create;
-                  Q := TQuestion.Create(QuestionObj);
+                  Q := TQuestion.Create;
 
                   Q.QuestionType := DecodeHTML(QuestionObj.GetValue<string>('type'));
                   Q.Difficulty := DecodeHTML(QuestionObj.GetValue<string>('difficulty'));

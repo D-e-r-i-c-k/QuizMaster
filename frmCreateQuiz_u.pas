@@ -9,7 +9,7 @@ uses
 
   GLOBALS_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, clsQuizBoxManager_u, clsApiQuizCaller_u,
 
-  clsCustomQuizQuestionManager_u;
+  clsCustomQuizQuestionManager_u, Vcl.Imaging.pngimage;
 
 type
   TfrmCreateQuiz = class(TForm)
@@ -143,7 +143,9 @@ type
     crdBoolean: TCard;
     lblBooleanAnswerTrue: TLabel;
     lblBooleanAnswerFalse: TLabel;
-    btnCreateQuestion: TButton;
+    pnlButtonCreateCustomQuiz: TPanel;
+    shpButtonCreateCustomQuiz: TShape;
+    lblCreateCustomQuiz: TLabel;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure sbtAPIClick(Sender: TObject);
@@ -157,10 +159,14 @@ type
     procedure memCustomQuizDescriptionEnter(Sender: TObject);
     procedure memCustomQuizDescriptionExit(Sender: TObject);
     procedure btnCreateQuestionClick(Sender: TObject);
+    procedure shpButtonCreateCustomQuizMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
     function CallApiQuiz(Category: string; AmntQuestions: integer): integer;
     function CallAiQuiz(UserPrompt: string; AmntQuestions: integer; Difficulty: string): integer;
+    procedure CustomQuizButtonClick(Sender: TObject);
+    function AddCustomQuiz: integer;
   public
     { Public declarations }
   end;
@@ -184,6 +190,7 @@ procedure TfrmCreateQuiz.FormCreate(Sender: TObject);
 
     imgApiSearch1.Picture.LoadFromFile('icons/imgAPISearch.png');
     imgAiCreate1.Picture.LoadFromFile('icons/imgAICreate.png');
+    imgCustomQuizHeader1.Picture.LoadFromFile('icons/imgUser.png');
 
     sbtAPI.Click;
   end;
@@ -201,6 +208,10 @@ procedure TfrmCreateQuiz.FormShow(Sender: TObject);
     cbxAiDifficultySelector.Items.AddStrings(['Very easy', 'Easy', 'Medium', 'Hard', 'Very hard']);
 
     QuestionManager := TCustomQuestionsManager.Create(pnlCustomQuizCreator, sbxMainScroll);
+    QuestionManager.AddQuestion;
+
+    pnlButtonCreateCustomQuiz.OnClick := CustomQuizButtonClick;
+    lblCreateCustomQuiz.OnClick := CustomQuizButtonClick;
   end;
 
 procedure TfrmCreateQuiz.memCustomQuizDescriptionEnter(Sender: TObject);
@@ -309,7 +320,13 @@ procedure TfrmCreateQuiz.shpButtonCreateAiQuizMouseDown(Sender: TObject;
 procedure TfrmCreateQuiz.shpButtonCreateQuizMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   begin
-    pnlCreateQuiz.OnClick(lblCreateQuiz);
+    pnlButtonCreateCustomQuiz.OnClick(Self);
+  end;
+
+procedure TfrmCreateQuiz.shpButtonCreateCustomQuizMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+  begin
+    pnlCreateAiQuiz.OnClick(lblCreateAiQuiz);
   end;
 
 function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): integer;
@@ -368,5 +385,24 @@ function TfrmCreateQuiz.CallAiQuiz(UserPrompt: string; AmntQuestions: Integer; D
       Result := -1;
       exit;
     end;
+  end;
+
+procedure TfrmCreateQuiz.CustomQuizButtonClick(Sender: TObject);
+  begin
+    AddCustomQuiz
+  end;
+
+function TfrmCreateQuiz.AddCustomQuiz: Integer;
+  var
+    QuizID: integer;
+  begin
+    Screen.Cursor := crHourGlass;
+    Self.Enabled := False;
+    QuizID := QuestionManager.TryAddQuiz;;
+    GLOBALS_u.QuizManager.AddQuiz(QuizID);
+    Screen.Cursor := crDefault;
+    Self.Enabled := True;
+    Self.Close;
+    ShowMessage('Quiz Created!');
   end;
 end.
