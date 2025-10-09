@@ -152,6 +152,10 @@
         <DCCReference Include="GLOBALS_u.pas"/>
         <DCCReference Include="clsAiQuizCaller_u.pas"/>
         <DCCReference Include="clsCustomQuizQuestionManager_u.pas"/>
+        <DCCReference Include="frmAnswerQuiz_u.pas">
+            <Form>frmAnswerQuiz</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -161,6 +161,7 @@ type
     procedure btnCreateQuestionClick(Sender: TObject);
     procedure shpButtonCreateCustomQuizMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     function CallApiQuiz(Category: string; AmntQuestions: integer): integer;
@@ -181,6 +182,11 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmCreateQuiz.FormClose(Sender: TObject; var Action: TCloseAction);
+  begin
+    FreeAndNil(Self)
+  end;
 
 procedure TfrmCreateQuiz.FormCreate(Sender: TObject);
   begin
@@ -404,5 +410,6 @@ function TfrmCreateQuiz.AddCustomQuiz: Integer;
     Self.Enabled := True;
     Self.Close;
     ShowMessage('Quiz Created!');
+    FreeAndNil(Self)
   end;
 end.

@@ -13,7 +13,8 @@ uses
   dbTemp_u in 'dbTemp_u.pas',
   GLOBALS_u in 'GLOBALS_u.pas',
   clsAiQuizCaller_u in 'clsAiQuizCaller_u.pas',
-  clsCustomQuizQuestionManager_u in 'clsCustomQuizQuestionManager_u.pas';
+  clsCustomQuizQuestionManager_u in 'clsCustomQuizQuestionManager_u.pas',
+  frmAnswerQuiz_u in 'frmAnswerQuiz_u.pas' {frmAnswerQuiz};
 
 {$R *.res}
 
@@ -23,5 +24,6 @@ begin
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TfrmHome, frmHome);
   Application.CreateForm(TfrmCreateQuiz, frmCreateQuiz);
+  Application.CreateForm(TfrmAnswerQuiz, frmAnswerQuiz);
   Application.Run;
 end.

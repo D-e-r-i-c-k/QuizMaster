@@ -15,6 +15,7 @@ object frmCreateQuiz: TfrmCreateQuiz
   Position = poMainFormCenter
   Scaled = False
   ScreenSnap = True
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 15
@@ -316,7 +317,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Left = -1
                   Top = -1
                   Width = 172
-                  Height = 33
+                  Height = 34
                   Hint = 'Enter the amount of questions.'
                   Margins.Left = 0
                   Margins.Top = 0
@@ -540,7 +541,7 @@ object frmCreateQuiz: TfrmCreateQuiz
                   Left = -1
                   Top = -1
                   Width = 102
-                  Height = 33
+                  Height = 34
                   Hint = 'Enter the amount of questions.'
                   Margins.Left = 0
                   Margins.Top = 0
