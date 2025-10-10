@@ -156,6 +156,8 @@
             <Form>frmAnswerQuiz</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="clsQuizAnswerManager_u.pas"/>
+        <DCCReference Include="clsAnswer_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

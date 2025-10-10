@@ -3,12 +3,11 @@ unit frmCreateQuiz_u;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.WinXPanels, Vcl.Menus, Vcl.Samples.Spin, System.Generics.Collections,
-
-  GLOBALS_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, clsQuizBoxManager_u, clsApiQuizCaller_u,
-
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.WinXPanels, Vcl.Menus,
+  Vcl.Samples.Spin, System.Generics.Collections, GLOBALS_u, clsAiQuizCaller_u,
+  clsQuestion_u, dbMain_u, clsQuizBoxManager_u, clsApiQuizCaller_u,
   clsCustomQuizQuestionManager_u, Vcl.Imaging.pngimage;
 
 type
@@ -152,15 +151,12 @@ type
     procedure sbtAIClick(Sender: TObject);
     procedure pnlCreateAiQuizClick(Sender: TObject);
     procedure pnlCreateQuizClick(Sender: TObject);
-    procedure shpButtonCreateQuizMouseDown(Sender: TObject;
-      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure shpButtonCreateAiQuizMouseDown(Sender: TObject;
-      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure shpButtonCreateAiQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure memCustomQuizDescriptionEnter(Sender: TObject);
     procedure memCustomQuizDescriptionExit(Sender: TObject);
     procedure btnCreateQuestionClick(Sender: TObject);
-    procedure shpButtonCreateCustomQuizMouseDown(Sender: TObject;
-      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure shpButtonCreateCustomQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
@@ -184,232 +180,210 @@ implementation
 {$R *.dfm}
 
 procedure TfrmCreateQuiz.FormClose(Sender: TObject; var Action: TCloseAction);
-  begin
-    FreeAndNil(Self)
-  end;
+begin
+  FreeAndNil(Self);
+  FreeAndNil(QuestionManager);
+end;
 
 procedure TfrmCreateQuiz.FormCreate(Sender: TObject);
-  begin
-    Cache := GLOBALS_u.Cache;
-    ApiQuizCaller := TApiQuizCaller.Create;
-    AiQuizCaller := TAiQuizCaller.Create;
+begin
+  Cache := GLOBALS_u.Cache;
+  ApiQuizCaller := TApiQuizCaller.Create;
+  AiQuizCaller := TAiQuizCaller.Create;
 
-    imgApiSearch1.Picture.LoadFromFile('icons/imgAPISearch.png');
-    imgAiCreate1.Picture.LoadFromFile('icons/imgAICreate.png');
-    imgCustomQuizHeader1.Picture.LoadFromFile('icons/imgUser.png');
+  imgApiSearch1.Picture.LoadFromFile('icons/imgAPISearch.png');
+  imgAiCreate1.Picture.LoadFromFile('icons/imgAICreate.png');
+  imgCustomQuizHeader1.Picture.LoadFromFile('icons/imgUser.png');
 
-    sbtAPI.Click;
-  end;
+  sbtAPI.Click;
+end;
 
 procedure TfrmCreateQuiz.FormShow(Sender: TObject);
-  var
-    Categories: TList<string>;
-    Category: string;
+var
+  Categories: TList<string>;
+  Category: string;
+begin
+  Categories := Cache.GetAllCategoryNames;
+  for Category in Categories do
   begin
-    Categories := Cache.GetAllCategoryNames;
-    for Category in Categories do
-      begin
-        cbxApiCategories.Items.Add(Category);
-      end;
-    cbxAiDifficultySelector.Items.AddStrings(['Very easy', 'Easy', 'Medium', 'Hard', 'Very hard']);
-
-    QuestionManager := TCustomQuestionsManager.Create(pnlCustomQuizCreator, sbxMainScroll);
-    QuestionManager.AddQuestion;
-
-    pnlButtonCreateCustomQuiz.OnClick := CustomQuizButtonClick;
-    lblCreateCustomQuiz.OnClick := CustomQuizButtonClick;
+    cbxApiCategories.Items.Add(Category);
   end;
+  cbxAiDifficultySelector.Items.AddStrings(['Very easy', 'Easy', 'Medium', 'Hard', 'Very hard']);
+
+  QuestionManager := TCustomQuestionsManager.Create(pnlCustomQuizCreator, sbxMainScroll);
+  QuestionManager.AddQuestion;
+
+  pnlButtonCreateCustomQuiz.OnClick := CustomQuizButtonClick;
+  lblCreateCustomQuiz.OnClick := CustomQuizButtonClick;
+end;
 
 procedure TfrmCreateQuiz.memCustomQuizDescriptionEnter(Sender: TObject);
+begin
+  if memCustomQuizDescription.Lines[0] = 'Describe what the quiz is about' then
   begin
-    if memCustomQuizDescription.Lines[0] = 'Describe what the quiz is about' then
-      begin
-        memCustomQuizDescription.Lines.Clear;
-        memCustomQuizDescription.Font.Color := clWindowText;
-      end;
+    memCustomQuizDescription.Lines.Clear;
+    memCustomQuizDescription.Font.Color := clWindowText;
   end;
+end;
 
 procedure TfrmCreateQuiz.memCustomQuizDescriptionExit(Sender: TObject);
+begin
+  if memCustomQuizDescription.Lines[0].Trim = '' then
   begin
-    if memCustomQuizDescription.Lines[0].Trim = '' then
-      begin
-        memCustomQuizDescription.Lines.Clear;
-        memCustomQuizDescription.Lines[0] := 'Describe what the quiz is about';
-        memCustomQuizDescription.Font.Color := clWindowFrame;
-      end;
+    memCustomQuizDescription.Lines.Clear;
+    memCustomQuizDescription.Lines[0] := 'Describe what the quiz is about';
+    memCustomQuizDescription.Font.Color := clWindowFrame;
   end;
+end;
 
 procedure TfrmCreateQuiz.pnlCreateAiQuizClick(Sender: TObject);
-  var
-    CatID: integer;
-    QuizID: integer;
+var
+  CatID: integer;
+  QuizID: integer;
+begin
+  if edtAiCategories.Text = '' then
   begin
-    if edtAiCategories.Text = '' then
-      begin
-        ShowMessage('Please enter a Category(ies)');
-        edtAiCategories.SetFocus;
-      end
-    else
-      begin
-        CatID := cbxAiDifficultySelector.Items.IndexOf(cbxAiDifficultySelector.Text);
-        if CatID = -1 then
-          begin
-            ShowMessage('No such difficulty as: ' + cbxAiDifficultySelector.Text);
-            cbxAiDifficultySelector.Text := 'Difficulty';
-            cbxAiDifficultySelector.SelectAll;
-          end
-        else
-          begin
-            try
-              Screen.Cursor := crHourGlass;
-              Self.Enabled := False;
-              QuizID := CallAiQuiz(edtAiCategories.Text, speAmntOfAiQuestions.Value, cbxAiDifficultySelector.Text);
-              if QuizID = -1 then
-                raise Exception.Create('Error creating AI Quiz');
-              GLOBALS_u.QuizManager.AddQuiz(QuizID);
-              Screen.Cursor := crDefault;
-              Self.Enabled := True;
-              Self.Close;
-              ShowMessage('Quiz Created!');
-            except
-              Screen.Cursor := crDefault;
-              Self.Enabled := True;
-              Self.Close;
-              ShowMessage('Error Creating AI Quiz.')
-            end;
-          end;
-
-      end;
-  end;
-
-procedure TfrmCreateQuiz.pnlCreateQuizClick(Sender: TObject);
-  var
-    CatID: integer;
-    QuizID: integer;
+    ShowMessage('Please enter a Category(ies)');
+    edtAiCategories.SetFocus;
+  end
+  else
   begin
-    CatID := cbxApiCategories.Items.IndexOf(cbxApiCategories.Text);
+    CatID := cbxAiDifficultySelector.Items.IndexOf(cbxAiDifficultySelector.Text);
     if CatID = -1 then
-      begin
-        ShowMessage('No such category as: ' + cbxApiCategories.Text);
-        cbxApiCategories.Text := 'Categories';
-        cbxApiCategories.SelectAll;
-      end
+    begin
+      ShowMessage('No such difficulty as: ' + cbxAiDifficultySelector.Text);
+      cbxAiDifficultySelector.Text := 'Difficulty';
+      cbxAiDifficultySelector.SelectAll;
+    end
     else
-      begin
+    begin
+      try
         Screen.Cursor := crHourGlass;
         Self.Enabled := False;
-        QuizID := CallApiQuiz(cbxApiCategories.Text, speAmntOfApiQuestions.Value);
+        QuizID := CallAiQuiz(edtAiCategories.Text, speAmntOfAiQuestions.Value, cbxAiDifficultySelector.Text);
+        if QuizID = -1 then
+          raise Exception.Create('Error creating AI Quiz');
         GLOBALS_u.QuizManager.AddQuiz(QuizID);
         Screen.Cursor := crDefault;
         Self.Enabled := True;
         Self.Close;
         ShowMessage('Quiz Created!');
-      end
-  end;
-
-procedure TfrmCreateQuiz.sbtAIClick(Sender: TObject);
-  begin
-    cpnAPI.ActiveCard := crdAiQuizCreator;
-  end;
-
-procedure TfrmCreateQuiz.sbtAPIClick(Sender: TObject);
-  begin
-    cpnAPI.ActiveCard := crdApiSearch;
-  end;
-
-procedure TfrmCreateQuiz.shpButtonCreateAiQuizMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-  begin
-    pnlCreateAiQuiz.OnClick(lblCreateAiQuiz);
-  end;
-
-procedure TfrmCreateQuiz.shpButtonCreateQuizMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-  begin
-    pnlButtonCreateCustomQuiz.OnClick(Self);
-  end;
-
-procedure TfrmCreateQuiz.shpButtonCreateCustomQuizMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-  begin
-    pnlCreateAiQuiz.OnClick(lblCreateAiQuiz);
-  end;
-
-function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): integer;
-  var
-    CatID: integer;
-    Questions: integer;
-    Quiz: TList<TQuestion>;
-  begin
-    CatID := GLOBALS_u.Cache.GetCategoryID(Category);
-    Questions := AmntQuestions;
-
-    try
-      Quiz := ApiQuizCaller.GetQuiz(CatID, Questions);
-    finally
-      Result := dmDatabase.AddQuiz(
-        'API Quiz: ' + Category,
-        'Testing the API Calling',
-        'Testing',
-        'User',
-        'Test Quiz',
-        Quiz
-      )
+      except
+        Screen.Cursor := crDefault;
+        Self.Enabled := True;
+        Self.Close;
+        ShowMessage('Error Creating AI Quiz.')
+      end;
     end;
-  end;
 
-procedure TfrmCreateQuiz.btnCreateQuestionClick(Sender: TObject);
+  end;
+end;
+
+procedure TfrmCreateQuiz.pnlCreateQuizClick(Sender: TObject);
+var
+  CatID: integer;
+  QuizID: integer;
+begin
+  CatID := cbxApiCategories.Items.IndexOf(cbxApiCategories.Text);
+  if CatID = -1 then
   begin
-    QuestionManager.AddQuestion;
-  end;
-
-function TfrmCreateQuiz.CallAiQuiz(UserPrompt: string; AmntQuestions: Integer; Difficulty: string): Integer;
-  var
-    FullPrompt: string;
-    Quiz: TList<TQuestion>;
-  begin
-    FullPrompt := 'Create a quiz on: '
-                  + UserPrompt
-                  + ', with '
-                  + IntToStr(AmntQuestions)
-                  + ' questions.'
-                  + 'Make the quiz difficulty '
-                  + Difficulty
-                  + '.';
-    try
-      Quiz := AiQuizCaller.GetQuiz(FullPrompt);
-      Result := dmDatabase.AddQuiz(
-        'AI Quiz: ' + UserPrompt,
-        'Testing the AI quiz creation',
-        'Testing',
-        'AI',
-        'Test Quiz',
-        Quiz
-      )
-    except
-      ShowMessage('Failed to call AI Quiz. Please try again later.');
-      Result := -1;
-      exit;
-    end;
-  end;
-
-procedure TfrmCreateQuiz.CustomQuizButtonClick(Sender: TObject);
-  begin
-    AddCustomQuiz
-  end;
-
-function TfrmCreateQuiz.AddCustomQuiz: Integer;
-  var
-    QuizID: integer;
+    ShowMessage('No such category as: ' + cbxApiCategories.Text);
+    cbxApiCategories.Text := 'Categories';
+    cbxApiCategories.SelectAll;
+  end
+  else
   begin
     Screen.Cursor := crHourGlass;
     Self.Enabled := False;
-    QuizID := QuestionManager.TryAddQuiz;;
+    QuizID := CallApiQuiz(cbxApiCategories.Text, speAmntOfApiQuestions.Value);
     GLOBALS_u.QuizManager.AddQuiz(QuizID);
     Screen.Cursor := crDefault;
     Self.Enabled := True;
     Self.Close;
     ShowMessage('Quiz Created!');
-    FreeAndNil(Self)
+  end
+end;
+
+procedure TfrmCreateQuiz.sbtAIClick(Sender: TObject);
+begin
+  cpnAPI.ActiveCard := crdAiQuizCreator;
+end;
+
+procedure TfrmCreateQuiz.sbtAPIClick(Sender: TObject);
+begin
+  cpnAPI.ActiveCard := crdApiSearch;
+end;
+
+procedure TfrmCreateQuiz.shpButtonCreateAiQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  pnlCreateAiQuiz.OnClick(lblCreateAiQuiz);
+end;
+
+procedure TfrmCreateQuiz.shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  pnlButtonCreateCustomQuiz.OnClick(Self);
+end;
+
+procedure TfrmCreateQuiz.shpButtonCreateCustomQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  pnlCreateAiQuiz.OnClick(lblCreateAiQuiz);
+end;
+
+function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): integer;
+var
+  CatID: integer;
+  Questions: integer;
+  Quiz: TList<TQuestion>;
+begin
+  CatID := GLOBALS_u.Cache.GetCategoryID(Category);
+  Questions := AmntQuestions;
+
+  try
+    Quiz := ApiQuizCaller.GetQuiz(CatID, Questions);
+  finally
+    Result := dmDatabase.AddQuiz('API Quiz: ' + Category, 'Testing the API Calling', 'Testing', 'API', 'User', Quiz)
   end;
+end;
+
+procedure TfrmCreateQuiz.btnCreateQuestionClick(Sender: TObject);
+begin
+  QuestionManager.AddQuestion;
+end;
+
+function TfrmCreateQuiz.CallAiQuiz(UserPrompt: string; AmntQuestions: Integer; Difficulty: string): Integer;
+var
+  FullPrompt: string;
+  Quiz: TList<TQuestion>;
+begin
+  FullPrompt := 'Create a quiz on: ' + UserPrompt + ', with ' + IntToStr(AmntQuestions) + ' questions.' + 'Make the quiz difficulty ' + Difficulty + '.';
+  try
+    Quiz := AiQuizCaller.GetQuiz(FullPrompt);
+    Result := dmDatabase.AddQuiz('AI Quiz: ' + UserPrompt, 'Testing the AI quiz creation', 'Testing', 'AI', 'AI', Quiz)
+  except
+    ShowMessage('Failed to call AI Quiz. Please try again later.');
+    Result := -1;
+    exit;
+  end;
+end;
+
+procedure TfrmCreateQuiz.CustomQuizButtonClick(Sender: TObject);
+begin
+  AddCustomQuiz
+end;
+
+function TfrmCreateQuiz.AddCustomQuiz: Integer;
+var
+  QuizID: integer;
+begin
+  Screen.Cursor := crHourGlass;
+  Self.Enabled := False;
+  QuizID := QuestionManager.TryAddQuiz;
+  GLOBALS_u.QuizManager.AddQuiz(QuizID);
+  Screen.Cursor := crDefault;
+  Self.Enabled := True;
+  Self.Close;
+  ShowMessage('Quiz Created!');
+end;
+
 end.
+

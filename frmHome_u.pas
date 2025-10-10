@@ -3,12 +3,12 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.Buttons, Vcl.WinXPanels, System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
-
-  clsQuizBoxManager_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u, frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u,
-  frmAnswerQuiz_u;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, Vcl.WinXPanels,
+  System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
+  clsQuizBoxManager_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u,
+  frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u, frmAnswerQuiz_u;
 
 type
   TfrmHome = class(TForm)
@@ -83,14 +83,11 @@ type
     Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure lblButtonStartDailyClick(Sender: TObject);
-    procedure shpButtonStartDailyMouseDown(Sender: TObject;
-      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure shpButtonStartDailyMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure pnlCreateQuizClick(Sender: TObject);
-    procedure shpButtonCreateQuizMouseDown(Sender: TObject;
-    Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormDestroy(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
   private
   {private variables}
   public
@@ -115,84 +112,76 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmHome.Button1Click(Sender: TObject);
-  begin
-    frmAnswerQuiz.Show;
-  end;
-
 procedure TfrmHome.FormCreate(Sender: TObject);
-  begin
+begin
   // Image Loading:
     // Stats
-    imgStat1.Picture.LoadFromFile('icons/imgStat1.png');
-    imgStat2.Picture.LoadFromFile('icons/imgStat2.png');
-    imgStat3.Picture.LoadFromFile('icons/imgStat3.png');
-    imgStat4.Picture.LoadFromFile('icons/imgStat4.png');
+  imgStat1.Picture.LoadFromFile('icons/imgStat1.png');
+  imgStat2.Picture.LoadFromFile('icons/imgStat2.png');
+  imgStat3.Picture.LoadFromFile('icons/imgStat3.png');
+  imgStat4.Picture.LoadFromFile('icons/imgStat4.png');
     // Daily Quiz
-    imgDaily1.Picture.LoadFromFile('icons/imgDaily1.png');
-    imgDaily2.Picture.LoadFromFile('icons/imgDaily2.png');
-    imgDaily3.Picture.LoadFromFile('icons/imgDaily3.png');
+  imgDaily1.Picture.LoadFromFile('icons/imgDaily1.png');
+  imgDaily2.Picture.LoadFromFile('icons/imgDaily2.png');
+  imgDaily3.Picture.LoadFromFile('icons/imgDaily3.png');
     // My Quizzes
-    imgMyQuizzes1.Picture.LoadFromFile('icons/imgMyQuizzes1.png');
-    imgMyQuizzesSearch.Picture.LoadFromFile('icons/imgSearch.png');
+  imgMyQuizzes1.Picture.LoadFromFile('icons/imgMyQuizzes1.png');
+  imgMyQuizzesSearch.Picture.LoadFromFile('icons/imgSearch.png');
 
   // Variable Initializing:
     // Stats:
-    intQuizAmt := 0;
+  intQuizAmt := 0;
     // My Quizzes
-    intMyQuizzesLeft := 0;
-    intMyQuizzesTop := 0;
-    intMyQuizzesCardCount := 0;
+  intMyQuizzesLeft := 0;
+  intMyQuizzesTop := 0;
+  intMyQuizzesCardCount := 0;
     // MyQuizzes list:
-    lstMyQuizzes := TObjectList<TPanel>.Create(False);
+  lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
-    GLOBALS_u.QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbxMyQuizzes);
-    GLOBALS_u.Cache := TdmCache.Create;
+  GLOBALS_u.QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbxMyQuizzes);
+  GLOBALS_u.Cache := TdmCache.Create;
 
-    GLOBALS_u.Cache.CacheAllCategories;
-  end;
+  GLOBALS_u.Cache.CacheAllCategories;
+end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);
-  begin
-    lstMyQuizzes.Free;
-  end;
+begin
+  lstMyQuizzes.Free;
+end;
 
 procedure TfrmHome.FormShow(Sender: TObject);
-  begin
+begin
   //Dynamic Text Loading:
     // Daily Quiz
-    lblDailyDate.Caption := 'Daily Quiz - ' + FormatDateTime('yyyy-mm-dd', Date());
-    lblDailyTopic.Caption := 'Topic: Literature';
-    lblDailyStreak.Caption := 'Current Streak: 0';
-    lblDailyAmntQuestions.Caption := '3 Questions';
+  lblDailyDate.Caption := 'Daily Quiz - ' + FormatDateTime('yyyy-mm-dd', Date());
+  lblDailyTopic.Caption := 'Topic: Literature';
+  lblDailyStreak.Caption := 'Current Streak: 0';
+  lblDailyAmntQuestions.Caption := '3 Questions';
 
   //Load all saved Quizzes from DB
-    GLOBALS_u.QuizManager.LoadAllQuizzes;
-  end;
+  GLOBALS_u.QuizManager.LoadAllQuizzes;
+end;
 
 procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
-  begin
-    ShowMessage('Clicked') ;
-  end;
+begin
+  ShowMessage('Clicked');
+end;
 
 procedure TfrmHome.pnlCreateQuizClick(Sender: TObject);
-  begin
-    CreateQuizForm := TfrmCreateQuiz.Create(Application);
-    CreateQuizForm.Show;
-  end;
+begin
+  CreateQuizForm := TfrmCreateQuiz.Create(Application);
+  CreateQuizForm.Show;
+end;
 
-procedure TfrmHome.shpButtonStartDailyMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-  begin
-    lblButtonStartDaily.OnClick(lblButtonStartDaily);
-  end;
+procedure TfrmHome.shpButtonStartDailyMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  lblButtonStartDaily.OnClick(lblButtonStartDaily);
+end;
 
-procedure TfrmHome.shpButtonCreateQuizMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-  begin
-    pnlCreateQuiz.OnClick(lblCreateQuiz);
-  end;
+procedure TfrmHome.shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  pnlCreateQuiz.OnClick(lblCreateQuiz);
+end;
 
 end.
-
 

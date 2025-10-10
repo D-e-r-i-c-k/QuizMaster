@@ -13,6 +13,8 @@ object frmAnswerQuiz: TfrmAnswerQuiz
   Font.Style = []
   Position = poMainFormCenter
   ShowInTaskBar = True
+  OnClose = FormClose
+  OnShow = FormShow
   TextHeight = 15
   object lblAnswerQuizTile: TLabel
     Left = 8
@@ -56,688 +58,23 @@ object frmAnswerQuiz: TfrmAnswerQuiz
       Margins.Bottom = 4
       Shape = stRoundRect
     end
-    object cplQuestionTypeOptions: TCardPanel
-      Left = 9
-      Top = 88
-      Width = 753
-      Height = 201
-      ActiveCard = crdMultipleChoice1
-      BevelOuter = bvNone
-      TabOrder = 0
-      object crdTextAnswer1: TCard
-        Left = 0
-        Top = 0
-        Width = 753
-        Height = 201
-        Caption = 'Text Answer'
-        CardIndex = 0
-        TabOrder = 0
-        ExplicitHeight = 200
-        object lblTextAnswerAnswer: TLabel
-          Left = 1
-          Top = 95
-          Width = 66
-          Height = 25
-          Caption = 'Answer'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clDefault
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblTextAnswerQuestion: TLabel
-          Left = 1
-          Top = -4
-          Width = 80
-          Height = 25
-          Caption = 'Question'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clDefault
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object pnlTextAnswerQuestionInput: TPanel
-          Left = 0
-          Top = 21
-          Width = 751
-          Height = 75
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 0
-          object shpTextAnswerQuestionBG: TShape
-            Left = 0
-            Top = 0
-            Width = 751
-            Height = 74
-            Shape = stRoundRect
-          end
-          object pnlTextAnswerQuestionInputRemoveBorder: TPanel
-            Left = 6
-            Top = 6
-            Width = 741
-            Height = 61
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object memTextAnswerQuestionInput: TMemo
-              Left = -1
-              Top = -1
-              Width = 743
-              Height = 66
-              Hint = 'Give a description of the your quiz'
-              TabStop = False
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowFrame
-              Font.Height = 18
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              Lines.Strings = (
-                'Question Text')
-              ParentFont = False
-              TabOrder = 0
-            end
-          end
-        end
-        object pnlTextAnswerAnswerInput: TPanel
-          Left = 0
-          Top = 121
-          Width = 751
-          Height = 75
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 1
-          object shpTextAnswerAnswerInputBG: TShape
-            Left = 0
-            Top = 0
-            Width = 751
-            Height = 74
-            Shape = stRoundRect
-          end
-          object pnlTextAnswerAnswerInputRemoveBorder: TPanel
-            Left = 6
-            Top = 6
-            Width = 741
-            Height = 61
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object memTextAnswerAnswer: TMemo
-              Left = -1
-              Top = -1
-              Width = 743
-              Height = 66
-              Hint = 'Give a description of the your quiz'
-              TabStop = False
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowFrame
-              Font.Height = 18
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              Lines.Strings = (
-                'Answer Text')
-              ParentFont = False
-              TabOrder = 0
-            end
-          end
-        end
-      end
-      object crdMultipleChoice1: TCard
-        Left = 0
-        Top = 0
-        Width = 753
-        Height = 201
-        Caption = 'Multiple Choice'
-        CardIndex = 1
-        TabOrder = 1
-        ExplicitHeight = 200
-        object lblMultipleChoiceQuestion: TLabel
-          Left = 1
-          Top = -4
-          Width = 80
-          Height = 25
-          Caption = 'Question'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clDefault
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblMultipleChoiceAnswer: TLabel
-          Left = 1
-          Top = 95
-          Width = 66
-          Height = 25
-          Caption = 'Answer'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clDefault
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object pnlMultipleChoiceQuestionInput: TPanel
-          Left = 0
-          Top = 21
-          Width = 751
-          Height = 75
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 0
-          object shpMultipleChoiceQuestionInputBG: TShape
-            Left = 0
-            Top = 0
-            Width = 751
-            Height = 74
-            Shape = stRoundRect
-          end
-          object pnlMultipleChoiceQuestionInputRemoveBorder: TPanel
-            Left = 6
-            Top = 6
-            Width = 741
-            Height = 61
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object memMultipleChoiceQuestionInput: TMemo
-              Left = -1
-              Top = -1
-              Width = 743
-              Height = 66
-              Hint = 'Give a description of the your quiz'
-              TabStop = False
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowFrame
-              Font.Height = 18
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              Lines.Strings = (
-                'Question Text')
-              ParentFont = False
-              TabOrder = 0
-            end
-          end
-        end
-        object rbtMultipleChoiceAnswer1: TRadioButton
-          Tag = 1
-          Left = 3
-          Top = 120
-          Width = 28
-          Height = 34
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = 20
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 1
-        end
-        object pnlMultipleChoiceAnswer1: TPanel
-          Left = 20
-          Top = 120
-          Width = 244
-          Height = 34
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 2
-          object shpMultipleChoiceAnswer1BG: TShape
-            Left = 0
-            Top = 0
-            Width = 244
-            Height = 33
-            Shape = stRoundRect
-          end
-          object pnlMultipleChoiceAnswer1RemoveBorder: TPanel
-            Left = 3
-            Top = 3
-            Width = 238
-            Height = 28
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object edtMultipleChoiceAnswer1: TEdit
-              Left = -1
-              Top = -1
-              Width = 240
-              Height = 31
-              Hint = 'Enter the first possible answer or leave blank for no option.'
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
-              TabStop = False
-              BevelEdges = []
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = 24
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-              TextHint = 'Option 1'
-              StyleElements = [seFont, seClient]
-            end
-          end
-        end
-        object rbtMultipleChoiceAnswer2: TRadioButton
-          Tag = 2
-          Left = 3
-          Top = 167
-          Width = 28
-          Height = 42
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = 20
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 4
-        end
-        object pnlMultipleChoiceAnswer2: TPanel
-          Left = 20
-          Top = 167
-          Width = 244
-          Height = 34
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 3
-          object shpMultipleChoiceAnswer2BG: TShape
-            Left = 0
-            Top = 0
-            Width = 244
-            Height = 33
-            Shape = stRoundRect
-          end
-          object pnlMultipleChoiceAnswer2RemoveBorder: TPanel
-            Left = 3
-            Top = 3
-            Width = 238
-            Height = 28
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object edtMultipleChoiceAnswer2: TEdit
-              Left = -1
-              Top = -1
-              Width = 240
-              Height = 31
-              Hint = 'Enter the second possible answer or leave blank for no option.'
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
-              TabStop = False
-              BevelEdges = []
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = 24
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-              TextHint = 'Option 2'
-              StyleElements = [seFont, seClient]
-            end
-          end
-        end
-        object rbtMultipleChoiceAnswer3: TRadioButton
-          Tag = 3
-          Left = 395
-          Top = 120
-          Width = 28
-          Height = 34
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = 20
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 7
-        end
-        object rbtMultipleChoiceAnswer4: TRadioButton
-          Tag = 4
-          Left = 395
-          Top = 167
-          Width = 28
-          Height = 34
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = 20
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 8
-        end
-        object pnlMultipleChoiceAnswer4: TPanel
-          Left = 412
-          Top = 167
-          Width = 244
-          Height = 34
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 6
-          object shpMultipleChoiceAnswer4BG: TShape
-            Left = 0
-            Top = 0
-            Width = 244
-            Height = 33
-            Shape = stRoundRect
-          end
-          object pnlMultipleChoiceAnswer4RemoveBorder: TPanel
-            Left = 3
-            Top = 3
-            Width = 238
-            Height = 28
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object edtMultipleChoiceAnswer4: TEdit
-              Left = -1
-              Top = -1
-              Width = 240
-              Height = 31
-              Hint = 'Enter the fourth possible answer or leave blank for no option.'
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
-              TabStop = False
-              BevelEdges = []
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = 24
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-              TextHint = 'Option 4'
-              StyleElements = [seFont, seClient]
-            end
-          end
-        end
-        object pnlMultipleChoiceAnswer3: TPanel
-          Left = 412
-          Top = 120
-          Width = 244
-          Height = 34
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 5
-          object shpMultipleChoiceAnswer3BG: TShape
-            Left = 0
-            Top = 0
-            Width = 244
-            Height = 33
-            Shape = stRoundRect
-          end
-          object pnlMultipleChoiceAnswer3RemoveBorder: TPanel
-            Left = 3
-            Top = 3
-            Width = 238
-            Height = 28
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object edt: TEdit
-              Left = -1
-              Top = -1
-              Width = 240
-              Height = 31
-              Hint = 'Enter the third possible answer or leave blank for no option.'
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
-              TabStop = False
-              BevelEdges = []
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = 24
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-              TextHint = 'Option 3'
-              StyleElements = [seFont, seClient]
-            end
-          end
-        end
-      end
-      object crdBoolean1: TCard
-        Left = 0
-        Top = 0
-        Width = 753
-        Height = 201
-        Caption = 'Boolean'
-        CardIndex = 2
-        TabOrder = 2
-        ExplicitHeight = 200
-        object lblBooleanQuestion: TLabel
-          Left = 1
-          Top = -4
-          Width = 80
-          Height = 25
-          Caption = 'Question'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clDefault
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblBooleanAnswer: TLabel
-          Left = 1
-          Top = 95
-          Width = 66
-          Height = 25
-          Caption = 'Answer'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clDefault
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblBooleanAnswerTrue: TLabel
-          Left = 23
-          Top = 125
-          Width = 30
-          Height = 21
-          Caption = 'True'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-        end
-        object lblBooleanAnswerFalse: TLabel
-          Left = 23
-          Top = 165
-          Width = 34
-          Height = 21
-          Caption = 'False'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-        end
-        object pnlBooleanQuestionInput: TPanel
-          Left = 0
-          Top = 21
-          Width = 751
-          Height = 75
-          Hint = 'Select a category.'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          BevelOuter = bvNone
-          TabOrder = 0
-          object shpBooleanQuesionInputBG: TShape
-            Left = 0
-            Top = 0
-            Width = 751
-            Height = 74
-            Shape = stRoundRect
-          end
-          object pnlBooleanQuesionInputRemoveBorder: TPanel
-            Left = 6
-            Top = 6
-            Width = 741
-            Height = 61
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            BevelOuter = bvNone
-            TabOrder = 0
-            object memBooleanQuestionInput: TMemo
-              Left = -1
-              Top = -1
-              Width = 743
-              Height = 66
-              Hint = 'Give a description of the your quiz'
-              TabStop = False
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowFrame
-              Font.Height = 18
-              Font.Name = 'Segoe UI'
-              Font.Style = []
-              Lines.Strings = (
-                'Question Text')
-              ParentFont = False
-              TabOrder = 0
-            end
-          end
-        end
-        object rbtBooleanAnswerTrue: TRadioButton
-          Tag = 1
-          Left = 3
-          Top = 120
-          Width = 20
-          Height = 34
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = 20
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 1
-        end
-        object rbtBooleanFalse1: TRadioButton
-          Tag = 2
-          Left = 3
-          Top = 160
-          Width = 20
-          Height = 34
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = 20
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 2
-        end
-      end
-    end
     object cplQuestions: TCardPanel
       Left = 0
       Top = 0
       Width = 769
       Height = 325
-      ActiveCard = crdQuestion1
+      ActiveCard = crdQuestion
       BevelOuter = bvNone
       Caption = 'cplQuestions'
-      TabOrder = 1
-      object crdQuestion1: TCard
+      TabOrder = 0
+      object crdQuestion: TCard
         Left = 0
         Top = 0
         Width = 769
         Height = 325
-        Caption = 'crdQuestion1'
+        Caption = 'crdQuestion'
         CardIndex = 0
         TabOrder = 0
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object lblQuestionNumber: TLabel
           Left = 12
           Top = 8
@@ -754,9 +91,11 @@ object frmAnswerQuiz: TfrmAnswerQuiz
         object lblQuestionText: TLabel
           Left = 12
           Top = 88
-          Width = 239
+          Width = 703
           Height = 25
-          Caption = 'What is the capital of France'
+          Caption = 
+            'What is the capital of France lkjlkjlkj slkdjf lskdjf llkajd als' +
+            'dkfj alsdjfalkjd l ajlofejlkjds'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clDefault
           Font.Height = 26
@@ -788,8 +127,6 @@ object frmAnswerQuiz: TfrmAnswerQuiz
               Caption = 'Text'
               CardIndex = 0
               TabOrder = 0
-              ExplicitWidth = 185
-              ExplicitHeight = 41
               object pnlTextAnswer: TPanel
                 Left = -1
                 Top = 0
@@ -850,8 +187,6 @@ object frmAnswerQuiz: TfrmAnswerQuiz
               Caption = 'crdBoolean'
               CardIndex = 1
               TabOrder = 1
-              ExplicitWidth = 185
-              ExplicitHeight = 41
               object shpBooleanAnswerBG: TShape
                 Left = 2
                 Top = 0
@@ -922,7 +257,6 @@ object frmAnswerQuiz: TfrmAnswerQuiz
               Caption = 'crdMultipleChoice'
               CardIndex = 2
               TabOrder = 2
-              ExplicitLeft = 2
               object lblMultipleChoiceAnswer1: TLabel
                 Left = 45
                 Top = 28
@@ -1082,6 +416,7 @@ object frmAnswerQuiz: TfrmAnswerQuiz
       Height = 33
       Brush.Color = clBackground
       Shape = stRoundRect
+      OnMouseDown = shpNextQuestionBGMouseDown
     end
     object lblNextQuestion: TLabel
       Left = 37
@@ -1097,6 +432,7 @@ object frmAnswerQuiz: TfrmAnswerQuiz
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
+      OnClick = lblNextQuestionClick
     end
   end
   object pnlPrevQuestion: TPanel
@@ -1113,6 +449,7 @@ object frmAnswerQuiz: TfrmAnswerQuiz
       Width = 168
       Height = 33
       Shape = stRoundRect
+      OnMouseDown = shpPrevQuestionBGMouseDown
     end
     object lblPrevQuestion: TLabel
       Left = 24
@@ -1130,6 +467,7 @@ object frmAnswerQuiz: TfrmAnswerQuiz
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+      OnClick = lblPrevQuestionClick
     end
   end
 end

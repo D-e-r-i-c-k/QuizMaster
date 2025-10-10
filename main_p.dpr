@@ -14,7 +14,9 @@ uses
   GLOBALS_u in 'GLOBALS_u.pas',
   clsAiQuizCaller_u in 'clsAiQuizCaller_u.pas',
   clsCustomQuizQuestionManager_u in 'clsCustomQuizQuestionManager_u.pas',
-  frmAnswerQuiz_u in 'frmAnswerQuiz_u.pas' {frmAnswerQuiz};
+  frmAnswerQuiz_u in 'frmAnswerQuiz_u.pas' {frmAnswerQuiz},
+  clsQuizAnswerManager_u in 'clsQuizAnswerManager_u.pas',
+  clsAnswer_u in 'clsAnswer_u.pas';
 
 {$R *.res}
 

@@ -22,6 +22,7 @@ type
     {Constructor, Procedures, and Properties}
       constructor Create;
       function GetQuiz(UserPrompt: string): TList<TQuestion>;
+      function MarkQuestion(Question: string; UserAnswer: string; ExpectedAnswer: string; Model: string): Boolean;
   end;
 
 implementation
@@ -38,7 +39,7 @@ function TAiQuizCaller.Call(UserPrompt: string; Model: string): TJSONObject;
   + 'Each question must have the following structure: '
   + '{ '
   + '"category": "Subject Area", '
-  + '"type": "multiple" | "boolean" | "userans", '
+  + '"type": "multiple" | "boolean" | "text", '
   + '"difficulty": "easy" | "medium" | "hard", '
   + '"question": "The full question text, written in a formal academic style.", '
   + '"correct_answer": "The correct answer", '
@@ -47,11 +48,11 @@ function TAiQuizCaller.Call(UserPrompt: string; Model: string): TJSONObject;
   + 'Rules for question types: '
   + '"multiple" = multiple choice. '
   + '"boolean" = True/False. '
-  + '"userans" = open-ended written response. For these, "incorrect_answers" must be an empty list. '
+  + '"text" = open-ended written response. For these, "incorrect_answers" must be an empty list. '
   + 'All questions must read like real academic test questions. '
   + 'Distractors must be plausible but clearly wrong. '
   + 'Difficulty must reflect real exam standards. '
-  + 'The quiz must mix multiple, boolean, and userans types. '
+  + 'The quiz must mix multiple, boolean, and text types. '
   + 'If long answers are expected, make the correct answer field "up for AI to mark". '
   + 'Make the test of the formal exam standard. '
   + 'Here is an example structure: '
@@ -80,7 +81,7 @@ function TAiQuizCaller.Call(UserPrompt: string; Model: string): TJSONObject;
   + '}, '
   + '{ '
   + '"category": "Mathematics", '
-  + '"type": "userans", '
+  + '"type": "text", '
   + '"difficulty": "hard", '
   + '"question": "Differentiate the function f(x) = 3x^3 - 5x^2 + 2x - 7.", '
   + '"correct_answer": "f''(x) = 9x^2 - 10x + 2", '
@@ -263,14 +264,12 @@ function TAiQuizCaller.GetQuiz(UserPrompt: string): TList<TQuestion>;
     Quiz: TList<TQuestion>;
   begin
     try
-      ShowMessage('Trying to get quiz with Grok 4 fast...');
-      QuizJSON := Call(UserPrompt, 'x-ai/grok-4-fast:free');
-      ShowMessage(QuizJSON.ToString);
+      ShowMessage('Trying to get quiz with Deepseek...' + sLineBreak + 'This can take a while, please click "okay" and be patient and don''t do anything while the cursor is loading.');
+      QuizJSON := Call(UserPrompt, 'deepseek/deepseek-chat-v3.1:free');
     except
       try
-        ShowMessage('Grok failed, trying Deepseek...');
-        QuizJSON := Call(UserPrompt, 'deepseek/deepseek-chat-v3.1:free');
-        ShowMessage(QuizJSON.ToString);
+        ShowMessage('Deepseek failed, trying Chimera...' +  sLineBreak + 'This can take a while, please click "okay" and be patient and don''t do anything while the cursor is loading.');
+        QuizJSON := Call(UserPrompt, 'tngtech/deepseek-r1t2-chimera:free');
       except
         ShowMessage('AI generation failed, please try again later.');
         ShowMessage(QuizJSON.ToString);
@@ -280,7 +279,6 @@ function TAiQuizCaller.GetQuiz(UserPrompt: string): TList<TQuestion>;
 
     try
       ShowMessage('Quiz Created... Parsing Quiz...');
-      ShowMessage(QuizJSON.ToString);
       Quiz := JSONToQuiz(QuizJSON);
       Result := Quiz;
     except
@@ -288,4 +286,93 @@ function TAiQuizCaller.GetQuiz(UserPrompt: string): TList<TQuestion>;
       Result := nil;
     end;
   end;
+
+function TAiQuizCaller.MarkQuestion(Question: string; UserAnswer: string; ExpectedAnswer: string; Model: string): Boolean;
+const
+  CPrompt =
+    'You are a quiz marker, marking a question where the user gives you the question, ' +
+    'the user answer, and the expected answer as on the memo. ' +
+    'Mark rationally, but strictly. If you are unsure of the topic, do research to make sure you understand the context. ' +
+    'Do not mark wrong answers as correct, but give the user the benefit of the doubt if the answer is more than 80% correct. ' +
+    'Return a single string "True" if the answer is correct, and "False" if the answer is wrong.';
+var
+  IdHTTP: TIdHTTP;
+  SSL: TIdSSLIOHandlerSocketOpenSSL;
+  ReqJSON, MsgSystem, MsgUser, RespJSON: TJSONObject;
+  MsgArray: TJSONArray;
+  RespText, ResultStr, UserPrompt: string;
+  RequestStream: TStringStream;
+  APIKey: string;
+begin
+  Result := False;
+  IdHTTP := TIdHTTP.Create(nil);
+  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+  ReqJSON := TJSONObject.Create;
+  MsgArray := TJSONArray.Create;
+  RespJSON := nil;
+
+  APIKey := GetEnvironmentVariable('OPEN_ROUTER_KEY');
+  if APIKey = '' then
+    begin
+      raise Exception.Create('OPEN_ROUTER_KEY environment variable is not set.');
+    end;
+
+  try
+    // === Build user prompt ===
+    UserPrompt :=
+      'Question: ' + Question + sLineBreak +
+      'Expected Answer: ' + ExpectedAnswer + sLineBreak +
+      'User Answer: ' + UserAnswer;
+
+    // === Build JSON payload ===
+    MsgSystem := TJSONObject.Create;
+    MsgSystem.AddPair('role', 'system');
+    MsgSystem.AddPair('content', CPrompt);
+    MsgArray.AddElement(MsgSystem);
+
+    MsgUser := TJSONObject.Create;
+    MsgUser.AddPair('role', 'user');
+    MsgUser.AddPair('content', UserPrompt);
+    MsgArray.AddElement(MsgUser);
+
+    ReqJSON.AddPair('model', Model);
+    ReqJSON.AddPair('messages', MsgArray);
+
+    // === HTTP setup ===
+    IdHTTP.IOHandler := SSL;
+    IdHTTP.Request.ContentType := 'application/json';
+    IdHTTP.Request.Accept := 'application/json';
+    IdHTTP.Request.CustomHeaders.Values['Authorization'] := 'Bearer ' + '<YOUR_API_KEY>';
+
+    RequestStream := TStringStream.Create(ReqJSON.ToJSON, TEncoding.UTF8);
+
+    // === POST request ===
+    RespText := IdHTTP.Post('https://openrouter.ai/api/v1/chat/completions', RequestStream);
+
+    // === Parse response ===
+    RespJSON := TJSONObject.ParseJSONValue(RespText) as TJSONObject;
+    if Assigned(RespJSON) then
+    begin
+      // Try to extract the model’s reply
+      if RespJSON.TryGetValue<string>('choices[0].message.content', ResultStr) then
+        Result := SameText(Trim(ResultStr), 'True')
+      else
+      begin
+        ResultStr := LowerCase(RespJSON.ToJSON);
+        Result := Pos('true', ResultStr) > 0;
+      end;
+    end;
+  except
+    on E: Exception do
+      Writeln('Error marking question: ' + E.Message);
+  end;
+
+  // === Cleanup ===
+  RespJSON.Free;
+  ReqJSON.Free;
+  MsgArray.Free;
+  RequestStream.Free;
+  SSL.Free;
+  IdHTTP.Free;
+end;
 end.
