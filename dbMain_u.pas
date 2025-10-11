@@ -3,8 +3,8 @@ unit dbMain_u;
 interface
 
 uses
-  System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, Vcl.Dialogs,
-  System.Generics.Collections, clsQuestion_u;
+  System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, Vcl.Dialogs, System.Variants,
+  System.Generics.Collections, clsQuestion_u, clsAnswer_u;
 
 type
   TdmDatabase = class(TDataModule)
@@ -31,6 +31,11 @@ type
     function GetAllNonDailyIDs: TList<integer>;
     function GetQuizDetails(QuizID: integer): TList<string>;
     function GetQuiz(QuizID: integer): TList<TQuestion>;
+    function CompleteQuiz(QuizID: integer; Score: Real; TimeTaken: Ttime; Answers: TList<TAnswer>): Integer;
+    function AddQuizCompletion(QuizID: integer; Score: Real; TimeTaken: Ttime): Integer;
+    function AddAnswer(QuizCompletionID: integer; QuestionID: integer; UserAnswer: string; TimeTaken: TTime; Correct: Boolean; ExpectedAns: string): Integer;
+    function GetQuizAnswers(QuizCompletionID: Integer): TList<TAnswer>;
+    function GetQuestionID(QuizID: Integer; Question: string): Integer;
   end;
 
 var
@@ -227,5 +232,93 @@ begin
   end;
 end;
 
+function TdmDatabase.CompleteQuiz(QuizID: Integer; Score: Real; TimeTaken: TTime; Answers: TList<TAnswer>): Integer;
+var
+  Answer: TAnswer;
+  CompletionID: Integer;
+begin
+  CompletionID := AddQuizCompletion(QuizID, Score, TimeTaken);
+  for Answer in Answers do
+  begin
+    AddAnswer(CompletionID, GetQuestionID(QuizID, Answer.Question), Answer.UserAnswer, 0, Answer.IsCorrect, Answer.ExpectedAnswer)
+  end;
+  Result := CompletionID;
+end;
+
+function TdmDatabase.AddQuizCompletion(QuizID: Integer; Score: Real; TimeTaken: TTime): Integer;
+begin
+  tblQCS.Insert;
+  tblQCS['QuizID'] := QuizID;
+  tblQCS['DateCompleted'] := Now;
+  tblQCS['Score'] := Score;
+  tblQCS['TimeTaken'] := TimeTaken;
+  tblQCS.Post;
+  tblQCS.Last;
+
+  Result := tblQCS.FieldByName('CompletionID').AsInteger;
+end;
+
+function TdmDatabase.AddAnswer(QuizCompletionID: Integer; QuestionID: Integer; UserAnswer: string; TimeTaken: TTime; Correct: Boolean; ExpectedAns: string): Integer;
+begin
+  tblAnswers.Insert;
+  tblAnswers['QuizCompletionID'] := QuizCompletionID;
+  tblAnswers['QuestionID'] := QuestionID;
+  tblAnswers['UserAns'] := UserAnswer;
+  tblAnswers['TimeTaken'] := TimeTaken;
+  tblAnswers['Correct'] := Correct;
+  tblAnswers['ExpectedAns'] := ExpectedAns;
+  tblAnswers.Post;
+  tblAnswers.Last;
+
+  Result := tblAnswers.FieldByName('AnswerID').AsInteger;
+end;
+
+function TdmDatabase.GetQuizAnswers(QuizCompletionID: Integer): TList<TAnswer>;
+var
+  Answer: TAnswer;
+  QuestionID: Integer;
+begin
+  Result := TList<TAnswer>.Create;
+
+  tblAnswers.Filter := 'QuizCompletionID = ' + IntToStr(QuizCompletionID);
+  tblAnswers.Filtered := True;
+  tblAnswers.First;
+
+  while not tblAnswers.Eof do
+  begin
+    Answer := TAnswer.Create;
+    Answer.UserAnswer := tblAnswers.FieldByName('UserAns').AsString;
+    Answer.IsCorrect := tblAnswers.FieldByName('Correct').AsBoolean;
+    Answer.ExpectedAnswer := tblAnswers.FieldByName('ExpectedAns').AsString;
+
+    QuestionID := tblAnswers.FieldByName('QuestionID').AsInteger;
+
+    if tblQuestions.Locate('QuestionID', QuestionID, []) then
+    begin
+      Answer.QuestionType := tblQuestions.FieldByName('Type').AsString;
+      Answer.Difficulty := tblQuestions.FieldByName('Difficulty').AsString;
+      Answer.Question := tblQuestions.FieldByName('Question').AsString;
+    end;
+
+    Result.Add(Answer);
+    tblAnswers.Next;
+  end;
+
+  tblAnswers.Filtered := False;
+end;
+
+function TdmDatabase.GetQuestionID(QuizID: Integer; Question: string): Integer;
+begin
+  Result := -1; // default if not found
+  tblQuestions.Filter := Format('QuizID=%d AND Question=''%s''', [QuizID, Question]);
+  tblQuestions.Filtered := True;
+
+  try
+    if not tblQuestions.IsEmpty then
+      Result := tblQuestions.FieldByName('QuestionID').AsInteger;
+  finally
+    tblQuestions.Filtered := False;
+  end;
+end;
 end.
 

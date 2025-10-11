@@ -16,7 +16,9 @@ uses
   clsCustomQuizQuestionManager_u in 'clsCustomQuizQuestionManager_u.pas',
   frmAnswerQuiz_u in 'frmAnswerQuiz_u.pas' {frmAnswerQuiz},
   clsQuizAnswerManager_u in 'clsQuizAnswerManager_u.pas',
-  clsAnswer_u in 'clsAnswer_u.pas';
+  clsAnswer_u in 'clsAnswer_u.pas',
+  frmResults_u in 'frmResults_u.pas' {frmResults},
+  clsResultsManager_u in 'clsResultsManager_u.pas';
 
 {$R *.res}
 
@@ -27,5 +29,6 @@ begin
   Application.CreateForm(TfrmHome, frmHome);
   Application.CreateForm(TfrmCreateQuiz, frmCreateQuiz);
   Application.CreateForm(TfrmAnswerQuiz, frmAnswerQuiz);
+  Application.CreateForm(TfrmResults, frmResults);
   Application.Run;
 end.

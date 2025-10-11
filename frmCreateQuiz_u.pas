@@ -321,12 +321,12 @@ end;
 
 procedure TfrmCreateQuiz.shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  pnlButtonCreateCustomQuiz.OnClick(Self);
+  pnlCreateQuiz.OnClick(Sender);
 end;
 
 procedure TfrmCreateQuiz.shpButtonCreateCustomQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  pnlCreateAiQuiz.OnClick(lblCreateAiQuiz);
+  pnlButtonCreateCustomQuiz.OnClick(Sender);
 end;
 
 function TfrmCreateQuiz.CallApiQuiz(Category: string; AmntQuestions: Integer): integer;
@@ -371,18 +371,32 @@ begin
   AddCustomQuiz
 end;
 
+
 function TfrmCreateQuiz.AddCustomQuiz: Integer;
 var
-  QuizID: integer;
+  QuizID: Integer;
 begin
   Screen.Cursor := crHourGlass;
   Self.Enabled := False;
-  QuizID := QuestionManager.TryAddQuiz;
-  GLOBALS_u.QuizManager.AddQuiz(QuizID);
-  Screen.Cursor := crDefault;
-  Self.Enabled := True;
-  Self.Close;
-  ShowMessage('Quiz Created!');
+
+  try
+    QuizID := QuestionManager.TryAddQuiz;
+
+    if QuizID = -1 then
+    begin
+      Screen.Cursor := crDefault;
+      Self.Enabled := True;
+      Exit
+    end;
+
+    GLOBALS_u.QuizManager.AddQuiz(QuizID);
+    ShowMessage('Quiz Created!');
+    Result := QuizID;
+    Close;
+  finally
+    Screen.Cursor := crDefault;
+    Self.Enabled := True;
+  end;
 end;
 
 end.

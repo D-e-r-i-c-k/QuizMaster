@@ -112,7 +112,7 @@ object frmCreateQuiz: TfrmCreateQuiz
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        ActiveCard = crdApiSearch
+        ActiveCard = crdAiQuizCreator
         BevelOuter = bvNone
         Caption = 'API'
         TabOrder = 0
@@ -981,7 +981,7 @@ object frmCreateQuiz: TfrmCreateQuiz
             Height = 33
             Brush.Color = clBackground
             Shape = stRoundRect
-            OnMouseDown = shpButtonCreateQuizMouseDown
+            OnMouseDown = shpButtonCreateCustomQuizMouseDown
           end
           object lblCreateCustomQuiz: TLabel
             Left = 47

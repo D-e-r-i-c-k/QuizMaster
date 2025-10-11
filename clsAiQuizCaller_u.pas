@@ -298,33 +298,48 @@ const
 var
   IdHTTP: TIdHTTP;
   SSL: TIdSSLIOHandlerSocketOpenSSL;
-  ReqJSON, MsgSystem, MsgUser, RespJSON: TJSONObject;
+  ReqJSON, MsgSystem, MsgUser, RespJSON, ChoicesArr, ChoiceObj, MessageObj: TJSONObject;
   MsgArray: TJSONArray;
-  RespText, ResultStr, UserPrompt: string;
+  RespText, ResultStr, UserPrompt, APIKey: string;
   RequestStream: TStringStream;
-  APIKey: string;
 begin
   Result := False;
-  IdHTTP := TIdHTTP.Create(nil);
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-  ReqJSON := TJSONObject.Create;
-  MsgArray := TJSONArray.Create;
+  IdHTTP := nil;
+  SSL := nil;
+  ReqJSON := nil;
+  MsgArray := nil;
+  MsgSystem := nil;
+  MsgUser := nil;
+  RequestStream := nil;
   RespJSON := nil;
 
   APIKey := GetEnvironmentVariable('OPEN_ROUTER_KEY');
   if APIKey = '' then
-    begin
-      raise Exception.Create('OPEN_ROUTER_KEY environment variable is not set.');
-    end;
+    raise Exception.Create('OPEN_ROUTER_KEY environment variable is not set.');
+
+  IdHTTP := TIdHTTP.Create(nil);
+  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
 
   try
-    // === Build user prompt ===
+    // Basic SSL config
+    SSL.SSLOptions.Method := sslvTLSv1_2;
+    SSL.SSLOptions.Mode := sslmClient;
+    IdHTTP.IOHandler := SSL;
+    IdHTTP.HandleRedirects := True;
+    IdHTTP.Request.ContentType := 'application/json';
+    IdHTTP.Request.Accept := 'application/json';
+    IdHTTP.Request.CustomHeaders.Values['Authorization'] := 'Bearer ' + APIKey;
+
+    // Build the prompt string
     UserPrompt :=
       'Question: ' + Question + sLineBreak +
       'Expected Answer: ' + ExpectedAnswer + sLineBreak +
       'User Answer: ' + UserAnswer;
 
-    // === Build JSON payload ===
+    // Build JSON payload for chat completion
+    ReqJSON := TJSONObject.Create;
+    MsgArray := TJSONArray.Create;
+
     MsgSystem := TJSONObject.Create;
     MsgSystem.AddPair('role', 'system');
     MsgSystem.AddPair('content', CPrompt);
@@ -337,42 +352,94 @@ begin
 
     ReqJSON.AddPair('model', Model);
     ReqJSON.AddPair('messages', MsgArray);
-
-    // === HTTP setup ===
-    IdHTTP.IOHandler := SSL;
-    IdHTTP.Request.ContentType := 'application/json';
-    IdHTTP.Request.Accept := 'application/json';
-    IdHTTP.Request.CustomHeaders.Values['Authorization'] := 'Bearer ' + '<YOUR_API_KEY>';
+    ReqJSON.AddPair('temperature', TJSONNumber.Create(0.0)); // deterministic
 
     RequestStream := TStringStream.Create(ReqJSON.ToJSON, TEncoding.UTF8);
 
-    // === POST request ===
-    RespText := IdHTTP.Post('https://openrouter.ai/api/v1/chat/completions', RequestStream);
-
-    // === Parse response ===
-    RespJSON := TJSONObject.ParseJSONValue(RespText) as TJSONObject;
-    if Assigned(RespJSON) then
-    begin
-      // Try to extract the model’s reply
-      if RespJSON.TryGetValue<string>('choices[0].message.content', ResultStr) then
-        Result := SameText(Trim(ResultStr), 'True')
-      else
+    // POST request
+    try
+      RespText := IdHTTP.Post('https://openrouter.ai/api/v1/chat/completions', RequestStream);
+    except
+      on E: Exception do
       begin
-        ResultStr := LowerCase(RespJSON.ToJSON);
-        Result := Pos('true', ResultStr) > 0;
+        // You can ShowMessage or log E.Message for debugging
+        Exit(False);
       end;
     end;
-  except
-    on E: Exception do
-      Writeln('Error marking question: ' + E.Message);
-  end;
 
-  // === Cleanup ===
-  RespJSON.Free;
-  ReqJSON.Free;
-  MsgArray.Free;
-  RequestStream.Free;
-  SSL.Free;
-  IdHTTP.Free;
+    // Parse response JSON
+    RespJSON := TJSONObject.ParseJSONValue(RespText) as TJSONObject;
+    if not Assigned(RespJSON) then
+      Exit(False);
+
+    // Try to extract choices array
+    try
+      // choices might be an array at root
+      var Choices := RespJSON.GetValue<TJSONArray>('choices');
+      if Assigned(Choices) and (Choices.Count > 0) then
+      begin
+        // choice item is usually an object
+        ChoiceObj := Choices.Items[0] as TJSONObject;
+
+        // attempt: choices[0].message.content (chat-style)
+        MessageObj := nil;
+        ResultStr := '';
+        try
+          if ChoiceObj.TryGetValue<TJSONObject>('message', MessageObj) and Assigned(MessageObj) then
+          begin
+            if MessageObj.TryGetValue<string>('content', ResultStr) then
+            begin
+              ResultStr := Trim(ResultStr);
+            end;
+          end;
+        finally
+          // don't free MessageObj or ChoiceObj here (they are owned by RespJSON tree)
+        end;
+
+        // fallback: some models return choices[0].text
+        if ResultStr = '' then
+        begin
+          try
+            ResultStr := Trim(ChoiceObj.GetValue<string>('text'));
+          except
+            ResultStr := '';
+          end;
+        end;
+
+        // Final fallback: use entire JSON text and look for "True"/"False"
+        if ResultStr = '' then
+          ResultStr := LowerCase(RespJSON.ToJSON);
+
+        // Decide result:
+        // Prefer exact single token "True"/"False" (case-insensitive)
+        if SameText(ResultStr, 'True') or SameText(ResultStr, '"True"') then
+          Result := True
+        else if SameText(ResultStr, 'False') or SameText(ResultStr, '"False"') then
+          Result := False
+        else
+        begin
+          // last-resort heuristic: look for ' true ' or '"true"' in the returned text
+          Result := Pos('true', LowerCase(ResultStr)) > 0;
+        end;
+
+        Exit(Result);
+      end
+      else
+      begin
+        // No choices found
+        Exit(False);
+      end;
+    except
+      Exit(False);
+    end;
+  finally
+    // cleanup
+    RequestStream.Free;
+    ReqJSON.Free;
+    RespJSON.Free;
+    SSL.Free;
+    IdHTTP.Free;
+  end;
 end;
+
 end.

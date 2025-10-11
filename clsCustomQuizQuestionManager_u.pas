@@ -1287,9 +1287,13 @@ begin
     end
     else
     begin
+      var Continu : Boolean;
+
       QuizTitle := QuizTitleEdit.Text;
       QuizCategory := QuizCategoryEdit.Text;
       QuizDescription := QuizDescriptionMemo.Text;
+
+      Continu := True;
 
       for I := 1 to FNonDeletedQuestions.Count do
       begin
@@ -1304,6 +1308,8 @@ begin
         if CheckAllFields <> 1 then
         begin
           ShowMessage('Please enter all question options');
+          Continu := False;
+          break;
         end
         else
         begin
@@ -1314,9 +1320,15 @@ begin
         Edits.Clear;
         RadioButtons.Clear;
       end;
-      QuizID := dmDatabase.AddQuiz(QuizTitle, QuizDescription, QuizCategory, 'User', 'User', Quiz);
-      ShowMessage('Custom quiz created at idex ' + IntToStr(QuizID));
-      Result := QuizID;
+      if Continu then
+      begin
+        QuizID := dmDatabase.AddQuiz(QuizTitle, QuizDescription, QuizCategory, 'User', 'User', Quiz);
+
+        ShowMessage('Custom quiz created at idex ' + IntToStr(QuizID));
+        Result := QuizID;
+      end;
+
+
     end;
   finally
     Memos.Free;
@@ -1325,6 +1337,97 @@ begin
     Quiz.Free;
   end;
 end;
+
+//function TCustomQuestionsManager.TryAddQuiz: Integer;
+//var
+//  Memos: TList<TMemo>;
+//  Edits: TList<TEdit>;
+//  RadioButtons: TList<TRadioButton>;
+//  CardPanel: TCardPanel;
+//  ActiveCard: TCard;
+//  I: Integer;
+//  QuestionID: Integer;
+//  QuizTitleEdit, QuizCategoryEdit: TEdit;
+//  QuizDescriptionMemo: TMemo;
+//  QuizTitle, QuizCategory, QuizDescription: string;
+//  Question: TQuestion;
+//  Quiz: TList<TQuestion>;
+//  QuizID: Integer;
+//  Continue: Boolean;
+//begin
+//  Result := -1;
+//  Quiz := TList<TQuestion>.Create;
+//
+//  try
+//    QuizTitleEdit := GetComponent('edtCustomQuizTitle') as TEdit;
+//    QuizCategoryEdit := GetComponent('edtCustomQuizCategory') as TEdit;
+//    QuizDescriptionMemo := GetComponent('memCustomQuizDescription') as TMemo;
+//
+//    if CheckTextEmpty(QuizTitleEdit) or CheckTextEmpty(QuizCategoryEdit) or CheckTextEmpty(QuizDescriptionMemo) then
+//    begin
+//      ShowMessage('Please enter quiz options.');
+//      Exit;
+//    end;
+//
+//    QuizTitle := QuizTitleEdit.Text;
+//    QuizCategory := QuizCategoryEdit.Text;
+//    QuizDescription := QuizDescriptionMemo.Text;
+//    Continue := True;
+//
+//    for I := 0 to FNonDeletedQuestions.Count - 1 do
+//    begin
+//      QuestionID := FQuestions.IndexOf(FNonDeletedQuestions[I]);
+//      CardPanel := FQuestionBox.Owner.FindComponent('cplQuestionTypeOptions' + IntToStr(QuestionID + 1)) as TCardPanel;
+//
+//      if not Assigned(CardPanel) then
+//      begin
+//        ShowMessage(Format('Could not find card panel for question %d', [QuestionID + 1]));
+//        Continue := False;
+//        Break;
+//      end;
+//
+//      ActiveCard := CardPanel.ActiveCard;
+//      if not Assigned(ActiveCard) then
+//      begin
+//        ShowMessage('No active card found.');
+//        Continue := False;
+//        Break;
+//      end;
+//
+//      Memos := TList<TMemo>.Create;
+//      Edits := TList<TEdit>.Create;
+//      RadioButtons := TList<TRadioButton>.Create;
+//      try
+//        GetQuestionControls(ActiveCard, Memos, Edits, RadioButtons);
+//
+//        if CheckAllFields <> 1 then
+//        begin
+//          ShowMessage('Please enter all question options.');
+//          Continue := False;
+//          Break;
+//        end;
+//
+//        Question := CreateQuestion(QuestionID, Memos, Edits, RadioButtons);
+//        Quiz.Add(Question);
+//      finally
+//        Memos.Free;
+//        Edits.Free;
+//        RadioButtons.Free;
+//      end;
+//    end;
+//
+//    if Continue then
+//    begin
+//      QuizID := dmDatabase.AddQuiz(QuizTitle, QuizDescription, QuizCategory, 'User', 'User', Quiz);
+//      ShowMessage('Custom quiz created at index ' + IntToStr(QuizID));
+//      Result := QuizID;
+//    end;
+//
+//  finally
+//    Quiz.Free;
+//  end;
+//end;
+
 
 procedure TCustomQuestionsManager.GetQuestionControls(Card: TCard; var Memos: TList<TMemo>; var Edits: TList<TEdit>; var RadioButtons: TList<TRadioButton>);
 
@@ -1462,6 +1565,62 @@ begin
   end;
 end;
 
+//function TCustomQuestionsManager.CheckAllFields: Integer;
+//var
+//  Memos: TList<TMemo>;
+//  Edits: TList<TEdit>;
+//  RadioButtons: TList<TRadioButton>;
+//  CardPanel: TCardPanel;
+//  ActiveCard: TCard;
+//  I: Integer;
+//  QuestionID: Integer;
+//begin
+//  Result := 1; // assume valid
+//  try
+//    for I := 0 to FNonDeletedQuestions.Count - 1 do
+//    begin
+//      QuestionID := FQuestions.IndexOf(FNonDeletedQuestions[I]);
+//      CardPanel := FQuestionBox.Owner.FindComponent('cplQuestionTypeOptions' + IntToStr(QuestionID + 1)) as TCardPanel;
+//      if not Assigned(CardPanel) then
+//      begin
+//        Result := 0;
+//        Exit;
+//      end;
+//
+//      ActiveCard := CardPanel.ActiveCard;
+//      if not Assigned(ActiveCard) then
+//      begin
+//        Result := 0;
+//        Exit;
+//      end;
+//
+//      Memos := TList<TMemo>.Create;
+//      Edits := TList<TEdit>.Create;
+//      RadioButtons := TList<TRadioButton>.Create;
+//      try
+//        GetQuestionControls(ActiveCard, Memos, Edits, RadioButtons);
+//
+//        if CheckFields(Memos, Edits, RadioButtons) <> 1 then
+//        begin
+//          Result := 0;
+//          Exit; // stop immediately if invalid
+//        end;
+//      finally
+//        Memos.Free;
+//        Edits.Free;
+//        RadioButtons.Free;
+//      end;
+//    end;
+//  except
+//    on E: Exception do
+//    begin
+//      ShowMessage('Error in CheckAllFields: ' + E.Message);
+//      Result := 0;
+//    end;
+//  end;
+//end;
+
+
 function TCustomQuestionsManager.CreateQuestion(QuestionID: integer; var Memos: TList<TMemo>; var Edits: TList<TEdit>; var RadioButtons: TList<TRadioButton>): TQuestion;
 const
   CTypes: array[0..2] of string = ('text', 'multiple', 'boolean');
@@ -1493,9 +1652,9 @@ begin
     end;
     for Edit in Edits do
     begin
-      if Edit.Text <> '' then
+      if (Edit.Text <> '') and (Edit.Text <> Question.Answer) then
       begin
-        Question.Options.Add(Edit.Text)
+        Question.Options.Add('"' + Edit.Text + '"');
       end;
     end;
   end
@@ -1512,15 +1671,15 @@ begin
         if Answer = 'True' then
         begin
           Question.Answer := 'True';
+          Question.Options.Add('"False"');
         end
         else
         begin
           Question.Answer := 'False';
+          Question.Options.Add('"True"');
         end;
       end;
     end;
-    Question.Options.Add('True');
-    Question.Options.Add('False');
   end;
   Result := Question;
 end;

@@ -8,7 +8,7 @@ uses
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, Vcl.WinXPanels,
   System.Generics.Collections, System.JSON, Vcl.ComCtrls,
 
-  clsQuestion_u, dbMain_u, clsAnswer_u, clsAiQuizCaller_u;
+  clsQuestion_u, dbMain_u, clsAnswer_u, clsAiQuizCaller_u, frmResults_u;
 
 type
   TAnswerManager = class
@@ -22,6 +22,7 @@ type
       FAnswers: TList<TAnswer>;
       FRadioButtons: TList<TList<TRadioButton>>;
       FMultipleChoiceOptions: TList<TList<TLabel>>;
+      FQuizID: integer;
     public
       constructor Create(QuizID: integer; QuizPanel: TCardPanel; ProgressBar: TProgressBar);
 
@@ -29,6 +30,7 @@ type
       function LoadQuiz(Quiz: TList<TQuestion>; QuizPanel: TCardPanel): Boolean;
       function GetAnswers: TList<TAnswer>;
       function GetComponent(Name: string): TComponent;
+      function GetScore(Answers: TList<TAnswer>): real;
 
       procedure ShowFirstQuestion(QuizPanel: TCardPanel);
       procedure ShowNextQuestion(QuizPanel: TCardPanel);
@@ -37,7 +39,9 @@ type
 
   end;
 var
-  AiCaller: TAiQuizCaller; 
+  AiCaller: TAiQuizCaller;
+  ResultsForm: TfrmResults;
+
 implementation
 
 constructor TAnswerManager.Create(QuizID: integer; QuizPanel: TCardPanel; ProgressBar: TProgressBar);
@@ -49,6 +53,7 @@ begin
   FProgressBar := ProgressBar;
   FProgressBar.Position := 0;
   FQuizPanel := QuizPanel;
+  FQuizID := QuizID;
 
   AiCaller := TAiQuizCaller.Create;
   FAnswers := TList<TAnswer>.Create;
@@ -533,7 +538,24 @@ begin
     FCurrentID := FQuestions.Count - 1;
     if MessageDlg('Are you sure you want to submit the quiz?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
-      ShowAnswers(GetAnswers);
+      var Answers: TList<TAnswer>;
+      var AnswerForm: TForm;
+      var QuizCompletionID: Integer;
+
+      ShowMessage('Marking quiz...' + sLineBreak + 'This can take a while, please click "okay" and wait while cursor is spinning');
+
+      AnswerForm := FQuizPanel.Owner as TForm;
+      AnswerForm.Cursor := crHourGlass;
+      AnswerForm.Enabled := False;
+      Answers := TList<TAnswer>.Create;
+      Answers := GetAnswers;
+      AnswerForm.Cursor := crDefault;
+      AnswerForm.Enabled := True;
+      QuizCompletionID := dmDatabase.CompleteQuiz(FQuizID, GetScore(Answers), 0, Answers);
+      ResultsForm := TfrmResults.Create(Application);
+      ResultsForm.QuizCompletionID := QuizCompletionID;
+      ResultsForm.Show;
+      AnswerForm.Close;
     end;
   end;
 end;
@@ -561,6 +583,7 @@ var
 begin
   QuestionNumber := 0;
   Result := nil;
+  FAnswers.Clear;
   for Question in FQuiz do
   begin
     Inc(QuestionNumber);
@@ -576,7 +599,7 @@ begin
 
       MemoAnswer := GetComponent('memTextAnswer' + IntToStr(QuestionNumber)) as TMemo;
       Answer.UserAnswer := Trim(MemoAnswer.Text);
-      
+
       if Answer.UserAnswer = Answer.ExpectedAnswer then
         begin
           Answer.IsCorrect := True;
@@ -591,10 +614,10 @@ begin
             except
               ShowMessage('Couldn''t get answer for ' + Question.Question);
               Answer.IsCorrect := False;
-              exit;
+              Continue;
             end;
           end;
-        end;     
+        end;
     end
     { Boolean }
     else if Question.QuestionType = 'boolean' then
@@ -605,7 +628,7 @@ begin
       begin
         if Rbt.Checked = True then
         begin
-          UserAns := Copy(Rbt.Name, 10, 4);
+          UserAns := Copy(Rbt.Name, 11, 4);
           
           if UserAns = 'True' then
           begin
@@ -613,7 +636,7 @@ begin
           end
           else
           begin             
-            Answer.UserAnswer := 'False';  
+            Answer.UserAnswer := 'False';
           end;
 
           if Answer.UserAnswer = Answer.ExpectedAnswer then
@@ -669,7 +692,22 @@ begin
   end;
 end;
 
+function TAnswerManager.GetScore(Answers: TList<TAnswer>): Real;
+var
+  Answer: TAnswer;
+  Correct: Integer;
+begin
+  Correct := 0;
+  for Answer in Answers do
+  begin
+    if Answer.IsCorrect then
+    begin
+      Inc(Correct);
+    end;
+  end;
 
+  Result := Correct/Answers.Count
+end;
 
 procedure TAnswerManager.ShowAnswers(Answers: TList<TAnswer>);
 var
