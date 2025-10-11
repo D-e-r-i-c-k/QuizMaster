@@ -47,7 +47,6 @@ begin
   begin
     LoadAnswer(Answer);
   end;
-
 end;
 
 procedure TResutlsManager.LoadQuiz(QuizCompletionID: Integer);

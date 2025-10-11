@@ -53,6 +53,19 @@ object frmResults: TfrmResults
       ParentColor = False
       ParentFont = False
     end
+    object lblQuizResult: TLabel
+      Left = 658
+      Top = 29
+      Width = 58
+      Height = 28
+      Caption = '70,2%'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clDefault
+      Font.Height = 28
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
   end
   object sbxMain: TScrollBox
     Left = 0

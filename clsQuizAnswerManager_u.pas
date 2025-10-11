@@ -418,7 +418,7 @@ begin
       Font.Height := 26;
       Visible := False;
     end;
-    MultipleChoiceOptions.Add(lblMultipleChoiceAnswer3);
+    MultipleChoiceOptions.Add(lblMultipleChoiceAnswer4);
 
     lblMultipleChoiceAnswer4 := TLabel.Create(QuizPanel.Owner);
     with lblMultipleChoiceAnswer4 do
@@ -431,7 +431,7 @@ begin
       Font.Height := 26;
       Visible := False;
     end;
-    MultipleChoiceOptions.Add(lblMultipleChoiceAnswer4);
+    MultipleChoiceOptions.Add(lblMultipleChoiceAnswer3);
 
     // === MULTIPLE CHOICE RADIO BUTTONS ===
     rbtMultipleChoice1 := TRadioButton.Create(QuizPanel.Owner);
@@ -541,6 +541,7 @@ begin
       var Answers: TList<TAnswer>;
       var AnswerForm: TForm;
       var QuizCompletionID: Integer;
+      var Score: Real;
 
       ShowMessage('Marking quiz...' + sLineBreak + 'This can take a while, please click "okay" and wait while cursor is spinning');
 
@@ -551,9 +552,11 @@ begin
       Answers := GetAnswers;
       AnswerForm.Cursor := crDefault;
       AnswerForm.Enabled := True;
-      QuizCompletionID := dmDatabase.CompleteQuiz(FQuizID, GetScore(Answers), 0, Answers);
+      Score := GetScore(Answers);
+      QuizCompletionID := dmDatabase.CompleteQuiz(FQuizID, Score, 0, Answers);
       ResultsForm := TfrmResults.Create(Application);
       ResultsForm.QuizCompletionID := QuizCompletionID;
+      ResultsForm.QuizScore := Score;
       ResultsForm.Show;
       AnswerForm.Close;
     end;
@@ -604,13 +607,17 @@ begin
         begin
           Answer.IsCorrect := True;
         end
+      else if Answer.UserAnswer = '' then
+      begin
+        Answer.IsCorrect := False;
+      end
       else
         begin
           try
-            Answer.IsCorrect := AiCaller.MarkQuestion(Question.Question, Answer.UserAnswer, Answer.ExpectedAnswer, 'deepseek/deepseek-chat-v3.1:free');
+            Answer.IsCorrect := AiCaller.MarkQuestion(Question.Question, Answer.UserAnswer, Answer.ExpectedAnswer, 'tngtech/deepseek-r1t2-chimera:free');
           except
             try
-              Answer.IsCorrect := AiCaller.MarkQuestion(Question.Question, Answer.UserAnswer, Answer.ExpectedAnswer, 'tngtech/deepseek-r1t2-chimera:free');
+              Answer.IsCorrect := AiCaller.MarkQuestion(Question.Question, Answer.UserAnswer, Answer.ExpectedAnswer, 'z-ai/glm-4.5-air:free');
             except
               ShowMessage('Couldn''t get answer for ' + Question.Question);
               Answer.IsCorrect := False;
@@ -706,7 +713,7 @@ begin
     end;
   end;
 
-  Result := Correct/Answers.Count
+  Result := Correct/Answers.Count*100;
 end;
 
 procedure TAnswerManager.ShowAnswers(Answers: TList<TAnswer>);

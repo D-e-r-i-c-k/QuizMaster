@@ -20,13 +20,16 @@ type
     memUserAnswer: TMemo;
     memExpectedAnswer: TMemo;
     lbExpecteAnswerHeader: TLabel;
+    lblQuizResult: TLabel;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FQuizCompletionID: integer;
+    FQuizScore: Real;
   public
     { Public declarations }
     property QuizCompletionID: integer read FQuizCompletionID write FQuizCompletionID;
+    property QuizScore: Real read FQuizScore write FQuizScore;
   end;
 
 var
@@ -40,6 +43,7 @@ implementation
 procedure TfrmResults.FormShow(Sender: TObject);
 begin
   Results := TResutlsManager.Create(sbxMain, QuizCompletionID);
+  lblQuizResult.Caption := FloatToStrF(FQuizScore, ffFixed, 8, 2) + '%'
 end;
 
 end.
