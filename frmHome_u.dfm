@@ -535,7 +535,6 @@ object frmHome: TfrmHome
           Margins.Bottom = 4
           Caption = 'Button1'
           TabOrder = 0
-          OnClick = Button1Click
         end
       end
       object pnlStartDaily: TPanel

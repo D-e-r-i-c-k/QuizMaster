@@ -163,6 +163,11 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="clsResultsManager_u.pas"/>
+        <DCCReference Include="frmEditQuiz_u.pas">
+            <Form>frmEditQuiz</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="clsEditQuizManager_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

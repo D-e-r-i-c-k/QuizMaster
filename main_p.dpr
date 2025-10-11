@@ -18,7 +18,9 @@ uses
   clsQuizAnswerManager_u in 'clsQuizAnswerManager_u.pas',
   clsAnswer_u in 'clsAnswer_u.pas',
   frmResults_u in 'frmResults_u.pas' {frmResults},
-  clsResultsManager_u in 'clsResultsManager_u.pas';
+  clsResultsManager_u in 'clsResultsManager_u.pas',
+  frmEditQuiz_u in 'frmEditQuiz_u.pas' {frmEditQuiz},
+  clsEditQuizManager_u in 'clsEditQuizManager_u.pas';
 
 {$R *.res}
 
@@ -30,5 +32,6 @@ begin
   Application.CreateForm(TfrmCreateQuiz, frmCreateQuiz);
   Application.CreateForm(TfrmAnswerQuiz, frmAnswerQuiz);
   Application.CreateForm(TfrmResults, frmResults);
+  Application.CreateForm(TfrmEditQuiz, frmEditQuiz);
   Application.Run;
 end.

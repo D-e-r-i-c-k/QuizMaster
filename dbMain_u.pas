@@ -36,6 +36,8 @@ type
     function AddAnswer(QuizCompletionID: integer; QuestionID: integer; UserAnswer: string; TimeTaken: TTime; Correct: Boolean; ExpectedAns: string): Integer;
     function GetQuizAnswers(QuizCompletionID: Integer): TList<TAnswer>;
     function GetQuestionID(QuizID: Integer; Question: string): Integer;
+    function UpdateDetails(QuizID: Integer; QuizTitle: string; QuizCategory: string; QuizDescription: string): integer;
+    function DeleteQuiz(QuizID: Integer): Integer;
   end;
 
 var
@@ -320,5 +322,73 @@ begin
     tblQuestions.Filtered := False;
   end;
 end;
+
+function TdmDatabase.UpdateDetails(QuizID: Integer; QuizTitle: string; QuizCategory: string; QuizDescription: string): Integer;
+begin
+  Result := 1;
+
+  try
+    tblQuizzes.Filter := 'QuizID = ' + IntToStr(QuizID);
+    tblQuizzes.Filtered := True;
+    tblQuizzes.Edit;
+    tblQuizzes['Title'] := QuizTitle;
+    tblQuizzes['Subject'] := QuizCategory;
+    tblQuizzes['Description'] := QuizDescription;
+    tblQuizzes.Post;
+  except
+    Result := -1;
+  end;
+
+  tblQuizzes.Filtered := False;
+end;
+
+function TdmDatabase.DeleteQuiz(QuizID: Integer): Integer;
+begin
+  Result := 1; // Success by default
+  try
+//    // Delete related answers first
+//    tblAnswers.Filter := 'QuestionID IN (SELECT QuestionID FROM tblQuestions WHERE QuizID=' + IntToStr(QuizID) + ')';
+//    tblAnswers.Filtered := True;
+//    tblAnswers.First;
+//    while not tblAnswers.Eof do
+//    begin
+//      tblAnswers.Delete;
+//    end;
+//    tblAnswers.Filtered := False;
+
+    // Delete related questions
+    tblQuestions.Filter := 'QuizID=' + IntToStr(QuizID);
+    tblQuestions.Filtered := True;
+    tblQuestions.First;
+    while not tblQuestions.Eof do
+    begin
+      tblQuestions.Delete;
+    end;
+    tblQuestions.Filtered := False;
+
+    // Delete from daily quizzes if exists
+    tblDailyQuizzes.Filter := 'QuizID=' + IntToStr(QuizID);
+    tblDailyQuizzes.Filtered := True;
+    if not tblDailyQuizzes.IsEmpty then
+    begin
+      tblDailyQuizzes.First;
+      while not tblDailyQuizzes.Eof do
+        tblDailyQuizzes.Delete;
+    end;
+    tblDailyQuizzes.Filtered := False;
+
+    // Finally delete the quiz
+    if tblQuizzes.Locate('QuizID', QuizID, []) then
+      tblQuizzes.Delete;
+
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Error deleting quiz: ' + E.Message);
+      Result := -1; // Failure
+    end;
+  end;
+end;
+
 end.
 

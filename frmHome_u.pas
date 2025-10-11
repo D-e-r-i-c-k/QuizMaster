@@ -8,7 +8,7 @@ uses
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, Vcl.WinXPanels,
   System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
   clsQuizBoxManager_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u,
-  frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u, frmAnswerQuiz_u, clsAnswer_u;
+  frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u, frmAnswerQuiz_u, clsAnswer_u, frmEditQuiz_u;
 
 type
   TfrmHome = class(TForm)
@@ -88,7 +88,6 @@ type
     procedure pnlCreateQuizClick(Sender: TObject);
     procedure shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormDestroy(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
   private
   {private variables}
   public
@@ -112,16 +111,6 @@ var
 implementation
 
 {$R *.dfm}
-
-procedure TfrmHome.Button1Click(Sender: TObject);
-var
-  Answer: TAnswer;
-begin
-  for Answer in (dmDatabase.GetQuizAnswers(1)) do
-  begin
-    ShowMessage(Answer.UserAnswer)
-  end;
-end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
 begin
@@ -150,6 +139,7 @@ begin
   lstMyQuizzes := TObjectList<TPanel>.Create(False);
 
   GLOBALS_u.QuizManager := TQuizBoxManager.Create(pnlMyQuizzesScroll, sbxMyQuizzes);
+
   GLOBALS_u.Cache := TdmCache.Create;
 
   GLOBALS_u.Cache.CacheAllCategories;
@@ -193,6 +183,5 @@ procedure TfrmHome.shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseB
 begin
   pnlCreateQuiz.OnClick(lblCreateQuiz);
 end;
-
 end.
 

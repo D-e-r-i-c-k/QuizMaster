@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, Vcl.WinXPanels,
-  System.Generics.Collections, dbMain_u, frmAnswerQuiz_u;
+  System.Generics.Collections, dbMain_u, frmAnswerQuiz_u, frmEditQuiz_u, clsQuestion_u;
 
 type
   TQuizBoxManager = class
@@ -22,7 +22,6 @@ type
     FQuizID: integer;
 // Quiz List:
     FQuizList: TObjectList<TPanel>;
-
   public
     {Constructor, Procedures and Properties}
     constructor Create(pnlQuizContainer: TPanel; sbScrollBox: TScrollBox);
@@ -31,12 +30,15 @@ type
     procedure EditQuizClick(Sender: TObject);
     procedure DeleteQuizClick(Sender: TObject);
     property Quizzes: TObjectList<TPanel> read FQuizList write FQuizList;
+    procedure ReloadAllQuizzes;
+    procedure QuizUpdated(Sender: TObject);
 
     procedure LoadAllQuizzes;
   end;
 
 var
   QuizAnswerForm: TfrmAnswerQuiz;
+  EditQuizForm: TfrmEditQuiz;
 implementation
 
 constructor TQuizBoxManager.Create(pnlQuizContainer: TPanel; sbScrollBox: TScrollBox);
@@ -271,10 +273,15 @@ end;
 procedure TQuizBoxManager.EditQuizClick(Sender: TObject);
 var
   intQuizID: integer;
+  QuizDetails: TList<String>;
 begin
   intQuizID := TImage(Sender).Tag;
   ShowMessage('Edit Quiz with ID: ' + IntToStr(intQuizID));
-    // Load quiz from DB here
+  QuizDetails := dmDatabase.GetQuizDetails(intQuizID);
+  EditQuizForm := TfrmEditQuiz.Create(Application);
+  EditQuizForm.OnQuizUpdated := QuizUpdated;
+  EditQuizForm.LoadEditQuiz(QuizDetails[0], QuizDetails[2], QuizDetails[1], intQuizID);
+  EditQuizForm.Show;
 end;
 
 procedure TQuizBoxManager.DeleteQuizClick(Sender: TObject);
@@ -283,7 +290,11 @@ var
 begin
   intQuizID := TImage(Sender).Tag;
   ShowMessage('Delete Quiz with ID: ' + IntToStr(intQuizID));
-    // Load quiz from DB here
+  if MessageDlg('Are you sure you want to delete this quiz and all its questions?',mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  begin
+    dmDatabase.DeleteQuiz(intQuizID);
+    ReloadAllQuizzes;
+  end;
 end;
 
 procedure TQuizBoxManager.LoadAllQuizzes;
@@ -298,6 +309,37 @@ begin
   end;
   FQuizScroller.VertScrollBar.Position := 0;
 end;
+
+procedure TQuizBoxManager.ReloadAllQuizzes;
+var
+  i: Integer;
+begin
+  // Remove all existing quiz panels from the parent panel
+  for i := FQuizList.Count - 1 downto 0 do
+  begin
+    FQuizList[i].Free;
+  end;
+
+  // Clear the list itself
+  FQuizList.Clear;
+
+  // Reset positioning
+  FMyQuizzesLeft := 0;
+  FMyQuizzesTop := 0;
+
+  // Optionally reset parent panel height to avoid scroll offset
+  FQuizParent.Height := FQuizScroller.ClientHeight;
+  FQuizScroller.VertScrollBar.Position := 0;
+
+  // Load all quizzes again
+  LoadAllQuizzes;
+end;
+
+procedure TQuizBoxManager.QuizUpdated(Sender: TObject);
+begin
+  ReloadAllQuizzes;
+end;
+
 
 end.
 
