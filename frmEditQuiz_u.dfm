@@ -12,6 +12,8 @@ object frmEditQuiz: TfrmEditQuiz
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  Scaled = False
+  ShowInTaskBar = True
   OnClose = FormClose
   TextHeight = 15
   object pnlHeader: TPanel

@@ -12,6 +12,7 @@ object frmAnswerQuiz: TfrmAnswerQuiz
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  Scaled = False
   ShowInTaskBar = True
   OnClose = FormClose
   OnShow = FormShow

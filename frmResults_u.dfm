@@ -12,6 +12,8 @@ object frmResults: TfrmResults
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  Scaled = False
+  ShowInTaskBar = True
   OnShow = FormShow
   TextHeight = 15
   object pnlHeader: TPanel
