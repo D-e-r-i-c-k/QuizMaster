@@ -1,74 +1,75 @@
 object dmDatabase: TdmDatabase
   OnCreate = DataModuleCreate
-  Height = 600
-  Width = 800
+  Height = 750
+  Width = 1000
+  PixelsPerInch = 120
   object conDB: TADOConnection
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=database.mdb;Mode=R' +
       'eadWrite;Persist Security Info=False;'
     LoginPrompt = False
     Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 40
-    Top = 29
+    Left = 50
+    Top = 36
   end
   object tblQuizzes: TADOTable
     Connection = conDB
     CursorType = ctStatic
     TableName = 'Quizzes'
-    Left = 42
-    Top = 94
+    Left = 53
+    Top = 118
   end
   object dsQuizzes: TDataSource
     DataSet = tblQuizzes
-    Left = 104
-    Top = 98
+    Left = 130
+    Top = 123
   end
   object tblQuestions: TADOTable
     Connection = conDB
     CursorType = ctStatic
     TableName = 'Questions'
-    Left = 42
-    Top = 171
+    Left = 53
+    Top = 214
   end
   object dsQuestions: TDataSource
     DataSet = tblQuestions
-    Left = 115
-    Top = 174
+    Left = 144
+    Top = 218
   end
   object tblQCS: TADOTable
     Connection = conDB
     CursorType = ctStatic
     TableName = 'QuizCompletionSummary'
-    Left = 49
-    Top = 229
+    Left = 61
+    Top = 286
   end
   object dsQCS: TDataSource
     DataSet = tblQCS
-    Left = 122
-    Top = 232
+    Left = 153
+    Top = 290
   end
   object tblAnswers: TADOTable
     Connection = conDB
     CursorType = ctStatic
     TableName = 'Answers'
-    Left = 49
-    Top = 293
+    Left = 61
+    Top = 366
   end
   object dsAnswers: TDataSource
     DataSet = tblAnswers
-    Left = 122
-    Top = 296
+    Left = 153
+    Top = 370
   end
   object tblDailyQuizzes: TADOTable
     Connection = conDB
     CursorType = ctStatic
     TableName = 'DailyQuizzes'
-    Left = 49
-    Top = 357
+    Left = 61
+    Top = 446
   end
   object dsDailyQuizzes: TDataSource
     DataSet = tblDailyQuizzes
-    Left = 122
-    Top = 360
+    Left = 153
+    Top = 450
   end
 end
