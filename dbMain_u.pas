@@ -391,19 +391,8 @@ end;
 
 function TdmDatabase.DeleteQuiz(QuizID: Integer): Integer;
 begin
-  Result := 1; // Success by default
+  Result := 1;
   try
-//    // Delete related answers first
-//    tblAnswers.Filter := 'QuestionID IN (SELECT QuestionID FROM tblQuestions WHERE QuizID=' + IntToStr(QuizID) + ')';
-//    tblAnswers.Filtered := True;
-//    tblAnswers.First;
-//    while not tblAnswers.Eof do
-//    begin
-//      tblAnswers.Delete;
-//    end;
-//    tblAnswers.Filtered := False;
-
-    // Delete related questions
     tblQuestions.Filter := 'QuizID=' + IntToStr(QuizID);
     tblQuestions.Filtered := True;
     tblQuestions.First;
@@ -412,17 +401,6 @@ begin
       tblQuestions.Delete;
     end;
     tblQuestions.Filtered := False;
-
-    // Delete from daily quizzes if exists
-    tblDailyQuizzes.Filter := 'QuizID=' + IntToStr(QuizID);
-    tblDailyQuizzes.Filtered := True;
-    if not tblDailyQuizzes.IsEmpty then
-    begin
-      tblDailyQuizzes.First;
-      while not tblDailyQuizzes.Eof do
-        tblDailyQuizzes.Delete;
-    end;
-    tblDailyQuizzes.Filtered := False;
 
     // Finally delete the quiz
     if tblQuizzes.Locate('QuizID', QuizID, []) then
