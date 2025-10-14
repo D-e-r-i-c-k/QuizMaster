@@ -1,3 +1,8 @@
+// clsQuizAnswerManager_u.pas
+// Purpose: Contains logic to manage quiz answers lifecycle within the
+// application (saving, retrieving, and processing answers). NO CODE
+// BEHAVIOR CHANGED — comments only.
+
 unit clsQuizAnswerManager_u;
 
 interface
@@ -113,7 +118,7 @@ var
   MultipleChoiceOptions: TList<TLabel>;
 begin
   QuestionNumber := 0;
-  
+
   for Question in Quiz do
   begin
     Inc(QuestionNumber);
@@ -483,7 +488,7 @@ begin
       Font.Height := 20;
       Caption := '';
       Visible := False;
-    end; 
+    end;
     RadioButtons.Add(rbtMultipleChoice4);
 
     FQuestions.Add(crdQuestion);
@@ -584,6 +589,19 @@ var
   Answer: TAnswer;
   QuestionNumber: integer;
 begin
+  // GetAnswers
+  // Purpose: Walk through the UI controls for each question and build a
+  // TList<TAnswer> describing the user's responses. Ownership: the
+  // returned list (FAnswers) is owned by this manager; callers should not
+  // free it directly unless they understand ownership semantics.
+  // Notes on behavior and heuristics:
+  // - Text questions are compared directly to the expected answer; if
+  //   not exact the code attempts to call AI marker (AiCaller.MarkQuestion)
+  //   with two different models as fallbacks. If both calls fail, the
+  //   answer is marked False.
+  // - Boolean and multiple choice answers are determined from selected
+  //   radio buttons and compared to the expected answer.
+  // - Any exceptions or missing controls may result in default False.
   QuestionNumber := 0;
   Result := nil;
   FAnswers.Clear;
@@ -636,13 +654,13 @@ begin
         if Rbt.Checked = True then
         begin
           UserAns := Copy(Rbt.Name, 11, 4);
-          
+
           if UserAns = 'True' then
           begin
             Answer.UserAnswer := 'True'
           end
           else
-          begin             
+          begin
             Answer.UserAnswer := 'False';
           end;
 
@@ -704,6 +722,10 @@ var
   Answer: TAnswer;
   Correct: Integer;
 begin
+  // GetScore
+  // Purpose: Compute percentage score as (correct / total) * 100.
+  // Note: If Answers.Count is zero this will raise a division by zero
+  // error; callers should ensure there is at least one answer.
   Correct := 0;
   for Answer in Answers do
   begin

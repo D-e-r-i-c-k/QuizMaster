@@ -1,3 +1,9 @@
+// clsAnswer_u.pas
+// Purpose: Defines the TAnswer class that represents a user's answer to a
+// question within the QuizMaster application. Includes fields for the
+// user's answer, whether it was correct, and related metadata. NO CODE
+// BEHAVIOR WAS CHANGED — only comments were added.
+
 unit clsAnswer_u;
 
 interface

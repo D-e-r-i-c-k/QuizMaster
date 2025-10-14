@@ -1,3 +1,7 @@
+// frmResults_u.pas
+// Purpose: Displays quiz results and statistics. Reads completion records
+// and renders results to the user. ONLY COMMENTS ADDED — no functional edits.
+
 unit frmResults_u;
 
 interface

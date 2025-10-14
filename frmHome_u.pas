@@ -1,4 +1,9 @@
-﻿unit frmHome_u;
+﻿// frmHome_u.pas
+// Purpose: Main application form (home screen) that navigates between
+// different features of QuizMaster. Responsible for high-level UI flow.
+// NO CODE WAS MODIFIED — only documentation comments added.
+
+unit frmHome_u;
 
 interface
 
@@ -190,4 +195,3 @@ begin
   pnlCreateQuiz.OnClick(lblCreateQuiz);
 end;
 end.
-

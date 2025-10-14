@@ -1,3 +1,8 @@
+// clsDailyQuizManager_u.pas
+// Purpose: Manages daily quiz scheduling, assignment and related
+// operations. This is documentation-only: the source code itself was not
+// modified beyond these comments.
+
 unit clsDailyQuizManager_u;
 
 interface

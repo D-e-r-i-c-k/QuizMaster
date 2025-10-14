@@ -1,3 +1,7 @@
+// clsEditQuizManager_u.pas
+// Purpose: Contains logic for editing quizzes: updating metadata and
+// questions. Only comments added to document purpose; no code changed.
+
 unit clsEditQuizManager_u;
 
 interface
@@ -1259,6 +1263,15 @@ var
   Quiz: TList<TQuestion>;
   QuizID: Integer;
 begin
+  // TryAddQuiz
+  // Purpose: Validate all quiz-level metadata and question inputs, build
+  // a TList<TQuestion> and call dmDatabase.AddQuiz to persist the
+  // custom quiz. Returns the created QuizID on success or -1 on failure.
+  // Behavior notes:
+  // - Shows user messages for missing fields or parse errors.
+  // - Ownership: the created TList<TQuestion> (Quiz) is freed by this
+  //   routine after AddQuiz is called; dmDatabase.AddQuiz copies data
+  //   into the DB and returns an integer id.
   Memos := TList<TMemo>.Create;
   Edits := TList<TEdit>.Create;
   RadioButtons := TList<TRadioButton>.Create;
@@ -1366,6 +1379,18 @@ var
   RadioEdit: TEdit;
   RadioName: string;
 begin
+  // CheckFields
+  // Purpose: Validate controls for a single question card.
+  // Rules implemented:
+  // - If the card contains two TMemo controls, treat it as a text question
+  //   and ensure both memo values are non-empty and not placeholder text.
+  // - Otherwise treat it as either multiple-choice or boolean and ensure
+  //   at least one radio button is selected and (for multiple choice)
+  //   that the corresponding Edit control contains text.
+  // Returns: 1 if validation passes, 0 otherwise.
+  // Notes: This function relies on control naming conventions (e.g.
+  // edtMultipleChoiceAnswerX) to locate linked edits for radio buttons.
+  // Changing control naming will break validation.
   //MemoCheck:
   Result := 1;
   for Memo in Memos do
@@ -1430,6 +1455,12 @@ var
   ActiveCard: TCard;
   I: Integer;
 begin
+  // CheckAllFields
+  // Purpose: Iterate over all non-deleted question cards and validate
+  // their input controls by calling CheckFields. Returns 1 only if all
+  // questions pass validation; otherwise returns 0.
+  // Notes: Temporary lists are created to collect controls for each
+  // question and are freed before returning.
   Memos := TList<TMemo>.Create;
   Edits := TList<TEdit>.Create;
   RadioButtons := TList<TRadioButton>.Create;
@@ -1467,6 +1498,17 @@ function TEditQuizManager.CreateQuestion(QuestionID: integer; var Memos: TList<T
 const
   CTypes: array[0..2] of string = ('text', 'multiple', 'boolean');
 begin
+  // CreateQuestion
+  // Purpose: Build a TQuestion instance from the UI controls collected
+  // for a question card. The function maps control values to the
+  // TQuestion fields using control naming and ordering conventions.
+  // Important:
+  // - Caller receives ownership of the returned TQuestion and its
+  //   Options list.
+  // - For multiple choice the selected radio button determines
+  //   Question.Answer; remaining edits are added to Question.Options.
+  // - For boolean questions one option (the opposite) is automatically
+  //   added to Options.
   Question := TQuestion.Create;
   Question.QuestionType := CTypes[FQuestionOptions[0 + (QuestionID * 2)].Items.IndexOf(FQuestionOptions[0 + (QuestionID * 2)].Text)];
   Question.Difficulty := FQuestionOptions[1 + (QuestionID * 2)].Text;
@@ -1541,4 +1583,3 @@ begin
 end;
 
 end.
-

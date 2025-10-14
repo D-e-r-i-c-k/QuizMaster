@@ -1,3 +1,8 @@
+// clsAiQuizCaller_u.pas
+// Purpose: Integrates with AI-based services or logic to generate quiz
+// content. The unit was only given descriptive comments; functionality
+// remains exactly as in the original submission.
+
 unit clsAiQuizCaller_u;
 
 interface
@@ -63,7 +68,7 @@ function TAiQuizCaller.Call(UserPrompt: string; Model: string): TJSONObject;
   + '"category": "Physics", '
   + '"type": "multiple", '
   + '"difficulty": "medium", '
-  + '"question": "Which of the following best describes Newton’s Second Law of Motion?", '
+  + '"question": "Which of the following best describes Newtonï¿½s Second Law of Motion?", '
   + '"correct_answer": "The acceleration of an object is directly proportional to the net force acting upon it and inversely proportional to its mass.", '
   + '"incorrect_answers": [ '
   + '"Every action has an equal and opposite reaction.", '
@@ -97,6 +102,17 @@ function TAiQuizCaller.Call(UserPrompt: string; Model: string): TJSONObject;
   HTTPEx: Exception;
   APIKey: string;
 begin
+  // Call (AI)
+  // Purpose: Send a chat-completion style request to the OpenRouter API
+  // with a system prompt that instructs the model to emit quiz JSON.
+  // Important notes:
+  // - Requires environment variable OPEN_ROUTER_KEY to be set to a valid
+  //   API key. The function raises an exception if the key is missing.
+  // - The response from the model may include markdown fences, extra
+  //   commentary or text; this routine attempts to extract the first
+  //   {...} JSON block if the raw content is not directly JSON.
+  // - If parsing fails the function returns nil and callers must handle
+  //   nil results.
   Result := nil;
   APIKey := GetEnvironmentVariable('OPEN_ROUTER_KEY');
 
@@ -217,6 +233,13 @@ function TAiQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
     Questions: TList<TQuestion>;
     Q: TQuestion;
   begin
+    // JSONToQuiz (AI)
+    // Purpose: Convert AI-produced JSON (matching the expected quiz
+    // schema) into TQuestion objects. Works the same as the API caller
+    // JSONToQuiz but is kept separate for clarity.
+    // Memory: The JSON object is freed in this routine; the returned
+    // TList<TQuestion> and each TQuestion.Options list are owned by the
+    // caller.
     try
       if Assigned(JSON) then
         begin

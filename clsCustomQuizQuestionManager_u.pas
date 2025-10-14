@@ -1,3 +1,8 @@
+// clsCustomQuizQuestionManager_u.pas
+// Purpose: Provides logic to manage user-created/custom quiz questions
+// including storage, retrieval and validation. NO BEHAVIORAL CHANGES —
+// comments only.
+
 unit clsCustomQuizQuestionManager_u;
 
 interface
@@ -1699,4 +1704,3 @@ begin
 end;
 
 end.
-

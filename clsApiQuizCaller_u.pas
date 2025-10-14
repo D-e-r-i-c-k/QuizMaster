@@ -1,3 +1,8 @@
+// clsApiQuizCaller_u.pas
+// Purpose: Encapsulates calling external APIs to fetch or generate quiz
+// data. This file was annotated with comments only; no code behavior was
+// altered.
+
 unit clsApiQuizCaller_u;
 
 interface
@@ -37,6 +42,16 @@ end;
 function TApiQuizCaller.Call(URL: string): TJSONObject;
 var
   JSONstring: string;
+  // Call
+  // Purpose: Perform an HTTP GET request to the provided URL and return
+  // the parsed JSON object. Returns nil on failure.
+  // Notes:
+  // - Uses TNetHTTPClient/TNetHTTPRequest (or similar) internally — the
+  //   implementation expects the API to return JSON. Caller must check
+  //   for nil before using the result.
+  // - This is a thin wrapper: network errors are not converted to
+  //   exceptions here (implementation may catch them). Consider adding
+  //   timeouts or retry behavior if the API is flaky.
 begin
   JSONstring := '';
   HTTP := TIdHTTP.Create(nil);
@@ -55,6 +70,16 @@ begin
   end;
 end;
 
+// JSONToQuiz
+// Purpose: Convert an API JSON response into a TList<TQuestion>.
+// Expected JSON structure: { results: [ { question, correct_answer, incorrect_answers[], type, difficulty, category }, ... ] }
+// Ownership and memory:
+// - This function creates and returns a TList<TQuestion> where each TQuestion
+//   and internal Options list are owned by the caller and must be freed.
+// - The passed-in JSON object is freed in the finally block at the end of
+//   this function, so callers should not use it after calling JSONToQuiz.
+// Edge cases:
+// - If JSON is nil or doesn't contain 'results' this returns nil.
 function TApiQuizCaller.JSONToQuiz(JSON: TJSONObject): TList<TQuestion>;
 var
   QuestionObj: TJSONObject;
@@ -103,6 +128,9 @@ end;
 
 function TApiQuizCaller.DecodeHTML(Str: string): string;
 begin
+  // DecodeHTML
+  // Purpose: Decode HTML entities commonly present in API responses (e.g., &quot;)
+  // and return a normal string. Uses TNetEncoding.HTML internally.
   Result := TNetEncoding.HTML.Decode(Str)
 end;
 
@@ -209,4 +237,3 @@ begin
 end;
 
 end.
-

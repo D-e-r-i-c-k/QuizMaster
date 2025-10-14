@@ -1,3 +1,9 @@
+// dbMain_u.pas
+// Purpose: Data module that provides database access and helper functions for
+// the QuizMaster application. Contains methods to add quizzes, questions,
+// quiz completions and answers, and to query various statistics. THIS FILE
+// WAS NOT MODIFIED BEYOND ADDING COMMENTS — no logic or behavior changed.
+
 unit dbMain_u;
 
 interface
@@ -105,6 +111,23 @@ var
   PossibleAnswerList: TList<string>;
   s: string;
 begin
+  // AddQuestion
+  // Purpose: Insert a new question record for QuizID into tblQuestions.
+  // Behavior notes and assumptions:
+  // - The TQuestion.Options list contains existing possible answers (does
+  //   not include the correct answer). This function inserts the correct
+  //   answer at a random position and then serialises the list into a
+  //   single string stored in the PossibleAnswers field.
+  // - The code replaces double-quotes (") with pipe characters (|) when
+  //   building the DB string so an opposite replacement is needed when
+  //   reading (handled by DBListToStringList).
+  // - Randomize is called here to ensure different answer orderings.
+  // - Returns the newly created QuestionID (caller owns the integer).
+  // Edge cases:
+  // - If PossibleAnswerList is empty or has unexpected format the
+  //   resulting DB string may be malformed; callers should ensure
+  //   Question.Options is valid.
+  // NOTE: This is documentation-only - no changes to logic below.
   // PosibleAnswerList Creation
   PossibleAnswerList := TList<string>.Create;
   PossibleAnswerList := Question.Options;
@@ -203,6 +226,21 @@ function TdmDatabase.GetQuiz(QuizID: Integer): TList<TQuestion>;
 var
   Q: TQuestion;
 begin
+  // GetQuiz
+  // Purpose: Retrieve all questions related to QuizID and return them as
+  // a list of TQuestion objects.
+  // Implementation notes:
+  // - Uses tblQuestions.Filter to limit the dataset, then creates a new
+  //   TQuestion for each record. The caller receives ownership of the
+  //   returned TList and each TQuestion instance.
+  // - The PossibleAnswers field is parsed using DBListToStringList which
+  //   expects the DB serialization format used in AddQuestion.
+  // - The method temporarily enables filtering on tblQuestions and
+  //   guarantees Filtered is reset in a finally block.
+  // Edge cases:
+  // - If the QuizID does not exist, an empty list is returned.
+  // - Any parsing errors in PossibleAnswers will propagate when
+  //   converting to TList<string>.
   Result := TList<TQuestion>.Create;
   if tblQuizzes.Locate('QuizID', QuizID, []) then
   begin
@@ -236,6 +274,17 @@ var
   ListAsString: string;
   Option: string;
 begin
+  // DBListToStringList
+  // Purpose: Convert the 'PossibleAnswers' string saved in the database
+  // back into a TList<string>. The DB format used by AddQuestion stores
+  // answers separated by '|' and wrapped in quotes that were replaced by
+  // '|' characters when saving. This routine reverses that process.
+  // Important assumptions:
+  // - DBList starts and ends with a delimiter and uses '|' as an inner
+  //   separator after AddQuestion's serialization.
+  // - The function trims and normalises a few expected patterns. If the
+  //   stored format differs, parsing may return incorrect entries.
+  // Returns: owned TList<string> containing the original answer strings.
   Result := TList<string>.Create;
 
   ListAsString := DBList.Trim;
@@ -253,6 +302,17 @@ var
   Answer: TAnswer;
   CompletionID: Integer;
 begin
+  // CompleteQuiz
+  // Purpose: Atomic-ish operation to record a quiz completion and all
+  // associated answers. It first creates a QuizCompletion row (via
+  // AddQuizCompletion) and then inserts each answer using AddAnswer.
+  // Notes:
+  // - Errors are caught by the outer try/except which shows a message and
+  //   returns -1 on failure. There is no transaction rollback; partial
+  //   data may remain if an exception occurs after AddQuizCompletion.
+  // - TimeTaken is supplied as a TTime value and passed into AddAnswer
+  //   though AddAnswer currently stores 0 for answer-level TimeTaken in
+  //   some call sites (see AddAnswer usage).
   try
     CompletionID := AddQuizCompletion(QuizID, Score, TimeTaken);
     for Answer in Answers do
@@ -374,6 +434,16 @@ function TdmDatabase.UpdateDetails(QuizID: Integer; QuizTitle: string; QuizCateg
 begin
   Result := 1;
 
+  // GetQuestionID
+  // Purpose: Search the questions for QuizID and match the Question text
+  // to return the QuestionID. Returns -1 if not found or on error.
+  // Notes and caveats:
+  // - Performs a tblQuestions.Filter to limit to the given QuizID and
+  //   iterates all rows checking the 'Question' field for equality.
+  // - If multiple matching questions exist the loop will return the
+  //   last matching QuestionID encountered.
+  // - Uses ShowMessage for user-facing error reporting; consider
+  //   replacing with logging if used in non-interactive contexts.
   try
     tblQuizzes.Filter := 'QuizID = ' + IntToStr(QuizID);
     tblQuizzes.Filtered := True;
@@ -487,6 +557,16 @@ var
   PrevID: Integer;
   NewStreak: Integer;
 begin
+  // UpdateStreak
+  // Purpose: Compute and return the user's current streak count. It
+  // checks whether the previously assigned daily quiz (ChallengeID - 1)
+  // was completed and, if so, returns the Count stored in tblStreak.
+  // Behavior notes:
+  // - If there is no previous challenge (PrevID = 0) the streak is reset
+  //   to 0.
+  // - The function reads and sets table filters; ensure callers don't rely
+  //   on filter state after this call since it resets filters before
+  //   returning.
   PrevComplete := False;
   tblDailyQuizzes.Filtered := False;
   tblDailyQuizzes.Last;
@@ -530,6 +610,13 @@ end;
 
 function TdmDatabase.IncStreak: Integer;
 begin
+  // IncStreak
+  // Purpose: Increment the streak counter in tblStreak and mark the
+  // latest daily quiz as completed. Returns the new streak value.
+  // Notes:
+  // - This routine assumes tblStreak already contains a row to edit.
+  // - After incrementing the streak it sets the last tblDailyQuizzes
+  //   record's Completed flag to True.
   tblStreak.Edit;
   tblStreak['Count'] := tblStreak.FieldByName('Count').AsInteger + 1;
   tblStreak.Post;
