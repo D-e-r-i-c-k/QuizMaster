@@ -8,7 +8,8 @@ uses
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Buttons, Vcl.WinXPanels,
   System.Generics.Collections, System.JSON, Data.DB, Data.Win.ADODB,
   clsQuizBoxManager_u, clsAiQuizCaller_u, clsQuestion_u, dbMain_u,
-  frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u, frmAnswerQuiz_u, clsAnswer_u, frmEditQuiz_u;
+  frmCreateQuiz_u, dbTemp_u, GLOBALS_u, clsApiQuizCaller_u, frmAnswerQuiz_u,
+  clsAnswer_u, frmEditQuiz_u, clsDailyQuizManager_u, frmResults_u;
 
 type
   TfrmHome = class(TForm)
@@ -80,14 +81,13 @@ type
     Image3: TImage;
     Image4: TImage;
     Image5: TImage;
-    Button1: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure lblButtonStartDailyClick(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure pnlCreateQuizClick(Sender: TObject);
     procedure shpButtonCreateQuizMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormDestroy(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
   {private variables}
   public
@@ -107,10 +107,19 @@ var
   Question: TQuestion;
   CreateQuizForm: TfrmCreateQuiz;
   AI: TAiQuizCaller;
+  DailyQuizManager: TDailyQuizManager;
 
 implementation
 
 {$R *.dfm}
+
+procedure TfrmHome.Button1Click(Sender: TObject);
+var
+  QuizManager: TDailyQuizManager;
+  Api: TApiQuizCaller ;
+begin
+  QuizManager := TDailyQuizManager.Create(pnlDailyQuiz);
+end;
 
 procedure TfrmHome.FormCreate(Sender: TObject);
 begin
@@ -143,6 +152,8 @@ begin
   GLOBALS_u.Cache := TdmCache.Create;
 
   GLOBALS_u.Cache.CacheAllCategories;
+    //Load all saved Quizzes from DB
+  GLOBALS_u.QuizManager.LoadAllQuizzes;
 end;
 
 procedure TfrmHome.FormDestroy(Sender: TObject);
@@ -153,19 +164,14 @@ end;
 procedure TfrmHome.FormShow(Sender: TObject);
 begin
   //Dynamic Text Loading:
-    // Daily Quiz
-  lblDailyDate.Caption := 'Daily Quiz - ' + FormatDateTime('yyyy-mm-dd', Date());
-  lblDailyTopic.Caption := 'Topic: Literature';
-  lblDailyStreak.Caption := 'Current Streak: 0';
-  lblDailyAmntQuestions.Caption := '3 Questions';
+  // Daily Quiz
+  DailyQuizManager := TDailyQuizManager.Create(pnlDailyQuiz);
 
-  //Load all saved Quizzes from DB
-  GLOBALS_u.QuizManager.LoadAllQuizzes;
-end;
-
-procedure TfrmHome.lblButtonStartDailyClick(Sender: TObject);
-begin
-  ShowMessage('Clicked');
+  //Stats:
+  lblStat1Num.Caption := IntToStr(dmDatabase.CountSavedQuizzes);
+  lblStat2Num.Caption := IntToStr(dmDatabase.CountCompletedQuizzes);
+  lblStat3Num.Caption := FloatToStrF(dmDatabase.GetAvScore, ffFixed, 8, 2) + '%';
+  lblStat4Num.Caption := IntToStr(dmDatabase.GetAnswerCount);
 end;
 
 procedure TfrmHome.pnlCreateQuizClick(Sender: TObject);

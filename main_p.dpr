@@ -20,7 +20,8 @@ uses
   frmResults_u in 'frmResults_u.pas' {frmResults},
   clsResultsManager_u in 'clsResultsManager_u.pas',
   frmEditQuiz_u in 'frmEditQuiz_u.pas' {frmEditQuiz},
-  clsEditQuizManager_u in 'clsEditQuizManager_u.pas';
+  clsEditQuizManager_u in 'clsEditQuizManager_u.pas',
+  clsDailyQuizManager_u in 'clsDailyQuizManager_u.pas';
 
 {$R *.res}
 

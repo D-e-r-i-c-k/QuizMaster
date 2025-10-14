@@ -14,6 +14,7 @@ object frmResults: TfrmResults
   Position = poMainFormCenter
   Scaled = False
   ShowInTaskBar = True
+  OnClose = FormClose
   OnShow = FormShow
   TextHeight = 15
   object pnlHeader: TPanel

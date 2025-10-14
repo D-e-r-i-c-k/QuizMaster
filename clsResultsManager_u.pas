@@ -14,6 +14,7 @@ type
   TResutlsManager = class
     private
       FQuizCompletionID: Integer;
+      FQuizID: Integer;
       FQuiz: TList<TAnswer>;
       FScroller: TScrollBox;
 
@@ -41,6 +42,12 @@ begin
   FCurrentQuestion := 0;
 
   FQuizCompletionID := QuizCompletionID;
+  FQuizID := dmDatabase.GetQuizID(FQuizCompletionID);
+  if dmDatabase.GetQuizDetails(FQuizID)[5] = 'Daily' then
+  begin
+    dmDatabase.IncStreak
+  end;
+
   FScroller := Scroller;
   LoadQuiz(FQuizCompletionID);
   for Answer in FQuiz do

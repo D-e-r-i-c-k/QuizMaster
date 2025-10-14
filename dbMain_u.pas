@@ -19,6 +19,8 @@ type
     dsAnswers: TDataSource;
     tblDailyQuizzes: TADOTable;
     dsDailyQuizzes: TDataSource;
+    tblStreak: TADOTable;
+    dsStreak: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -38,6 +40,17 @@ type
     function GetQuestionID(QuizID: Integer; Question: string): Integer;
     function UpdateDetails(QuizID: Integer; QuizTitle: string; QuizCategory: string; QuizDescription: string): integer;
     function DeleteQuiz(QuizID: Integer): Integer;
+    function GetLatestDailyQuizID: Integer;
+    function CountSavedQuizzes: Integer;
+    function CountCompletedQuizzes: Integer;
+    function GetAvScore: Real;
+    function DailyQuizCompleted: Boolean;
+    function GetDailyQuizQuizID: Integer;
+    function GetAnswerCount: Integer;
+    function GetStreak: Integer;
+    function UpdateStreak: Integer;
+    function GetQuizID(QuizCompletionID: integer): Integer;
+    function IncStreak: Integer;
   end;
 
 var
@@ -83,6 +96,7 @@ begin
   tblQCS.Open;
   tblAnswers.Open;
   tblDailyQuizzes.Open;
+  tblStreak.Open;
 end;
 
 function TdmDatabase.AddQuestion(QuizID: Integer; Question: TQuestion): integer;
@@ -423,4 +437,130 @@ begin
   end;
 end;
 
+function TdmDatabase.GetLatestDailyQuizID: Integer;
+begin
+  try
+    tblDailyQuizzes.Filtered := False;
+    tblDailyQuizzes.Last;
+    Result := tblDailyQuizzes.FieldByName('QuizID').AsInteger;
+  except
+    Result := -1;
+  end;
+end;
+
+function TdmDatabase.CountSavedQuizzes: Integer;
+begin
+  Result := GetAllNonDailyIDs.Count;
+end;
+
+function TdmDatabase.CountCompletedQuizzes: Integer;
+begin
+  tblQCS.Filtered := False;
+  Result := tblQCS.RecordCount;
+end;
+
+function TdmDatabase.GetAvScore: Real;
+var
+  Sum: Real;
+begin
+  Sum := 0;
+  tblQCS.Filtered := False;
+  tblQCS.First;
+
+  while not tblQCS.Eof do
+  begin
+    Sum := Sum + tblQCS.FieldByName('Score').AsFloat;
+    tblQCS.Next;
+  end;
+
+  Result := Sum/tblQCS.RecordCount;
+end;
+
+function TdmDatabase.DailyQuizCompleted: Boolean;
+begin
+  tblDailyQuizzes.Filtered := False;
+  tblDailyQuizzes.Last;
+
+  Result := tblDailyQuizzes.FieldByName('Completed').AsBoolean;
+end;
+
+function TdmDatabase.GetDailyQuizQuizID: Integer;
+begin
+  tblDailyQuizzes.Filtered := False;
+  tblDailyQuizzes.Last;
+
+  Result := tblDailyQuizzes.FieldByName('QuizID').AsInteger;
+end;
+
+function TdmDatabase.GetAnswerCount: Integer;
+begin
+  tblAnswers.Filtered := False;
+  Result := tblAnswers.RecordCount;
+end;
+
+function TdmDatabase.GetStreak: Integer;
+begin
+  Result := tblStreak.FieldByName('Count').AsInteger;
+end;
+
+function TdmDatabase.UpdateStreak: Integer;
+var
+  PrevComplete: Boolean;
+  PrevID: Integer;
+  NewStreak: Integer;
+begin
+  PrevComplete := False;
+  tblDailyQuizzes.Filtered := False;
+  tblDailyQuizzes.Last;
+  PrevID := tblDailyQuizzes.FieldByName('ChallengeID').AsInteger - 1;
+  if PrevID = 0 then
+  begin
+    tblStreak.First;
+    tblStreak.Edit;
+    tblStreak['Count'] := 0;
+    tblStreak.Post;
+    Result := 0;
+  end
+  else
+  begin
+    tblDailyQuizzes.Filter := 'ChallengeID = ' + IntToStr(PrevID);
+    tblDailyQuizzes.Filtered := True;
+    if tblDailyQuizzes.IsEmpty then
+    begin
+      ShowMessage('No challenge with ID ' + IntToStr(PrevID));
+    end
+    else
+    begin
+      PrevComplete := tblDailyQuizzes.FieldByName('Completed').AsBoolean;
+      if PrevComplete then
+      begin
+        tblStreak.First;
+        Result := tblStreak.FieldByName('Count').AsInteger;
+      end;
+    end;
+    tblDailyQuizzes.Filtered := False;
+  end;
+end;
+
+function TdmDatabase.GetQuizID(QuizCompletionID: Integer): Integer;
+begin
+  tblQCS.Filter := 'CompletionID = ' + IntToStr(QuizCompletionID);
+  tblQCS.Filtered := True;
+  Result := tblQCS.FieldByName('QuizID').AsInteger;
+  tblQCS.Filtered := False;
+end;
+
+function TdmDatabase.IncStreak: Integer;
+begin
+  tblStreak.Edit;
+  tblStreak['Count'] := tblStreak.FieldByName('Count').AsInteger + 1;
+  tblStreak.Post;
+  Result := tblStreak.FieldByName('Count').AsInteger;
+
+  tblDailyQuizzes.Filtered := False;
+  tblDailyQuizzes.Last;
+  tblDailyQuizzes.Edit;
+  tblDailyQuizzes['Completed'] := True;
+  tblDailyQuizzes.Post;
+end;
 end.

@@ -72,4 +72,16 @@ object dmDatabase: TdmDatabase
     Left = 153
     Top = 450
   end
+  object tblStreak: TADOTable
+    Connection = conDB
+    CursorType = ctStatic
+    TableName = 'Streak'
+    Left = 61
+    Top = 518
+  end
+  object dsStreak: TDataSource
+    DataSet = tblStreak
+    Left = 153
+    Top = 522
+  end
 end

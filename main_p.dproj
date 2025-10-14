@@ -168,6 +168,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="clsEditQuizManager_u.pas"/>
+        <DCCReference Include="clsDailyQuizManager_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

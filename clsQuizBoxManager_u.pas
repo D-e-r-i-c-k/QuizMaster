@@ -57,9 +57,11 @@ var
   imgQuizBox1, imgQuizBox2, imgQuizType, imgBtnEditQuiz, imgBtnDelQuiz: TImage;
   strQuizType: string;
   Properties: TList<string>;
+  Quiz: TList<TQuestion>;
 begin
   //Quiz Properties:
   Properties := dmDatabase.GetQuizDetails(QuizID);
+  Quiz := dmDatabase.GetQuiz(QuizID);
   //Panel Of Box:
   pnlBox := TPanel.Create(FQuizParent.Owner);
   pnlBox.Parent := FQuizParent;
@@ -132,7 +134,7 @@ begin
   lblAmtQuestions.Parent := pnlBox;
   lblAmtQuestions.Left := 38;
   lblAmtQuestions.Top := 106;
-  lblAmtQuestions.Caption := 'x Questions';
+  lblAmtQuestions.Caption := IntToStr(Quiz.Count) + ' Questions';
   lblAmtQuestions.Font.Color := $666666;
   lblAmtQuestions.Font.Size := 6;
 

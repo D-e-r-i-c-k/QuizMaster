@@ -524,18 +524,6 @@ object frmHome: TfrmHome
           Center = True
           Stretch = True
         end
-        object Button1: TButton
-          Left = 235
-          Top = 78
-          Width = 174
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Button1'
-          TabOrder = 0
-        end
       end
       object pnlStartDaily: TPanel
         Left = 179
@@ -569,7 +557,6 @@ object frmHome: TfrmHome
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
-          OnClick = lblButtonStartDailyClick
         end
       end
     end
@@ -698,7 +685,7 @@ object frmHome: TfrmHome
       object lblStat3Num: TLabel
         Left = 16
         Top = 16
-        Width = 82
+        Width = 89
         Height = 33
         AutoSize = False
         Caption = '0%'
@@ -724,7 +711,7 @@ object frmHome: TfrmHome
         ParentFont = False
       end
       object imgStat3: TImage
-        Left = 104
+        Left = 111
         Top = 16
         Width = 41
         Height = 41
