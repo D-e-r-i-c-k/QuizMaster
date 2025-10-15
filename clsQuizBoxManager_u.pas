@@ -1,7 +1,6 @@
 // clsQuizBoxManager_u.pas
 // Purpose: Manages collections of quizzes (quiz boxes) used for grouping
-// and selection in the UI. This file only received comments; behavior
-// remains unchanged.
+// and selection in the UI.
 
 unit clsQuizBoxManager_u;
 

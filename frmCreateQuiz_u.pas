@@ -1,7 +1,7 @@
 // frmCreateQuiz_u.pas
 // Purpose: UI form for creating new quizzes. Provides controls for entering
 // quiz metadata and questions, and forwards user input to the application's
-// quiz creation logic. NO LOGIC CHANGED — only comments added.
+// quiz creation logic.
 
 unit frmCreateQuiz_u;
 

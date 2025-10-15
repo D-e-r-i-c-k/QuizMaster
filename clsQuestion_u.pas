@@ -1,7 +1,6 @@
 // clsQuestion_u.pas
 // Purpose: Defines the TQuestion class used to represent a quiz question,
-// its type, difficulty, possible answers and correct answer. ONLY
-// COMMENTS ADDED — no changes to logic.
+// its type, difficulty, possible answers and correct answer.
 
 unit clsQuestion_u;
 

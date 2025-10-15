@@ -1,6 +1,6 @@
 // frmResults_u.pas
 // Purpose: Displays quiz results and statistics. Reads completion records
-// and renders results to the user. ONLY COMMENTS ADDED — no functional edits.
+// and renders results to the user.
 
 unit frmResults_u;
 

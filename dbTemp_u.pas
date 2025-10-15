@@ -1,8 +1,6 @@
 // dbTemp_u.pas
 // Purpose: Temporary database helper module used for intermediate storage
-// or transient operations during QuizMaster runtime. Documentation-only
-// edits were made; no code logic was changed.
-
+// or transient operations during QuizMaster runtime.
 unit dbTemp_u;
 
 interface

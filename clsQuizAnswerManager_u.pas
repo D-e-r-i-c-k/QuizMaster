@@ -1,7 +1,6 @@
 // clsQuizAnswerManager_u.pas
 // Purpose: Contains logic to manage quiz answers lifecycle within the
-// application (saving, retrieving, and processing answers). NO CODE
-// BEHAVIOR CHANGED — comments only.
+// application (saving, retrieving, and processing answers).
 
 unit clsQuizAnswerManager_u;
 

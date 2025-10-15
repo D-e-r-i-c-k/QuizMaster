@@ -1,7 +1,6 @@
 // clsResultsManager_u.pas
 // Purpose: Provides helper methods for calculating and retrieving quiz
-// results and statistics. This unit was only annotated with comments; no
-// executable changes were made.
+// results and statistics.
 
 unit clsResultsManager_u;
 

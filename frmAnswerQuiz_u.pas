@@ -1,7 +1,7 @@
 // frmAnswerQuiz_u.pas
 // Purpose: Form unit that implements the UI for answering quizzes. Handles
 // presentation of questions, user input and wiring into the QuizMaster
-// backend. ONLY COMMENTS ADDED — behavior and code untouched.
+// backend.
 
 unit frmAnswerQuiz_u;
 

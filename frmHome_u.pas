@@ -1,7 +1,6 @@
 ﻿// frmHome_u.pas
 // Purpose: Main application form (home screen) that navigates between
 // different features of QuizMaster. Responsible for high-level UI flow.
-// NO CODE WAS MODIFIED — only documentation comments added.
 
 unit frmHome_u;
 
@@ -72,20 +71,6 @@ type
     edtMyQuizzesSearch: TEdit;
     sbxMyQuizzes: TScrollBox;
     pnlMyQuizzesScroll: TPanel;
-    Panel1: TPanel;
-    Shape3: TShape;
-    Label2: TLabel;
-    Label3: TLabel;
-    Image1: TImage;
-    Label1: TLabel;
-    Image2: TImage;
-    Label4: TLabel;
-    Panel2: TPanel;
-    Shape4: TShape;
-    Label5: TLabel;
-    Image3: TImage;
-    Image4: TImage;
-    Image5: TImage;
     procedure FormCreate(Sender: TObject);
     procedure shpButtonStartDailyMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);

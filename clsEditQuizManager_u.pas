@@ -1,6 +1,6 @@
 // clsEditQuizManager_u.pas
 // Purpose: Contains logic for editing quizzes: updating metadata and
-// questions. Only comments added to document purpose; no code changed.
+// questions.
 
 unit clsEditQuizManager_u;
 

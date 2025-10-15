@@ -1,7 +1,6 @@
 // frmEditQuiz_u.pas
 // Purpose: UI for editing an existing quiz. Allows updating quiz details
-// and questions; delegates persistence to the database manager. ONLY
-// COMMENTS WERE ADDED — no functional changes.
+// and questions; delegates persistence to the database manager.
 
 unit frmEditQuiz_u;
 

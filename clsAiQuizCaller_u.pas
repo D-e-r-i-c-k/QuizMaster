@@ -1,7 +1,6 @@
 // clsAiQuizCaller_u.pas
 // Purpose: Integrates with AI-based services or logic to generate quiz
-// content. The unit was only given descriptive comments; functionality
-// remains exactly as in the original submission.
+// content.
 
 unit clsAiQuizCaller_u;
 

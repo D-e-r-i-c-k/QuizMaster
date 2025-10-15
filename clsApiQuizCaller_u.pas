@@ -1,7 +1,6 @@
 // clsApiQuizCaller_u.pas
 // Purpose: Encapsulates calling external APIs to fetch or generate quiz
-// data. This file was annotated with comments only; no code behavior was
-// altered.
+// data.
 
 unit clsApiQuizCaller_u;
 

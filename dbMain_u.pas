@@ -1,8 +1,7 @@
 // dbMain_u.pas
 // Purpose: Data module that provides database access and helper functions for
 // the QuizMaster application. Contains methods to add quizzes, questions,
-// quiz completions and answers, and to query various statistics. THIS FILE
-// WAS NOT MODIFIED BEYOND ADDING COMMENTS — no logic or behavior changed.
+// quiz completions and answers, and to query various statistics.
 
 unit dbMain_u;
 
@@ -127,7 +126,7 @@ begin
   // - If PossibleAnswerList is empty or has unexpected format the
   //   resulting DB string may be malformed; callers should ensure
   //   Question.Options is valid.
-  // NOTE: This is documentation-only - no changes to logic below.
+
   // PosibleAnswerList Creation
   PossibleAnswerList := TList<string>.Create;
   PossibleAnswerList := Question.Options;

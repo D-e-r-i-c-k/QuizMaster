@@ -4,7 +4,7 @@ object dmDatabase: TdmDatabase
   Width = 1000
   PixelsPerInch = 120
   object conDB: TADOConnection
-    ConnectionString = 
+    ConnectionString =
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=database.mdb;Mode=R' +
       'eadWrite;Persist Security Info=False;'
     LoginPrompt = False
